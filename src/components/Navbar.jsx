@@ -1,5 +1,6 @@
 import { SearchRounded } from '@mui/icons-material';
 import styled from 'styled-components';
+import Carousel from './Carousel';
 
 const Notifications = styled.div`
   display: flex;
@@ -19,20 +20,35 @@ const NavbarContainer = styled.div`
   height: 115px;
   font-family: 'Domine', serif;
   align-content: center;
-  align-items: center:
-  position: relative;
+  align-items: center;
+  position: absolute;
+  z-index: 4;
+  width: 100%;
+  transition: ease-in-out 4s;
+  &:hover {
+    background-color: white;
+    color: black;
+  }
 `;
 const WrapperContainer = styled.div`
-  padding: 50px 40px;
+  width: 100%;
+  padding: 35px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   align-content: center;
-  color: #fffff;
+  color: white;
+  z-index: 3;
+
+  &:hover {
+    background-color: white;
+    color: black;
+  }
 `;
 const LogoContainer = styled.div`
   flex: 1;
   text-align: center;
+  margin-left: 50px;
   font-family: 'My Soul', cursive;
   font-weight: 400;
   font-size: 38px;
@@ -70,45 +86,50 @@ const Languages = styled.span`
 const SearchIcon = styled(SearchRounded)`
   border: 1px solid;
   border-radius: 50%;
-  padding: 3px;
+  padding: 5px;
 `;
 
 const Navbar = () => {
   return (
     <div>
-      <Notifications>
-        <NotificationsList>
-          <li>Free Shipping to All Europe</li>
-        </NotificationsList>
-      </Notifications>
-      <NavbarContainer>
-        <WrapperContainer>
-          <LogoContainer>
-            <Spans>B e r k e & Z e z</Spans>
-          </LogoContainer>
-          <MainContainer>
-            <MainList>
-              <MainListItems>
-                <Spans>SHOP</Spans>
-                <Spans>ABOUT</Spans>
-                <Spans>CONTACT</Spans>
-                <Spans>LOOKBOOK</Spans>
-                <Spans style={{ color: 'red' }}>SALE</Spans>
-              </MainListItems>
-            </MainList>
-          </MainContainer>
-          <RightContainer>
-            <Spans>
-              <Languages>En</Languages>
-            </Spans>
-            <Spans>Account</Spans>
-            <Spans>Bag (0)</Spans>
-            <Spans>
-              <SearchIcon />
-            </Spans>
-          </RightContainer>
-        </WrapperContainer>
-      </NavbarContainer>
+      <div>
+        <Notifications>
+          <NotificationsList>
+            <li>Free Shipping to All Europe</li>
+          </NotificationsList>
+        </Notifications>
+        <NavbarContainer>
+          <WrapperContainer>
+            <LogoContainer>
+              <Spans>B e r k e & Z e z</Spans>
+            </LogoContainer>
+            <MainContainer>
+              <MainList>
+                <MainListItems>
+                  <Spans>SHOP</Spans>
+                  <Spans>ABOUT</Spans>
+                  <Spans>CONTACT</Spans>
+                  <Spans>LOOKBOOK</Spans>
+                  <Spans style={{ color: 'red' }}>SALE</Spans>
+                </MainListItems>
+              </MainList>
+            </MainContainer>
+            <RightContainer>
+              <Spans>
+                <Languages>En</Languages>
+              </Spans>
+              <Spans>Account</Spans>
+              <Spans>Bag (0)</Spans>
+              <Spans>
+                <SearchIcon />
+              </Spans>
+            </RightContainer>
+          </WrapperContainer>
+        </NavbarContainer>
+      </div>
+      <div>
+        <Carousel />
+      </div>
     </div>
   );
 };
