@@ -24,7 +24,7 @@ const NavbarContainer = styled.div`
   position: absolute;
   z-index: 4;
   width: 100%;
-  transition: ease-in-out 4s;
+
   &:hover {
     background-color: white;
     color: black;
@@ -46,18 +46,20 @@ const WrapperContainer = styled.div`
   }
 `;
 const LogoContainer = styled.div`
-  flex: 1;
+  flex: 0.8;
   text-align: center;
   margin-left: 50px;
   font-family: 'My Soul', cursive;
   font-weight: 400;
   font-size: 38px;
+  transition: ease-in-out 2s;
 `;
 const MainContainer = styled.div`
   flex: 1.5;
   font-size: 14px;
   font-weight: 500;
   text-align: center;
+  transition: ease-in-out 1s;
 `;
 const RightContainer = styled.div`
   flex: 1;
@@ -67,6 +69,7 @@ const RightContainer = styled.div`
   font-size: 14px;
   display: flex;
   margin-left: 50px;
+  transition: ease-in-out 1s;
 `;
 
 const MainList = styled.ul``;
@@ -75,7 +78,7 @@ const MainListItems = styled.li`
 `;
 
 const Spans = styled.span`
-  margin: 0 15px;
+  margin: 0 20px;
   cursor: pointer;
 `;
 
