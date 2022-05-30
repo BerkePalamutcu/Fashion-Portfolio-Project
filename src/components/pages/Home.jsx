@@ -1,11 +1,12 @@
 import Navbar from '../Navbar';
-import Carousel from '../Carousel';
 import Slider from '../Slider';
+import Animation from '../Animation';
 const Home = () => {
   return (
     <div>
       <Navbar />
       <Slider />
+      <Animation />
     </div>
   );
 };

@@ -3,7 +3,7 @@ import Video from './Video';
 
 const VideoEdited = styled(Video)`
   object-fit: cover;
-  width: 100wh;
+  width: 100vw;
   height: 100vh;
 `;
 

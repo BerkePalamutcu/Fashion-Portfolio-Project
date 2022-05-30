@@ -9,8 +9,10 @@ const Notifications = styled.div`
   align-items: center;
   height: 38px;
   background-color: #b78c71;
+  width: 100vw;
 `;
 const NotificationsList = styled.ul`
+  width: 100vw;
   list-style-type: none;
   color: white;
   font-size: 12px;
@@ -23,7 +25,8 @@ const NavbarContainer = styled.div`
   align-items: center;
   position: absolute;
   z-index: 4;
-  width: 100%;
+  width: 100vw;
+  overflow: hidden;
 
   &:hover {
     background-color: white;
@@ -31,7 +34,7 @@ const NavbarContainer = styled.div`
   }
 `;
 const WrapperContainer = styled.div`
-  width: 100%;
+  width: 100vw;
   padding: 35px 40px;
   display: flex;
   justify-content: space-between;
@@ -39,7 +42,7 @@ const WrapperContainer = styled.div`
   align-content: center;
   color: white;
   z-index: 3;
-
+  overflow: hidden;
   &:hover {
     background-color: white;
     color: black;
@@ -48,7 +51,6 @@ const WrapperContainer = styled.div`
 const LogoContainer = styled.div`
   flex: 0.8;
   text-align: center;
-  margin-left: 50px;
   font-family: 'My Soul', cursive;
   font-weight: 400;
   font-size: 38px;
@@ -68,7 +70,6 @@ const RightContainer = styled.div`
   align-content: center;
   font-size: 14px;
   display: flex;
-  margin-left: 50px;
   transition: ease-in-out 1s;
 `;
 
@@ -112,7 +113,6 @@ const Navbar = () => {
                   <Spans>SHOP</Spans>
                   <Spans>ABOUT</Spans>
                   <Spans>CONTACT</Spans>
-                  <Spans>LOOKBOOK</Spans>
                   <Spans style={{ color: 'red' }}>SALE</Spans>
                 </MainListItems>
               </MainList>
@@ -121,7 +121,7 @@ const Navbar = () => {
               <Spans>
                 <Languages>En</Languages>
               </Spans>
-              <Spans>Account</Spans>
+              <Spans>LOGIN</Spans>
               <Spans>Bag (0)</Spans>
               <Spans>
                 <SearchIcon />
