@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import { SearchRounded } from '@mui/icons-material';
 import styled from 'styled-components';
 import Carousel from './Carousel';
@@ -110,10 +111,18 @@ const Navbar = () => {
             <MainContainer>
               <MainList>
                 <MainListItems>
-                  <Spans>SHOP</Spans>
-                  <Spans>ABOUT</Spans>
-                  <Spans>CONTACT</Spans>
-                  <Spans style={{ color: 'red' }}>SALE</Spans>
+                  <NavLink to="/shop">
+                    <Spans>SHOP</Spans>
+                  </NavLink>
+                  <NavLink to="/about">
+                    <Spans>ABOUT</Spans>
+                  </NavLink>
+                  <NavLink to="/contact">
+                    <Spans>CONTACT</Spans>
+                  </NavLink>
+                  <NavLink to="/sale">
+                    <Spans style={{ color: 'red' }}>SALE</Spans>
+                  </NavLink>
                 </MainListItems>
               </MainList>
             </MainContainer>

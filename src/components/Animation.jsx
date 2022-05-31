@@ -1,56 +1,71 @@
-import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-const MainImgContainer = styled.div`
-  width: 100vw;
-  height: 400vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-`;
-const AnimationImg = styled.img.attrs((props) => ({ src: props.src }))`
-  position: absolute;
-  top: 0;
-  object-fit: cover;
-  transform: scale(${({ zoom }) => zoom});
-  transform-origin: 49% 50%;
-`;
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useRef, useEffect } from 'react';
+import './Animation.css';
+
+gsap.registerPlugin(ScrollTrigger);
+gsap.set('.gridBlock', {
+  backgroundImage: (i) =>
+    `url(https://picsum.photos/${500}/${500}?random=${i})`,
+});
 const Animation = () => {
-  //Scroll positionu yakalamami sagliyor.
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const [zoom, setZoom] = useState(1);
-
-  const handleScroll = () => {
-    const position = window.pageYOffset;
-    setScrollPosition(position);
-    console.log(position);
-  };
-
-  const handleZoom = () => {
-    if (scrollPosition >= 2000 && scrollPosition <= 2300 && handleScroll) {
-      setZoom(zoom - 0.01);
-    }
-  };
-
+  const imageRef = useRef(null);
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    const el = imageRef.current;
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: document.querySelector('.grid-container'),
+          start: 'top top',
+          end: () => 400 * 4,
+          scrub: true,
+          pin: document.querySelector('.grid'),
+          anticipatePin: 1,
+        },
+      })
+      .set('.gridBlock:not(.centerBlock)', { autoAlpha: 0 })
+      .to(
+        '.gridBlock:not(.centerBlock)',
+        { duration: 0.1, autoAlpha: 1 },
+        0.001
+      )
+      .from('.gridLayer', {
+        scale: 3.3333,
+        ease: 'none',
+      });
   }, []);
-
-  useEffect(() => {
-    handleZoom();
-  }, [scrollPosition]);
-
   return (
-    <MainImgContainer>
-      <AnimationImg
-        zoom={zoom}
-        src="https://web.archive.org/web/20200514180121im_/https://www.rino-pelle.com/wp-content/uploads/2020/03/instagram-tile-4.jpg"
-      />
-    </MainImgContainer>
+    <div className="grid-container">
+      <div className="grid">
+        <div className="gridLayer">
+          <div className="gridBlock"></div>
+        </div>
+        <div className="gridLayer">
+          <div className="gridBlock"></div>
+        </div>
+        <div className="gridLayer">
+          <div className="gridBlock"></div>
+        </div>
+        <div className="gridLayer centerPiece">
+          <div className="gridBlock centerBlock"></div>
+        </div>
+        <div className="gridLayer">
+          <div className="gridBlock"></div>
+        </div>
+        <div className="gridLayer">
+          <div className="gridBlock"></div>
+        </div>
+        <div className="gridLayer">
+          <div className="gridBlock"></div>
+        </div>
+        <div className="gridLayer">
+          <div className="gridBlock"></div>
+        </div>
+        <div className="gridLayer">
+          <div className="gridBlock"></div>
+        </div>
+      </div>
+    </div>
   );
 };
 
