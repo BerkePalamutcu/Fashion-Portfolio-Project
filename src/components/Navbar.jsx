@@ -1,7 +1,7 @@
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { SearchRounded } from '@mui/icons-material';
 import styled from 'styled-components';
-import Carousel from './Carousel';
 
 const Notifications = styled.div`
   display: flex;
@@ -31,7 +31,7 @@ const NavbarContainer = styled.div`
 
   &:hover {
     background-color: white;
-    color: black;
+    color: black !important;
   }
 `;
 const WrapperContainer = styled.div`
@@ -44,9 +44,9 @@ const WrapperContainer = styled.div`
   color: white;
   z-index: 3;
   overflow: hidden;
-  &:hover {
+  &&&: [hover] {
     background-color: white;
-    color: black;
+    color: black !important;
   }
 `;
 const LogoContainer = styled.div`
@@ -95,53 +95,110 @@ const SearchIcon = styled(SearchRounded)`
 `;
 
 const Navbar = () => {
+  const [hovered, setHovered] = useState(false);
+  const handleMouseEnter = () => {
+    setHovered(true);
+  };
+  const handleMouseLeave = () => {
+    setHovered(false);
+  };
   return (
     <div>
-      <div>
-        <Notifications>
-          <NotificationsList>
-            <li>Free Shipping to All Europe</li>
-          </NotificationsList>
-        </Notifications>
-        <NavbarContainer>
-          <WrapperContainer>
-            <LogoContainer>
+      <Notifications>
+        <NotificationsList>
+          <li>Free Shipping to All Europe</li>
+        </NotificationsList>
+      </Notifications>
+      <NavbarContainer>
+        <WrapperContainer
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <LogoContainer>
+            <NavLink
+              style={{
+                textDecoration: 'none',
+                color: hovered === true ? 'black' : 'white',
+                transition: 'ease-in-out 2s',
+              }}
+              to="/"
+            >
               <Spans>B e r k e & Z e z</Spans>
-            </LogoContainer>
-            <MainContainer>
-              <MainList>
-                <MainListItems>
-                  <NavLink to="/shop">
-                    <Spans>SHOP</Spans>
-                  </NavLink>
-                  <NavLink to="/about">
-                    <Spans>ABOUT</Spans>
-                  </NavLink>
-                  <NavLink to="/contact">
-                    <Spans>CONTACT</Spans>
-                  </NavLink>
-                  <NavLink to="/sale">
-                    <Spans style={{ color: 'red' }}>SALE</Spans>
-                  </NavLink>
-                </MainListItems>
-              </MainList>
-            </MainContainer>
-            <RightContainer>
-              <Spans>
-                <Languages>En</Languages>
-              </Spans>
+            </NavLink>
+          </LogoContainer>
+          <MainContainer>
+            <MainList>
+              <MainListItems>
+                <NavLink
+                  style={{
+                    textDecoration: 'none',
+                    color: hovered === true ? 'black' : 'white',
+                  }}
+                  to="/shop"
+                >
+                  <Spans>SHOP</Spans>
+                </NavLink>
+                <NavLink
+                  style={{
+                    textDecoration: 'none',
+                    color: hovered === true ? 'black' : 'white',
+                  }}
+                  to="/about"
+                >
+                  <Spans>ABOUT</Spans>
+                </NavLink>
+                <NavLink
+                  style={{
+                    textDecoration: 'none',
+                    color: hovered === true ? 'black' : 'white',
+                  }}
+                  to="/contact"
+                >
+                  <Spans>CONTACT</Spans>
+                </NavLink>
+                <NavLink style={{ textDecoration: 'none' }} to="/sale">
+                  <Spans style={{ color: 'red' }}>SALE</Spans>
+                </NavLink>
+              </MainListItems>
+            </MainList>
+          </MainContainer>
+          <RightContainer>
+            <Spans
+              style={{
+                textDecoration: 'none',
+                color: hovered === true ? 'black' : 'white',
+              }}
+            >
+              <Languages>En</Languages>
+            </Spans>
+            <NavLink
+              style={{
+                textDecoration: 'none',
+                color: hovered === true ? 'black' : 'white',
+              }}
+              to="/login"
+            >
               <Spans>LOGIN</Spans>
-              <Spans>Bag (0)</Spans>
-              <Spans>
-                <SearchIcon />
-              </Spans>
-            </RightContainer>
-          </WrapperContainer>
-        </NavbarContainer>
-      </div>
-      <div>
-        <Carousel />
-      </div>
+            </NavLink>
+            <Spans
+              style={{
+                textDecoration: 'none',
+                color: hovered === true ? 'black' : 'white',
+              }}
+            >
+              Bag (0)
+            </Spans>
+            <Spans>
+              <SearchIcon
+                style={{
+                  textDecoration: 'none',
+                  color: hovered === true ? 'black' : 'white',
+                }}
+              />
+            </Spans>
+          </RightContainer>
+        </WrapperContainer>
+      </NavbarContainer>
     </div>
   );
 };
