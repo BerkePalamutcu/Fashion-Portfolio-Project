@@ -71,6 +71,7 @@ const BlackButton = styled.button`
 
   &:hover {
     background-color: #b78c71;
+    cursor: pointer;
   }
 `;
 
