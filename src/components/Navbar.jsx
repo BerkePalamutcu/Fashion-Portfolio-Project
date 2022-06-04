@@ -5,12 +5,12 @@ import styled from 'styled-components';
 
 const Notifications = styled.div`
   display: flex;
+  width: 100vw;
   justify-content: center;
   text-align: center;
   align-items: center;
   height: 38px;
   background-color: #b78c71;
-  width: 100vw;
 `;
 const NotificationsList = styled.ul`
   width: 100vw;
@@ -96,12 +96,15 @@ const SearchIcon = styled(SearchRounded)`
 
 const Navbar = () => {
   const [hovered, setHovered] = useState(false);
+
   const handleMouseEnter = () => {
     setHovered(true);
   };
+
   const handleMouseLeave = () => {
     setHovered(false);
   };
+
   return (
     <div>
       <Notifications>
