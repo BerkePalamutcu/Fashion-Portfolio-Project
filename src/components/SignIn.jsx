@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-
+import { Facebook } from '@mui/icons-material';
 const SignInContainer = styled.div`
   positition: relative;
   display: flex;
@@ -114,7 +114,11 @@ const SignUpButton = styled.button`
   border-radius: 5px;
 `;
 const LoginWithGoogleButton = styled.button`
-  width: 270px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  align-content: center;
+  width: 200px;
   background-color: #0085c6;
   font-weight: 600;
   font-size: 16px;
@@ -140,7 +144,10 @@ const SignIn = () => {
               <SignUpButton>SIGN UP</SignUpButton>
             </ButtonContainer>
             <h3>OR</h3>
-            <LoginWithGoogleButton>Facebook Login</LoginWithGoogleButton>
+            <LoginWithGoogleButton>
+              <Facebook style={{ height: '25px' }} />
+              Facebook Login
+            </LoginWithGoogleButton>
           </InputContainer>
         </FormStylingContainer>
       </FormContainer>
