@@ -114,7 +114,7 @@ const SignUpButton = styled.button`
   border-radius: 5px;
 `;
 const LoginWithGoogleButton = styled.button`
-  width: 270git px;
+  width: 270px;
   background-color: #0085c6;
   font-weight: 600;
   font-size: 16px;
