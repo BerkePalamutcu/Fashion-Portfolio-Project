@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { SearchRounded } from '@mui/icons-material';
 import styled from 'styled-components';
 
-const Notifications = styled.div`
+export const Notifications = styled.div`
   display: flex;
   width: 100vw;
   justify-content: center;
@@ -12,14 +12,14 @@ const Notifications = styled.div`
   height: 38px;
   background-color: #b78c71;
 `;
-const NotificationsList = styled.ul`
+export const NotificationsList = styled.ul`
   width: 100vw;
   list-style-type: none;
   color: white;
   font-size: 12px;
   font-family: 'Domine', serif;
 `;
-const NavbarContainer = styled.div`
+export const NavbarContainer = styled.div`
   height: 115px;
   font-family: 'Domine', serif;
   align-content: center;
@@ -34,7 +34,7 @@ const NavbarContainer = styled.div`
     color: black !important;
   }
 `;
-const WrapperContainer = styled.div`
+export const WrapperContainer = styled.div`
   width: 100vw;
   padding: 35px 40px;
   display: flex;
@@ -49,7 +49,7 @@ const WrapperContainer = styled.div`
     color: black !important;
   }
 `;
-const LogoContainer = styled.div`
+export const LogoContainer = styled.div`
   flex: 0.8;
   text-align: center;
   font-family: 'My Soul', cursive;
@@ -57,14 +57,14 @@ const LogoContainer = styled.div`
   font-size: 38px;
   transition: ease-in-out 2s;
 `;
-const MainContainer = styled.div`
+export const MainContainer = styled.div`
   flex: 1.5;
   font-size: 14px;
   font-weight: 500;
   text-align: center;
   transition: ease-in-out 1s;
 `;
-const RightContainer = styled.div`
+export const RightContainer = styled.div`
   flex: 1;
   text-align: center;
   align-items: center;
@@ -74,21 +74,22 @@ const RightContainer = styled.div`
   transition: ease-in-out 1s;
 `;
 
-const MainList = styled.ul``;
-const MainListItems = styled.li`
+export const MainList = styled.ul``;
+
+export const MainListItems = styled.li`
   list-style-type: none;
 `;
 
-const Spans = styled.span`
+export const Spans = styled.span`
   margin: 0 20px;
   cursor: pointer;
 `;
 
-const Languages = styled.span`
+export const Languages = styled.span`
   margin-right: 24px;
 `;
 
-const SearchIcon = styled(SearchRounded)`
+export const SearchIcon = styled(SearchRounded)`
   border: 1px solid;
   border-radius: 50%;
   padding: 5px;
@@ -106,7 +107,7 @@ const Navbar = () => {
   };
 
   return (
-    <div>
+    <>
       <Notifications>
         <NotificationsList>
           <li>Free Shipping to All Europe</li>
@@ -126,7 +127,7 @@ const Navbar = () => {
               }}
               to="/"
             >
-              <Spans>B e r k e & Z e z</Spans>
+              <Spans>Berke's Place</Spans>
             </NavLink>
           </LogoContainer>
           <MainContainer>
@@ -202,7 +203,7 @@ const Navbar = () => {
           </RightContainer>
         </WrapperContainer>
       </NavbarContainer>
-    </div>
+    </>
   );
 };
 

@@ -1,9 +1,9 @@
-import Navbar from '../Navbar';
+import NavbarOther from '../NavbarOther';
 const Shop = () => {
   return (
-    <div>
-      <Navbar />
-    </div>
+    <>
+      <NavbarOther />
+    </>
   );
 };
 

@@ -1,9 +1,11 @@
-import Navbar from "../Navbar"
+import NavbarOther from '../NavbarOther';
 
 const Contact = () => {
   return (
-    <div><Navbar/></div>
-  )
-}
+    <>
+      <NavbarOther />
+    </>
+  );
+};
 
-export default Contact
+export default Contact;

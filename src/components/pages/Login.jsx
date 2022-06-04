@@ -1,8 +1,11 @@
-import Navbar from '../Navbar';
+import SignIn from '../SignIn';
+import NavbarOther from '../NavbarOther';
+
 const Login = () => {
   return (
     <>
-      <Navbar />
+      <NavbarOther />
+      <SignIn />
     </>
   );
 };

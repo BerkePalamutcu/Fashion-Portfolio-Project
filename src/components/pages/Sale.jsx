@@ -1,10 +1,10 @@
-import Navbar from '../Navbar';
+import NavbarOther from '../NavbarOther';
 
 const Sale = () => {
   return (
-    <div>
-      <Navbar />
-    </div>
+    <>
+      <NavbarOther />
+    </>
   );
 };
 
