@@ -25,7 +25,7 @@ const ImageContainer = styled.img.attrs((props) => ({
   src: props.src,
 }))`
   height: auto;
-  max-width: 65%;
+  max-width: 64%;
   height: auto;
   object-fit: cover;
   display: flex;
@@ -39,14 +39,16 @@ const SignUpFormContainer = styled.div`
   width: 100%;
   padding: 0 50px;
 `;
-
+const SignUpInputContainer = styled(InputContainer)`
+  gap: 5px;
+`;
 const CreateAccount = () => {
   return (
     <>
       <SignUpPageContainer>
         <SignUpFormContainer>
           <FormStylingContainer>
-            <InputContainer>
+            <SignUpInputContainer>
               <LoginHeader>Create Account</LoginHeader>
               <EmailLabel>E-mail</EmailLabel>
               <EmailInput />
@@ -54,8 +56,10 @@ const CreateAccount = () => {
               <PasswordInput />
               <PasswordLabel>Confirmed Password</PasswordLabel>
               <PasswordInput />
-              <SignUpButton>SIGN UP</SignUpButton>
-            </InputContainer>
+              <SignUpButton style={{ marginTop: '100px' }}>
+                SIGN UP
+              </SignUpButton>
+            </SignUpInputContainer>
           </FormStylingContainer>
         </SignUpFormContainer>
         <ImageContainer src={myImage} />
