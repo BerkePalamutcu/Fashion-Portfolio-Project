@@ -37,6 +37,7 @@ const FormStylingContainer = styled.div`
   height: 100%;
   padding: 0 10px;
   align-content: center;
+  justify-content: center;
   display: flex;
 `;
 const InputContainer = styled.div`
@@ -46,7 +47,6 @@ const InputContainer = styled.div`
   align-content: center;
   justify-content: center;
   gap: 20px;
-  margin: 0 30% 100px 22%;
 `;
 const EmailLabel = styled.label`
   font-size: 24px;
@@ -119,7 +119,7 @@ const LoginWithGoogleButton = styled.button`
   align-items: flex-end;
   align-content: center;
   width: 200px;
-  background-color: #0085c6;
+  background-color: #0075d3;
   font-weight: 600;
   font-size: 16px;
   color: white;
@@ -127,6 +127,9 @@ const LoginWithGoogleButton = styled.button`
   cursor: pointer;
   padding: 20px 0;
   border-radius: 5px;
+  &:hover {
+    background-color: #0095d9;
+  }
 `;
 const SignIn = () => {
   return (
