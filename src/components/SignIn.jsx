@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { Facebook } from '@mui/icons-material';
+import { NavLink } from 'react-router-dom';
+
 const SignInContainer = styled.div`
   positition: relative;
   display: flex;
@@ -11,12 +13,12 @@ const SignInContainer = styled.div`
 `;
 const LoginImage = styled.img.attrs((props) => ({ src: props.src }))`
   height: auto;
-  max-width: 100%
+  max-width: 100%;
   height: auto;
   object-fit: cover;
   display: flex;
 `;
-const FormContainer = styled.div`
+export const FormContainer = styled.form`
   display: flex;
   justify-content: center;
   align-content: center;
@@ -24,14 +26,14 @@ const FormContainer = styled.div`
   width: 100%;
   padding: 0 50px;
 `;
-const LoginHeader = styled.h1`
+export const LoginHeader = styled.h1`
   font-weight: 400;
   margin-bottom: 20%;
   font-size: 46px;
   display: flex;
 `;
 
-const FormStylingContainer = styled.div`
+export const FormStylingContainer = styled.div`
   background-color: #e9e3dc;
   width: 80%;
   height: 100%;
@@ -40,7 +42,7 @@ const FormStylingContainer = styled.div`
   justify-content: center;
   display: flex;
 `;
-const InputContainer = styled.div`
+export const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -48,16 +50,16 @@ const InputContainer = styled.div`
   justify-content: center;
   gap: 20px;
 `;
-const EmailLabel = styled.label`
+export const EmailLabel = styled.label`
   font-size: 24px;
   display: flex;
 `;
-const PasswordLabel = styled.label`
+export const PasswordLabel = styled.label`
   margin-top: 30px;
   font-size: 24px;
   display: flex;
 `;
-const EmailInput = styled.input`
+export const EmailInput = styled.input`
   background: transparent;
   border: none;
   border-bottom: 1px solid black;
@@ -70,7 +72,7 @@ const EmailInput = styled.input`
     outline: none;
   }
 `;
-const PasswordInput = styled.input`
+export const PasswordInput = styled.input`
 background: transparent;
   border: none;
   border-bottom: 1px solid black;
@@ -81,12 +83,12 @@ background: transparent;
   &:focus {
     background: #f6f4f2;
     outline: none;`;
-const ButtonContainer = styled.div`
+export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 20px;
 `;
-const LoginButton = styled.button`
+export const LoginButton = styled.button`
   width: 125px;
   background-color: #cb9374;
   font-weight: 600;
@@ -101,7 +103,7 @@ const LoginButton = styled.button`
     background-color: #ceb599;
   }
 `;
-const SignUpButton = styled.button`
+export const SignUpButton = styled.button`
   width: 125px;
   background-color: #252424;
   font-weight: 600;
@@ -144,7 +146,9 @@ const SignIn = () => {
             <PasswordInput />
             <ButtonContainer>
               <LoginButton>LOGIN</LoginButton>
-              <SignUpButton>SIGN UP</SignUpButton>
+              <NavLink to="/SignUp">
+                <SignUpButton>SIGN UP</SignUpButton>
+              </NavLink>
             </ButtonContainer>
             <h3>OR</h3>
             <LoginWithGoogleButton>
