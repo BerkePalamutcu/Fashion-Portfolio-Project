@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Facebook } from '@mui/icons-material';
+// import { Google } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
-
+import { signInWithGooglePopup } from '../firebase/firebaseapp';
 const SignInContainer = styled.div`
   positition: relative;
   display: flex;
@@ -117,8 +117,10 @@ export const SignUpButton = styled.button`
 `;
 const LoginWithGoogleButton = styled.button`
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
+  text-align: center;
+  justify-content: flex-start;
+  gap: 25px;
+  align-items: center;
   align-content: center;
   width: 200px;
   background-color: #0075d3;
@@ -127,13 +129,29 @@ const LoginWithGoogleButton = styled.button`
   color: white;
   border: none;
   cursor: pointer;
-  padding: 20px 0;
+  padding: 0 0 0 0;
   border-radius: 5px;
   &:hover {
     background-color: #0095d9;
   }
 `;
+
+const logoStylesheet = {
+  display: 'flex',
+  width: '50px',
+  height: '50px',
+  backgroundColor: 'white',
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: '2px',
+};
+
 const SignIn = () => {
+  const signInWithGoogle = async (event) => {
+    event.preventDefault();
+    await signInWithGooglePopup();
+  };
+
   return (
     <SignInContainer>
       <FormContainer>
@@ -151,9 +169,15 @@ const SignIn = () => {
               </NavLink>
             </ButtonContainer>
             <h3>OR</h3>
-            <LoginWithGoogleButton>
-              <Facebook style={{ height: '25px' }} />
-              Facebook Login
+            <LoginWithGoogleButton onClick={signInWithGoogle}>
+              <div style={logoStylesheet}>
+                <img
+                  style={{ diplay: 'flex' }}
+                  src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                  alt="google logo"
+                />
+              </div>
+              Google Login
             </LoginWithGoogleButton>
           </InputContainer>
         </FormStylingContainer>
