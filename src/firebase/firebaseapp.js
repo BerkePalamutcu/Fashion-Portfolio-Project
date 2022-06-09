@@ -6,6 +6,7 @@ import {
   GoogleAuthProvider,
 } from 'firebase/auth';
 
+/// Firebase config file copied
 const firebaseConfig = {
   apiKey: 'AIzaSyAv3FLsrNVpng-85kctKuvSQ6j0Kc4YyyA',
   authDomain: 'portfolio-project-1-eaaf2.firebaseapp.com',
@@ -15,10 +16,23 @@ const firebaseConfig = {
   appId: '1:802258685124:web:00f335492aa41b41b08d91',
 };
 
+/// Initialize the app
 const app = initializeApp(firebaseConfig);
+
+/// Make auth instance by calling getAuth methdod.
 export const auth = getAuth();
 
+/// Configuring the provider of Auth
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
 
+/// The function to use to sign in with google. Needed with auth and provider as parameters
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+
+///Making new user by email and password
+export const createNewUserFromEmailandPassword = async (email, password) => {
+  if (!email || !password) {
+    return;
+  }
+  return await createUserWithEmailAndPassword(auth, email, password);
+};

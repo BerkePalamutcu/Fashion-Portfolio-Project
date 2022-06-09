@@ -148,13 +148,12 @@ const logoStylesheet = {
 
 const SignIn = () => {
   const signInWithGoogle = async (event) => {
-    event.preventDefault();
     await signInWithGooglePopup();
   };
 
   return (
     <SignInContainer>
-      <FormContainer>
+      <FormContainer onSubmit={(e) => e.preventDefault()}>
         <FormStylingContainer>
           <InputContainer>
             <LoginHeader>SIGN IN</LoginHeader>

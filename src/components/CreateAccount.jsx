@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { createNewUserFromEmailandPassword } from '../firebase/firebaseapp';
 import styled from 'styled-components';
 import myImage from '../assets/LoginImg-1.png';
 import {
@@ -31,7 +33,7 @@ const ImageContainer = styled.img.attrs((props) => ({
   display: flex;
 `;
 
-const SignUpFormContainer = styled.div`
+const SignUpFormContainer = styled.form`
   display: flex;
   justify-content: center;
   align-content: center;
@@ -42,20 +44,64 @@ const SignUpFormContainer = styled.div`
 const SignUpInputContainer = styled(InputContainer)`
   gap: 5px;
 `;
+const ConfirmedPasswordInput = styled(PasswordInput)``;
 const CreateAccount = () => {
+  const defaultParameters = {
+    email: '',
+    password: '',
+    confirmedPassword: '',
+  };
+
+  const [params, setParams] = useState(defaultParameters);
+  const { email, password, confirmedPassword } = params;
+
+  /// helper function to assign to the sign up button
+  const createNewAccount = async () => {
+    /// its async function to communicate with external fb auth therefore, the response needs to await.
+    await createNewUserFromEmailandPassword(email, password);
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    /// name ve value event.targetten destructure edildi ve onceki state in uzerine yazildi
+    /// bu sayede ayni isi her bir state ile kullanabiliyoruz.
+    setParams({ ...params, [name]: value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (password !== confirmedPassword) {
+      alert('wrong password');
+      return;
+    }
+    try {
+      createNewAccount();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <SignUpPageContainer>
-        <SignUpFormContainer>
+        <SignUpFormContainer onSubmit={handleSubmit}>
           <FormStylingContainer>
             <SignUpInputContainer>
               <LoginHeader>Create Account</LoginHeader>
               <EmailLabel>E-mail</EmailLabel>
-              <EmailInput />
+              <EmailInput onChange={handleChange} name="email" value={email} />
               <PasswordLabel>Password</PasswordLabel>
-              <PasswordInput />
+              <PasswordInput
+                onChange={handleChange}
+                name="password"
+                value={password}
+              />
               <PasswordLabel>Confirmed Password</PasswordLabel>
-              <PasswordInput />
+              <ConfirmedPasswordInput
+                onChange={handleChange}
+                name="confirmedPassword"
+                value={confirmedPassword}
+              />
               <SignUpButton style={{ marginTop: '100px' }}>
                 SIGN UP
               </SignUpButton>
