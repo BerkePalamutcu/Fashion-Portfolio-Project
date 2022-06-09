@@ -1,5 +1,8 @@
-import { useState } from 'react';
-import { createNewUserFromEmailandPassword } from '../firebase/firebaseapp';
+import { useState, useEffect } from 'react';
+import {
+  createNewUserFromEmailandPassword,
+  onAuthStateChangedListener,
+} from '../firebase/firebaseapp';
 import styled from 'styled-components';
 import myImage from '../assets/LoginImg-1.png';
 import {
@@ -54,11 +57,12 @@ const CreateAccount = () => {
 
   const [params, setParams] = useState(defaultParameters);
   const { email, password, confirmedPassword } = params;
-
+  useEffect(() => onAuthStateChangedListener(), []);
   /// helper function to assign to the sign up button
   const createNewAccount = async () => {
     /// its async function to communicate with external fb auth therefore, the response needs to await.
     await createNewUserFromEmailandPassword(email, password);
+    setParams(defaultParameters);
   };
 
   const handleChange = (event) => {

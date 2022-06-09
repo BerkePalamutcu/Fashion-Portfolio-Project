@@ -4,9 +4,10 @@ import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
+  onAuthStateChanged,
 } from 'firebase/auth';
 
-/// Firebase config file copied
+/// Firebase config file
 const firebaseConfig = {
   apiKey: 'AIzaSyAv3FLsrNVpng-85kctKuvSQ6j0Kc4YyyA',
   authDomain: 'portfolio-project-1-eaaf2.firebaseapp.com',
@@ -34,5 +35,17 @@ export const createNewUserFromEmailandPassword = async (email, password) => {
   if (!email || !password) {
     return;
   }
+  // userCredential return ediyor!!
   return await createUserWithEmailAndPassword(auth, email, password);
 };
+
+export const onAuthStateChangedListener = () =>
+  /// callback olarak user aliyor!!!
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log('logged in');
+      console.log(user.uid);
+    } else {
+      console.log('not logged in');
+    }
+  });
