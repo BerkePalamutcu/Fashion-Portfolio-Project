@@ -5,6 +5,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   onAuthStateChanged,
+  signOut,
 } from 'firebase/auth';
 
 /// Firebase config file
@@ -21,7 +22,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 /// Make auth instance by calling getAuth methdod.
-export const auth = getAuth();
+export const auth = getAuth(app);
 
 /// Configuring the provider of Auth
 const provider = new GoogleAuthProvider();
@@ -39,13 +40,19 @@ export const createNewUserFromEmailandPassword = async (email, password) => {
   return await createUserWithEmailAndPassword(auth, email, password);
 };
 
+/// Checks if user is signed in or not!
 export const onAuthStateChangedListener = () =>
   /// callback olarak user aliyor!!!
   onAuthStateChanged(auth, (user) => {
     if (user) {
       console.log('logged in');
       console.log(user.uid);
+      console.log(user.email);
     } else {
       console.log('not logged in');
     }
   });
+
+export const signOutUser = async () => {
+  signOut(auth);
+};
