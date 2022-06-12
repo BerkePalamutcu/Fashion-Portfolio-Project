@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   createNewUserFromEmailandPassword,
   onAuthStateChangedListener,
@@ -48,6 +49,7 @@ const SignUpInputContainer = styled(InputContainer)`
   gap: 5px;
 `;
 const ConfirmedPasswordInput = styled(PasswordInput)``;
+/// Create Account Component
 const CreateAccount = () => {
   const defaultParameters = {
     email: '',
@@ -63,10 +65,10 @@ const CreateAccount = () => {
   /// helper function to assign to the sign up button
   const createNewAccount = async () => {
     /// its async function to communicate with external fb auth therefore, the response needs to await.
-     await createNewUserFromEmailandPassword(email, password);
+    await createNewUserFromEmailandPassword(email, password);
     setParams(defaultParameters);
   };
-
+  const redirect = useNavigate();
   const handleChange = (event) => {
     const { name, value } = event.target;
     /// name ve value event.targetten destructure edildi ve onceki state in uzerine yazildi
@@ -82,6 +84,7 @@ const CreateAccount = () => {
     }
     try {
       createNewAccount();
+      redirect('../', { replace: true });
     } catch (error) {
       console.log(error);
     }

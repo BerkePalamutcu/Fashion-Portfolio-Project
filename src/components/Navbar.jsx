@@ -197,16 +197,12 @@ const Navbar = () => {
                 <Spans>LOGIN</Spans>
               </NavLink>
             ) : (
-              <NavLink
-                style={{
-                  textDecoration: 'none',
-                  color: hovered === true ? 'black' : 'white',
-                }}
-                to="/"
+              <Spans
+                style={{ color: hovered === true ? 'black' : 'white' }}
                 onClick={signOutUser}
               >
-                <Spans>LOG OUT</Spans>
-              </NavLink>
+                LOG OUT
+              </Spans>
             )}
             <Spans
               style={{

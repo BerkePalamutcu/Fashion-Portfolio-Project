@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 // import { Google } from '@mui/icons-material';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { signInWithGooglePopup } from '../firebase/firebaseapp';
 const SignInContainer = styled.div`
   positition: relative;
@@ -150,8 +150,10 @@ const logoStylesheet = {
 };
 
 const SignIn = () => {
+  const redirect = useNavigate();
   const signInWithGoogle = async (event) => {
     await signInWithGooglePopup();
+    redirect('../', { replace: true });
   };
 
   return (

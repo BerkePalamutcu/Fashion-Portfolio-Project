@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink, Navigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
   Notifications,
   NotificationsList,
@@ -110,7 +110,7 @@ const NavbarOther = () => {
                 <Spans>LOGIN</Spans>
               </NavLink>
             ) : (
-              <Navigate
+              <NavLink
                 style={{
                   textDecoration: 'none',
                   color: 'black',
@@ -119,7 +119,7 @@ const NavbarOther = () => {
                 onClick={signOutUser}
               >
                 <Spans>LOG OUT</Spans>
-              </Navigate>
+              </NavLink>
             )}
             <Spans
               style={{
