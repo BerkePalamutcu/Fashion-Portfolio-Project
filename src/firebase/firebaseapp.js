@@ -5,6 +5,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth';
 
@@ -42,7 +43,7 @@ export const createNewUserFromEmailandPassword = async (email, password) => {
 
 /// Checks if user is signed in or not!
 export const onAuthStateChangedListener = () =>
-  /// callback olarak user aliyor!!!
+  /// callbacke dikkat!!
   onAuthStateChanged(auth, (user) => {
     if (user) {
       console.log('logged in');
@@ -52,6 +53,13 @@ export const onAuthStateChangedListener = () =>
       console.log('not logged in');
     }
   });
+
+export const signInUser = async (email, password) => {
+  if (!email || !password) {
+    return;
+  }
+  return await signInWithEmailAndPassword(auth, email, password);
+};
 
 export const signOutUser = async () => {
   signOut(auth);

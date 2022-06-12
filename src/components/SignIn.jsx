@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import styled from 'styled-components';
-// import { Google } from '@mui/icons-material';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { signInWithGooglePopup } from '../firebase/firebaseapp';
+import { signInWithGooglePopup, signInUser } from '../firebase/firebaseapp';
+
 const SignInContainer = styled.div`
   positition: relative;
   display: flex;
@@ -150,24 +151,54 @@ const logoStylesheet = {
 };
 
 const SignIn = () => {
+  const defaultParams = {
+    email: '',
+    password: '',
+  };
+
+  const [params, setParams] = useState(defaultParams);
+  const { email, password } = params;
+
   const redirect = useNavigate();
-  const signInWithGoogle = async (event) => {
+
+  const signInWithGoogle = async () => {
     await signInWithGooglePopup();
     redirect('../', { replace: true });
   };
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setParams({ ...params, [name]: value });
+  };
+
+  const signInWithEmailandPassword = async (event) => {
+    event.preventDefault();
+    await signInUser(email, password);
+    redirect('../', { replace: true });
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  };
   return (
     <SignInContainer>
-      <FormContainer onSubmit={(e) => e.preventDefault()}>
+      <FormContainer onSubmit={handleSubmit}>
         <FormStylingContainer>
           <InputContainer>
             <LoginHeader>SIGN IN</LoginHeader>
             <EmailLabel>E-mail</EmailLabel>
-            <EmailInput />
+            <EmailInput name="email" value={email} onChange={handleChange} />
             <PasswordLabel>Password</PasswordLabel>
-            <PasswordInput />
+            <PasswordInput
+              name="password"
+              value={password}
+              onChange={handleChange}
+              type="password"
+            />
             <ButtonContainer>
-              <LoginButton>LOGIN</LoginButton>
+              <LoginButton onClick={signInWithEmailandPassword}>
+                LOGIN
+              </LoginButton>
+              {/*  redirect to signup page} */}
               <NavLink to="/SignUp">
                 <SignUpButton>SIGN UP</SignUpButton>
               </NavLink>
