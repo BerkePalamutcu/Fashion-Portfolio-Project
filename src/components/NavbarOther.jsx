@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   Notifications,
@@ -14,12 +15,25 @@ import {
   SearchIcon,
 } from './Navbar';
 import styled from 'styled-components';
+import { auth, signOutUser } from '../firebase/firebaseapp';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const StaticNavbarContainer = styled(NavbarContainer)`
   position: relative;
 `;
 
 const NavbarOther = () => {
+  const [loginData, setUserLoggedIn] = useState(false);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserLoggedIn(true);
+      } else {
+        setUserLoggedIn(false);
+      }
+    });
+  }, [loginData]);
+
   return (
     <>
       <Notifications>
@@ -85,15 +99,28 @@ const NavbarOther = () => {
             >
               <Languages>En</Languages>
             </Spans>
-            <NavLink
-              style={{
-                textDecoration: 'none',
-                color: 'black',
-              }}
-              to="/login"
-            >
-              <Spans>LOGIN</Spans>
-            </NavLink>
+            {!loginData ? (
+              <NavLink
+                style={{
+                  textDecoration: 'none',
+                  color: 'black',
+                }}
+                to="/login"
+              >
+                <Spans>LOGIN</Spans>
+              </NavLink>
+            ) : (
+              <NavLink
+                style={{
+                  textDecoration: 'none',
+                  color: 'black',
+                }}
+                to="/"
+                onClick={signOutUser}
+              >
+                <Spans>LOG OUT</Spans>
+              </NavLink>
+            )}
             <Spans
               style={{
                 textDecoration: 'none',

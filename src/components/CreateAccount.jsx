@@ -57,11 +57,13 @@ const CreateAccount = () => {
 
   const [params, setParams] = useState(defaultParameters);
   const { email, password, confirmedPassword } = params;
+
+  /// checks the user if signed in or not when component mounts!
   useEffect(() => onAuthStateChangedListener(), []);
   /// helper function to assign to the sign up button
   const createNewAccount = async () => {
     /// its async function to communicate with external fb auth therefore, the response needs to await.
-    await createNewUserFromEmailandPassword(email, password);
+    const { user } = await createNewUserFromEmailandPassword(email, password);
     setParams(defaultParameters);
   };
 

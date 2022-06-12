@@ -150,7 +150,7 @@ const SignIn = () => {
   const signInWithGoogle = async (event) => {
     await signInWithGooglePopup();
   };
-
+  
   return (
     <SignInContainer>
       <FormContainer onSubmit={(e) => e.preventDefault()}>

@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { SearchRounded } from '@mui/icons-material';
 import styled from 'styled-components';
-
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth, signOutUser } from '../firebase/firebaseapp';
 export const Notifications = styled.div`
   display: flex;
   width: 100vw;
@@ -96,6 +97,16 @@ export const SearchIcon = styled(SearchRounded)`
 `;
 
 const Navbar = () => {
+  const [loginData, setUserLoggedIn] = useState(false);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserLoggedIn(true);
+      } else {
+        setUserLoggedIn(false);
+      }
+    });
+  }, [loginData]);
   const [hovered, setHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -175,15 +186,28 @@ const Navbar = () => {
             >
               <Languages>En</Languages>
             </Spans>
-            <NavLink
-              style={{
-                textDecoration: 'none',
-                color: hovered === true ? 'black' : 'white',
-              }}
-              to="/login"
-            >
-              <Spans>LOGIN</Spans>
-            </NavLink>
+            {!loginData ? (
+              <NavLink
+                style={{
+                  textDecoration: 'none',
+                  color: hovered === true ? 'black' : 'white',
+                }}
+                to="/login"
+              >
+                <Spans>LOGIN</Spans>
+              </NavLink>
+            ) : (
+              <NavLink
+                style={{
+                  textDecoration: 'none',
+                  color: hovered === true ? 'black' : 'white',
+                }}
+                to="/"
+                onClick={signOutUser}
+              >
+                <Spans>LOG OUT</Spans>
+              </NavLink>
+            )}
             <Spans
               style={{
                 textDecoration: 'none',
