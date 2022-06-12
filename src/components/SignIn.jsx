@@ -114,6 +114,9 @@ export const SignUpButton = styled.button`
   padding: 20px 0;
   margin-top: 30px;
   border-radius: 5px;
+  &:hover {
+    background-color: #424747;
+  }
 `;
 const LoginWithGoogleButton = styled.button`
   display: flex;
@@ -150,7 +153,7 @@ const SignIn = () => {
   const signInWithGoogle = async (event) => {
     await signInWithGooglePopup();
   };
-  
+
   return (
     <SignInContainer>
       <FormContainer onSubmit={(e) => e.preventDefault()}>

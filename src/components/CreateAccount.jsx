@@ -63,7 +63,7 @@ const CreateAccount = () => {
   /// helper function to assign to the sign up button
   const createNewAccount = async () => {
     /// its async function to communicate with external fb auth therefore, the response needs to await.
-    const { user } = await createNewUserFromEmailandPassword(email, password);
+     await createNewUserFromEmailandPassword(email, password);
     setParams(defaultParameters);
   };
 
