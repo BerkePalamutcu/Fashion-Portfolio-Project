@@ -173,9 +173,16 @@ const SignIn = () => {
 
   const signInWithEmailandPassword = async (event) => {
     event.preventDefault();
-    await signInUser(email, password);
-    redirect('../', { replace: true });
+    if (email && password) {
+      try {
+        await signInUser(email, password);
+        redirect('../');
+      } catch (error) {
+        alert(error);
+      }
+    }
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
   };
@@ -186,16 +193,22 @@ const SignIn = () => {
           <InputContainer>
             <LoginHeader>SIGN IN</LoginHeader>
             <EmailLabel>E-mail</EmailLabel>
-            <EmailInput name="email" value={email} onChange={handleChange} />
+            <EmailInput
+              name="email"
+              value={email}
+              onChange={handleChange}
+              required
+            />
             <PasswordLabel>Password</PasswordLabel>
             <PasswordInput
               name="password"
               value={password}
               onChange={handleChange}
               type="password"
+              required
             />
             <ButtonContainer>
-              <LoginButton onClick={signInWithEmailandPassword}>
+              <LoginButton type="submit" onClick={signInWithEmailandPassword}>
                 LOGIN
               </LoginButton>
               {/*  redirect to signup page} */}

@@ -98,18 +98,25 @@ const CreateAccount = () => {
             <SignUpInputContainer>
               <LoginHeader>Create Account</LoginHeader>
               <EmailLabel>E-mail</EmailLabel>
-              <EmailInput onChange={handleChange} name="email" value={email} />
+              <EmailInput
+                onChange={handleChange}
+                name="email"
+                value={email}
+                required
+              />
               <PasswordLabel>Password</PasswordLabel>
               <PasswordInput
                 onChange={handleChange}
                 name="password"
                 value={password}
+                required
               />
               <PasswordLabel>Confirmed Password</PasswordLabel>
               <ConfirmedPasswordInput
                 onChange={handleChange}
                 name="confirmedPassword"
                 value={confirmedPassword}
+                required
               />
               <SignUpButton style={{ marginTop: '100px' }}>
                 SIGN UP
