@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+/// Firebase Auth imports
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -9,6 +10,17 @@ import {
   signOut,
 } from 'firebase/auth';
 
+/// Firebase DB imports
+import {
+  getFirestore,
+  doc,
+  collection,
+  getDocs,
+  getDoc,
+  setDocs,
+  writeBatch,
+  query,
+} from 'firebase/firestore';
 /// Firebase config file
 const firebaseConfig = {
   apiKey: 'AIzaSyAv3FLsrNVpng-85kctKuvSQ6j0Kc4YyyA',
@@ -64,3 +76,21 @@ export const signInUser = async (email, password) => {
 export const signOutUser = async () => {
   signOut(auth);
 };
+
+/// DB CODE STARTS HERE
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore(app);
+
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, 'categories');
+  const q = query(collectionRef);
+  const querySnapshot = await getDocs(q);
+  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title] = items;
+    return acc;
+  }, {});
+  console.log(categoryMap);
+};
+
+getCategoriesAndDocuments();
