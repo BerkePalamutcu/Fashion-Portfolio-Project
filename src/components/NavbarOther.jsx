@@ -91,14 +91,6 @@ const NavbarOther = () => {
             </MainList>
           </MainContainer>
           <RightContainer>
-            <Spans
-              style={{
-                textDecoration: 'none',
-                color: 'black',
-              }}
-            >
-              <Languages>En</Languages>
-            </Spans>
             {!loginData ? (
               <NavLink
                 style={{

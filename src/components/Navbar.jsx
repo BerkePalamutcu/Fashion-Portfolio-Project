@@ -178,14 +178,6 @@ const Navbar = () => {
             </MainList>
           </MainContainer>
           <RightContainer>
-            <Spans
-              style={{
-                textDecoration: 'none',
-                color: hovered === true ? 'black' : 'white',
-              }}
-            >
-              <Languages>En</Languages>
-            </Spans>
             {!loginData ? (
               <NavLink
                 style={{
