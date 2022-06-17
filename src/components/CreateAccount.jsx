@@ -29,6 +29,7 @@ const SignUpPageContainer = styled.div`
 
 const ImageContainer = styled.img.attrs((props) => ({
   src: props.src,
+  alt: props.alt,
 }))`
   height: auto;
   max-width: 64%;
@@ -124,7 +125,7 @@ const CreateAccount = () => {
             </SignUpInputContainer>
           </FormStylingContainer>
         </SignUpFormContainer>
-        <ImageContainer src={myImage} />
+        <ImageContainer alt="signUP image" src={myImage} />
       </SignUpPageContainer>
     </>
   );

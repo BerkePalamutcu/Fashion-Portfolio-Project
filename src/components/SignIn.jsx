@@ -12,7 +12,10 @@ const SignInContainer = styled.div`
   background-color: #f6f4f2;
   font-family: 'Domine', serif;
 `;
-const LoginImage = styled.img.attrs((props) => ({ src: props.src }))`
+const LoginImage = styled.img.attrs((props) => ({
+  src: props.src,
+  alt: props.alt,
+}))`
   height: auto;
   max-width: 100%;
   height: auto;
@@ -230,7 +233,10 @@ const SignIn = () => {
           </InputContainer>
         </FormStylingContainer>
       </FormContainer>
-      <LoginImage src="https://femm.fashion/wp-content/uploads/2020/02/Rino-Z-20-scuba-jas-perzik-1200x801.jpg" />
+      <LoginImage
+        alt="login Image"
+        src="https://femm.fashion/wp-content/uploads/2020/02/Rino-Z-20-scuba-jas-perzik-1200x801.jpg"
+      />
     </SignInContainer>
   );
 };

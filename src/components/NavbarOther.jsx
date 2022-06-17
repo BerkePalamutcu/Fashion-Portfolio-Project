@@ -11,7 +11,6 @@ import {
   MainList,
   MainListItems,
   Spans,
-  Languages,
   SearchIcon,
 } from './Navbar';
 import styled from 'styled-components';
