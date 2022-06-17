@@ -10,7 +10,7 @@ export const Notifications = styled.div`
   justify-content: center;
   text-align: center;
   align-items: center;
-  height: 38px;
+  height: 28px;
   background-color: #b78c71;
 `;
 export const NotificationsList = styled.ul`
