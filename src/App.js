@@ -1,12 +1,13 @@
 import { BrowserRouter } from 'react-router-dom';
 import Navigation from './components/routes/Navigation';
+
 function App() {
   return (
-    <div className="App">
+    <main className="App">
       <BrowserRouter>
         <Navigation />
       </BrowserRouter>
-    </div>
+    </main>
   );
 }
 
