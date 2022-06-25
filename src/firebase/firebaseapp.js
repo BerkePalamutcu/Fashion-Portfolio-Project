@@ -11,15 +11,7 @@ import {
 } from 'firebase/auth';
 
 /// Firebase DB imports
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  getDoc,
-  setDocs,
-  writeBatch,
-  query,
-} from 'firebase/firestore';
+import { getFirestore, collection, getDocs, query } from 'firebase/firestore';
 /// Firebase config file
 const firebaseConfig = {
   apiKey: 'AIzaSyAv3FLsrNVpng-85kctKuvSQ6j0Kc4YyyA',
@@ -86,10 +78,10 @@ export const getCategoriesAndDocuments = async () => {
   const querySnapshot = await getDocs(q);
   const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
     const { title, items } = docSnapshot.data();
+
     acc[title.toLowerCase()] = items;
     return acc;
   }, {});
   console.log(categoryMap);
+  console.log(querySnapshot);
 };
-
-getCategoriesAndDocuments();
