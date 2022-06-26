@@ -61,7 +61,7 @@ const NavbarOther = () => {
                     textDecoration: 'none',
                     color: 'black',
                   }}
-                  to="/shop"
+                  to="/all-products"
                 >
                   <Spans>SHOP</Spans>
                 </NavLink>
