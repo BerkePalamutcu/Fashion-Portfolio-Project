@@ -1,5 +1,9 @@
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getDataFromFirestore } from '../redux/dataSlice';
 import styled from 'styled-components';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
+import { getCategoriesAndDocuments } from '../firebase/firebaseapp';
 
 const SliderContainer = styled.div`
   height: 700px;
@@ -39,8 +43,19 @@ const SliderImg = styled.img.attrs((props) => ({
 `;
 
 const Slider = () => {
+  const items = useSelector((state) => state.getDataReducer);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const getData = async () => {
+      const shopData = await getCategoriesAndDocuments('categories');
+      dispatch(getDataFromFirestore(shopData));
+    };
+    getData();
+    console.log(items);
+  }, []);
+
   return (
-    <div>
+    <>
       <SliderContainer>
         <SliderHeader>Collection Highlights</SliderHeader>
         <ImgContainer>
@@ -56,7 +71,7 @@ const Slider = () => {
           </ArrowContainer>
         </ImgContainer>
       </SliderContainer>
-    </div>
+    </>
   );
 };
 
