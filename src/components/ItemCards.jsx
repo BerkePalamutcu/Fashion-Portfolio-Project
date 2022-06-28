@@ -35,11 +35,10 @@ const CardImage = styled.img.attrs((props) => ({
 const ItemCards = () => {
   let itemsData = [];
   const [intersection, setIntersection] = useState(false);
-  const [fetchedItemCount, setFetchedItemCount] = useState(12);
+  const [fetchedItemCount, setFetchedItemCount] = useState(4);
   const [itemsDataState, setItemsDataState] = useState([]);
-  const bottomElementRef = useRef(null);
-
-  const items = useSelector((state) => state.getDataReducer.itemData);
+  const bottomElementRef = useRef(null); //dummy div reference
+  const items = useSelector((state) => state.getDataReducer.itemData); // main state -> reducer -> inital state object
   const dispatch = useDispatch();
 
   //CALLBACK FUNCTION FOR INTERSECTION OBSERVER
@@ -47,11 +46,13 @@ const ItemCards = () => {
     let [item] = items;
     setIntersection(item.isIntersecting);
   };
+
   //OPTIONS FOR OBSERVER
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const options = {
     root: null,
-    rootMargin: '0px',
-    threshold: 0,
+    rootMargin: '0px 0px 500px 0px',
+    threshold: 1.0,
   };
 
   //Redux action to get the data from the store
@@ -63,27 +64,29 @@ const ItemCards = () => {
     getData();
   }, []);
 
-  //TODO:gelen datayi state'e kaydetmeyi dene
-  //FIXME: Eger olmazsa bos bir arrayin icine gonderip o arrayi data ile doldurduktan sonra state'te tut
-
+  //infinite scrolling and array slice logic is handled here
   useEffect(() => {
     for (let i = 0; i < Object.values(items).length; i++) {
       for (let j = 0; j < Object.values(items)[i].items.length; j++) {
         itemsData.push(Object.values(items)[i].items[j]);
-        // setItemsDataState(itemsData);
       }
     }
-    //TODO:INFINITE SCROLLING WILL BE IMPLEMENTED!
-    //FIXME: Slice logic is handled here for now!
     let slicedItems = itemsData.slice(0, fetchedItemCount);
     console.log(slicedItems);
     setItemsDataState(slicedItems);
-  }, [items]);
-  //
-  let dummyDivRef = bottomElementRef.current;
-  useEffect(() => {
-    const observer = new IntersectionObserver(observerHelper, options);
+    if (intersection) {
+      console.log(fetchedItemCount);
+      console.log('intersection');
+    } else {
+      console.log('no intersection');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [intersection, items]);
 
+  //Dummy div reference and intersection logic handled here
+  useEffect(() => {
+    let dummyDivRef = bottomElementRef.current;
+    const observer = new IntersectionObserver(observerHelper, options);
     if (dummyDivRef) {
       observer.observe(dummyDivRef);
       console.log('im here');
@@ -93,14 +96,13 @@ const ItemCards = () => {
       if (dummyDivRef) {
         try {
           observer.unobserve(dummyDivRef);
-          setFetchedItemCount(fetchedItemCount + 8);
-          console.log(fetchedItemCount);
+          setFetchedItemCount(fetchedItemCount + 4);
         } catch (error) {
           console.log(error);
         }
       }
     };
-  }, [dummyDivRef, options, fetchedItemCount]);
+  }, [bottomElementRef, options, fetchedItemCount]);
   //
 
   return (
