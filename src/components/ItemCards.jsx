@@ -8,12 +8,12 @@ import styled from 'styled-components';
 //STYLING
 const CardsContainer = styled.div`
   display: flex;
+  flex-direction: column;
 `;
 const CardsWrapper = styled.div`
   width: 100vw;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 10px;
   margin-left: 10px;
 `;
 const ItemCard = styled.div`
@@ -30,13 +30,35 @@ const CardImage = styled.img.attrs((props) => ({
   object-fit: cover;
   cursor: pointer;
 `;
+const FilterContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 40px 30px 50px 30px;
+`;
+const FilterWrapper = styled.div`
+  display: flex;
+  gap: 15px;
+`;
+const FilterTag = styled.span`
+  font-family: 'Quintessential', cursive;
+  font-size: 22px;
+  cursor: pointer;
+`;
 
+const Header = styled.h1`
+  font-family: 'Quintessential', cursive;
+  font-size: 55px;
+  font-weight: 500;
+  // margin: 40px 0 50px 50px;
+`;
 //COMPONENT
 const ItemCards = () => {
   let itemsData = [];
   const [intersection, setIntersection] = useState(false);
   const [fetchedItemCount, setFetchedItemCount] = useState(4);
   const [itemsDataState, setItemsDataState] = useState([]);
+
   const bottomElementRef = useRef(null); //dummy div reference
   const items = useSelector((state) => state.getDataReducer.itemData); // main state -> reducer -> inital state object
   const dispatch = useDispatch();
@@ -108,6 +130,16 @@ const ItemCards = () => {
   return (
     <>
       <CardsContainer>
+        <FilterContainer>
+          <Header>All Products</Header>
+          <FilterWrapper>
+            <FilterTag>Filters</FilterTag>
+            <FilterTag>Sort</FilterTag>
+            <FilterTag>4 column</FilterTag>
+            <FilterTag>2 column</FilterTag>
+          </FilterWrapper>
+        </FilterContainer>
+
         <CardsWrapper>
           {itemsDataState.map((item) => (
             <div key={item.id}>
