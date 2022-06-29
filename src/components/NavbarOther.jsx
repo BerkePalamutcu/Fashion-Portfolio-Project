@@ -19,6 +19,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 const StaticNavbarContainer = styled(NavbarContainer)`
   position: relative;
+  box-shadow: 0 2px #e0e0eb;
   transition: ease-in-out 1s;
 `;
 
@@ -63,7 +64,6 @@ const NavbarOther = () => {
         style={{
           position: scrollPosition > 750 && 'fixed',
           backgroundColor: scrollPosition > 750 && 'white',
-          boxShadow: scrollPosition > 750 && '0 2px #e0e0eb',
         }}
       >
         <WrapperContainer>
