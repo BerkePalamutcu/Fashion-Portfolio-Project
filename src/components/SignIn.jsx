@@ -223,7 +223,9 @@ const SignIn = () => {
                 <SignUpButton>SIGN UP</SignUpButton>
               </NavLink>
             </ButtonContainer>
-            <h3>OR</h3>
+            <h3>
+              <em>OR</em>
+            </h3>
             <LoginWithGoogleButton onClick={signInWithGoogle}>
               <div style={logoStylesheet}>
                 <img
