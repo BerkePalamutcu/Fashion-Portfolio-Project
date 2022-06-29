@@ -181,8 +181,12 @@ const SignIn = () => {
         await signInUser(email, password);
         redirect('../');
       } catch (error) {
-        alert(error);
+        alert(`USER NOT FOUND ${error}`);
+        setParams(defaultParams);
       }
+    }
+    if (email === '' || password === '') {
+      alert('username or password can not be empty');
     }
   };
 
@@ -200,7 +204,7 @@ const SignIn = () => {
               name="email"
               value={email}
               onChange={handleChange}
-              required
+              required={signInWithGoogle ? false : true}
             />
             <PasswordLabel>Password</PasswordLabel>
             <PasswordInput
@@ -208,7 +212,7 @@ const SignIn = () => {
               value={password}
               onChange={handleChange}
               type="password"
-              required
+              required={signInWithGoogle ? false : true}
             />
             <ButtonContainer>
               <LoginButton type="submit" onClick={signInWithEmailandPassword}>
