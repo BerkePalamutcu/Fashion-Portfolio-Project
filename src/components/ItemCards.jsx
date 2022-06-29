@@ -62,6 +62,7 @@ const ItemCards = () => {
       dispatch(getDataFromFirestore(shopData));
     };
     getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //infinite scrolling and array slice logic is handled here
@@ -103,20 +104,26 @@ const ItemCards = () => {
       }
     };
   }, [bottomElementRef, options, fetchedItemCount]);
-  //
 
   return (
     <>
       <CardsContainer>
         <CardsWrapper>
           {itemsDataState.map((item) => (
-            <>
-              <div key={item.id}>
-                <CardImage alt={item.name} src={item.imgURL[0]} />
-                <ItemCard>{item.name}</ItemCard>
-                <div>{item.price}$</div>
-              </div>
-            </>
+            <div key={item.id}>
+              <CardImage
+                onMouseEnter={(e) =>
+                  (e.target.src = item.imgURL[1]
+                    ? item.imgURL[1]
+                    : item.imgURL[0])
+                }
+                onMouseLeave={(e) => (e.target.src = item.imgURL[0])}
+                alt={item.name}
+                src={item.imgURL[0]}
+              />
+              <ItemCard>{item.name}</ItemCard>
+              <div>{item.price}$</div>
+            </div>
           ))}
         </CardsWrapper>
       </CardsContainer>
