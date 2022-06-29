@@ -19,10 +19,18 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 const StaticNavbarContainer = styled(NavbarContainer)`
   position: relative;
+  transition: ease-in-out 1s;
 `;
 
 const NavbarOther = () => {
   const [loginData, setUserLoggedIn] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0); // getting the current scrollingPosition
+
+  //Handling Scrolling events and setting scroll position to the state
+  const handleScroll = () => {
+    const position = window.pageYOffset;
+    setScrollPosition(position);
+  };
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -32,15 +40,32 @@ const NavbarOther = () => {
       }
     });
   }, [loginData]);
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
 
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
     <>
-      <Notifications>
+      <Notifications
+        style={{
+          display: scrollPosition > 750 && 'none',
+        }}
+      >
         <NotificationsList>
           <li>Free Shipping to All Europe</li>
         </NotificationsList>
       </Notifications>
-      <StaticNavbarContainer>
+
+      <StaticNavbarContainer
+        style={{
+          position: scrollPosition > 750 && 'fixed',
+          backgroundColor: scrollPosition > 750 && 'white',
+          boxShadow: scrollPosition > 750 && '0 2px #e0e0eb',
+        }}
+      >
         <WrapperContainer>
           <LogoContainer>
             <NavLink

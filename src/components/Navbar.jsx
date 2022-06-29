@@ -29,7 +29,7 @@ export const NavbarContainer = styled.div`
   z-index: 4;
   width: 100vw;
   overflow: hidden;
-
+  transition: ease-in-out 1s;
   &:hover {
     background-color: white;
     color: black !important;
