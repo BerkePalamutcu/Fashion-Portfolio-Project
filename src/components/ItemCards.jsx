@@ -14,6 +14,7 @@ const CardsWrapper = styled.div`
   width: 100vw;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+  row-gap: 40px;
   margin-left: 10px;
 `;
 const ItemCard = styled.div`
@@ -44,21 +45,70 @@ const FilterTag = styled.span`
   font-family: 'Quintessential', cursive;
   font-size: 22px;
   cursor: pointer;
+  user-select: none;
 `;
 
 const Header = styled.h1`
   font-family: 'Quintessential', cursive;
   font-size: 55px;
   font-weight: 500;
-  // margin: 40px 0 50px 50px;
 `;
+
+const FiltersMenuContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+`;
+const FiltersMenuWrapper = styled.div`
+  display: flex;
+
+  margin: 20px 30px 20px 30px;
+`;
+const FiltersMenuHeaders = styled.span`
+  display: flex;
+  font-size: 22px;
+  font-weight: 600;
+  font-family: 'Quintessential', cursive;
+`;
+const FiltersMenuItems = styled.div`
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-left: 50px;
+  font-size: 18px;
+  font-family: 'Baskervville', serif;
+  font-weight: 400;
+`;
+const FilterMenuItem = styled.span`
+  display: flex;
+  cursor: pointer;
+  font-style: italic;
+  user-select: none;
+`;
+
+const SortItemsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: 40px 30px 50px 30px;
+`;
+const SortItemsWrapper = styled.div`
+  display: flex;
+  gap: 20px;
+`;
+const SortItem = styled.span`
+  font-family: 'Baskervville', serif;
+  user-select: none;
+  cursor: pointer;
+`;
+
 //COMPONENT
 const ItemCards = () => {
   let itemsData = [];
   const [intersection, setIntersection] = useState(false);
   const [fetchedItemCount, setFetchedItemCount] = useState(4);
   const [itemsDataState, setItemsDataState] = useState([]);
-
+  const [filterMenuActive, setFilterMenuActive] = useState(false);
+  const [sortMenuActive, setSortMenuActive] = useState(false);
   const bottomElementRef = useRef(null); //dummy div reference
   const items = useSelector((state) => state.getDataReducer.itemData); // main state -> reducer -> inital state object
   const dispatch = useDispatch();
@@ -76,7 +126,12 @@ const ItemCards = () => {
     rootMargin: '0px 0px 500px 0px',
     threshold: 1.0,
   };
-
+  const filterClickHandler = () => {
+    setFilterMenuActive(!filterMenuActive);
+  };
+  const sortClickHandler = () => {
+    setSortMenuActive(!sortMenuActive);
+  };
   //Redux action to get the data from the store
   useEffect(() => {
     const getData = async () => {
@@ -106,7 +161,7 @@ const ItemCards = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [intersection, items]);
 
-  //Dummy div reference and intersection logic handled here
+  //Dummy div reference and intersection logic are handled here
   useEffect(() => {
     let dummyDivRef = bottomElementRef.current;
     const observer = new IntersectionObserver(observerHelper, options);
@@ -133,15 +188,52 @@ const ItemCards = () => {
         <FilterContainer>
           <Header>All Products</Header>
           <FilterWrapper>
-            <FilterTag>Filters</FilterTag>
-            <FilterTag>Sort</FilterTag>
+            <FilterTag onClick={filterClickHandler}>Filters</FilterTag>
+            <FilterTag onClick={sortClickHandler}>Sort</FilterTag>
             <FilterTag>4 column</FilterTag>
             <FilterTag>2 column</FilterTag>
           </FilterWrapper>
         </FilterContainer>
-
+        <FiltersMenuContainer
+          style={{ display: filterMenuActive === false && 'none' }}
+        >
+          <FiltersMenuWrapper>
+            <FiltersMenuHeaders>Categories</FiltersMenuHeaders>
+            <FiltersMenuItems>
+              <FilterMenuItem>Dresses</FilterMenuItem>
+              <FilterMenuItem>Jackets</FilterMenuItem>
+              <FilterMenuItem>Coats</FilterMenuItem>
+              <FilterMenuItem>T-Shirts</FilterMenuItem>
+              <FilterMenuItem>Skirts</FilterMenuItem>
+              <FilterMenuItem>Sweaters</FilterMenuItem>
+              <FilterMenuItem>Trousers</FilterMenuItem>
+              <FilterMenuItem>Coats</FilterMenuItem>
+              <FilterMenuItem>Waistcoats</FilterMenuItem>
+              <FilterMenuItem>Bags</FilterMenuItem>
+            </FiltersMenuItems>
+          </FiltersMenuWrapper>
+          <FiltersMenuWrapper>
+            <FiltersMenuHeaders>Price</FiltersMenuHeaders>
+            <FiltersMenuItems>
+              <FilterMenuItem>$0-50</FilterMenuItem>
+              <FilterMenuItem>$50-100</FilterMenuItem>
+              <FilterMenuItem>$100-150</FilterMenuItem>
+            </FiltersMenuItems>
+          </FiltersMenuWrapper>
+        </FiltersMenuContainer>
+        <SortItemsContainer
+          style={{ display: sortMenuActive === false && 'none' }}
+        >
+          <SortItemsWrapper>
+            <SortItem>Low To High</SortItem>
+            <SortItem>High To Low</SortItem>
+            <SortItem>A-Z</SortItem>
+            <SortItem>Z-A</SortItem>
+            <SortItem>Featured</SortItem>
+          </SortItemsWrapper>
+        </SortItemsContainer>
         <CardsWrapper>
-          {itemsDataState.map((item) => (
+          {itemsDataState.map((item, i) => (
             <div key={item.id}>
               <CardImage
                 onMouseEnter={(e) =>
@@ -152,6 +244,7 @@ const ItemCards = () => {
                 onMouseLeave={(e) => (e.target.src = item.imgURL[0])}
                 alt={item.name}
                 src={item.imgURL[0]}
+                onClick={(e) => console.log(i)}
               />
               <ItemCard>{item.name}</ItemCard>
               <div>{item.price}$</div>
