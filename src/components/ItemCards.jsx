@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getDataFromFirestore } from '../redux/dataSlice';
 import { getCategoriesAndDocuments } from '../firebase/firebaseapp';
@@ -9,6 +8,7 @@ import styled from 'styled-components';
 const CardsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  transition: ease-in-out 1s;
 `;
 const CardsWrapper = styled.div`
   width: 100vw;
@@ -109,23 +109,31 @@ const ItemCards = () => {
   const [itemsDataState, setItemsDataState] = useState([]);
   const [filterMenuActive, setFilterMenuActive] = useState(false);
   const [sortMenuActive, setSortMenuActive] = useState(false);
+  const [filterParameter, setFilterParameter] = useState('');
   const bottomElementRef = useRef(null); //dummy div reference
   const items = useSelector((state) => state.getDataReducer.itemData); // main state -> reducer -> inital state object
   const dispatch = useDispatch();
 
+  //HELPER FUNCTION TO SET FILTER PARAMETER
+  const handleFilterParameter = (event) => {
+    setFilterParameter(event.target.innerHTML.toLowerCase());
+  };
+
   //CALLBACK FUNCTION FOR INTERSECTION OBSERVER
   const observerHelper = (items) => {
     let [item] = items;
+    console.log(item);
     setIntersection(item.isIntersecting);
   };
 
   //OPTIONS FOR OBSERVER
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const options = {
     root: null,
-    rootMargin: '0px 0px 500px 0px',
-    threshold: 1.0,
+    rootMargin: '0px 0px 90px 0px',
+    threshold: 0.0,
   };
+
+  const optionsObj = useMemo(() => options, []);
   const filterClickHandler = () => {
     setFilterMenuActive(!filterMenuActive);
   };
@@ -134,53 +142,66 @@ const ItemCards = () => {
   };
   //Redux action to get the data from the store
   useEffect(() => {
+    console.log('getdata fired first');
     const getData = async () => {
       const shopData = await getCategoriesAndDocuments('categories');
       dispatch(getDataFromFirestore(shopData));
     };
     getData();
+    console.log('getdata fired second');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //infinite scrolling and array slice logic is handled here
   useEffect(() => {
+    console.log('datapush effect fired first');
     for (let i = 0; i < Object.values(items).length; i++) {
       for (let j = 0; j < Object.values(items)[i].items.length; j++) {
         itemsData.push(Object.values(items)[i].items[j]);
       }
     }
     let slicedItems = itemsData.slice(0, fetchedItemCount);
-    console.log(slicedItems);
     setItemsDataState(slicedItems);
-    if (intersection) {
-      console.log(fetchedItemCount);
-      console.log('intersection');
-    } else {
-      console.log('no intersection');
-    }
+    setFetchedItemCount(fetchedItemCount + 4);
+    console.log('datapush effect fired second');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [intersection, items]);
+  }, [intersection]);
+
+  //Sets new parameter for filter without extra rendering
+  const filteredItems = useMemo(
+    () => itemsDataState.filter((item) => item.category === filterParameter),
+    [filterParameter, itemsDataState]
+  );
+
+  // const observer = new IntersectionObserver(observerHelper, options);
+  const observer = useMemo(
+    () => new IntersectionObserver(observerHelper, optionsObj),
+    [optionsObj]
+  );
+
+  const observerMemoized = useCallback(() => {
+    // let dummyDivRef = bottomElementRef.current;
+    console.log('dummydiv effect fired');
+    if (bottomElementRef.current) {
+      observer.observe(bottomElementRef.current);
+    }
+  }, [observer]);
+
+  const observerCleanUpMemoized = useCallback(() => {
+    if (bottomElementRef.current) {
+      try {
+        observer.unobserve(bottomElementRef.current);
+        console.log('dummydiv cleanup fired');
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, []);
 
   //Dummy div reference and intersection logic are handled here
   useEffect(() => {
-    let dummyDivRef = bottomElementRef.current;
-    const observer = new IntersectionObserver(observerHelper, options);
-    if (dummyDivRef) {
-      observer.observe(dummyDivRef);
-      console.log('im here');
-    }
-
-    return () => {
-      if (dummyDivRef) {
-        try {
-          observer.unobserve(dummyDivRef);
-          setFetchedItemCount(fetchedItemCount + 4);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    };
-  }, [bottomElementRef, options, fetchedItemCount]);
+    observerMemoized();
+  }, []);
 
   return (
     <>
@@ -199,7 +220,7 @@ const ItemCards = () => {
         >
           <FiltersMenuWrapper>
             <FiltersMenuHeaders>Categories</FiltersMenuHeaders>
-            <FiltersMenuItems>
+            <FiltersMenuItems onClick={handleFilterParameter}>
               <FilterMenuItem>Dresses</FilterMenuItem>
               <FilterMenuItem>Jackets</FilterMenuItem>
               <FilterMenuItem>Coats</FilterMenuItem>
@@ -209,7 +230,7 @@ const ItemCards = () => {
               <FilterMenuItem>Trousers</FilterMenuItem>
               <FilterMenuItem>Coats</FilterMenuItem>
               <FilterMenuItem>Waistcoats</FilterMenuItem>
-              <FilterMenuItem>Bags</FilterMenuItem>
+              <FilterMenuItem>Accessories</FilterMenuItem>
             </FiltersMenuItems>
           </FiltersMenuWrapper>
           <FiltersMenuWrapper>
