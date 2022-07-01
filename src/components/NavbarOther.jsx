@@ -52,7 +52,7 @@ const NavbarOther = () => {
     <>
       <Notifications
         style={{
-          display: scrollPosition > 750 && 'none',
+          display: scrollPosition > 780 && 'none',
         }}
       >
         <NotificationsList>
@@ -62,8 +62,8 @@ const NavbarOther = () => {
 
       <StaticNavbarContainer
         style={{
-          position: scrollPosition > 750 && 'fixed',
-          backgroundColor: scrollPosition > 750 && 'white',
+          position: scrollPosition > 780 && 'fixed',
+          backgroundColor: scrollPosition > 780 && 'white',
         }}
       >
         <WrapperContainer>
