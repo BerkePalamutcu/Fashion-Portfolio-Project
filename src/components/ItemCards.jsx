@@ -122,7 +122,7 @@ const ItemCards = () => {
   //CALLBACK FUNCTION FOR INTERSECTION OBSERVER
   const observerHelper = (items) => {
     let [item] = items;
-    console.log(item);
+
     setIntersection(item.isIntersecting);
   };
 
@@ -133,6 +133,7 @@ const ItemCards = () => {
     threshold: 0.0,
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const optionsObj = useMemo(() => options, []);
   const filterClickHandler = () => {
     setFilterMenuActive(!filterMenuActive);
@@ -142,46 +143,51 @@ const ItemCards = () => {
   };
   //Redux action to get the data from the store
   useEffect(() => {
-    console.log('getdata fired first');
     const getData = async () => {
       const shopData = await getCategoriesAndDocuments('categories');
       dispatch(getDataFromFirestore(shopData));
     };
     getData();
-    console.log('getdata fired second');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //infinite scrolling and array slice logic is handled here
-  useEffect(() => {
-    console.log('datapush effect fired first');
+  const dataCleaner = () => {
     for (let i = 0; i < Object.values(items).length; i++) {
       for (let j = 0; j < Object.values(items)[i].items.length; j++) {
         itemsData.push(Object.values(items)[i].items[j]);
       }
     }
-    let slicedItems = itemsData.slice(0, fetchedItemCount);
-    setItemsDataState(slicedItems);
-    setFetchedItemCount(fetchedItemCount + 4);
-    console.log('datapush effect fired second');
+  };
+  useEffect(() => {
+    if (filterParameter === '' || filterParameter === 'all') {
+      dataCleaner();
+      let slicedItems = itemsData.slice(0, fetchedItemCount);
+      setFetchedItemCount(fetchedItemCount + 4);
+      setItemsDataState(slicedItems);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [intersection]);
+  //
+  useEffect(() => {
+    if (filterParameter !== '') {
+      dataCleaner();
+      let allFilteredItems = itemsData.filter(
+        (item) => item.category === filterParameter
+      );
+      setItemsDataState(allFilteredItems);
+      console.log(allFilteredItems);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterParameter]);
 
-  //Sets new parameter for filter without extra rendering
-  const filteredItems = useMemo(
-    () => itemsDataState.filter((item) => item.category === filterParameter),
-    [filterParameter, itemsDataState]
-  );
-
-  // const observer = new IntersectionObserver(observerHelper, options);
   const observer = useMemo(
     () => new IntersectionObserver(observerHelper, optionsObj),
     [optionsObj]
   );
 
   const observerMemoized = useCallback(() => {
-    // let dummyDivRef = bottomElementRef.current;
-    console.log('dummydiv effect fired');
     if (bottomElementRef.current) {
       observer.observe(bottomElementRef.current);
     }
@@ -191,16 +197,22 @@ const ItemCards = () => {
     if (bottomElementRef.current) {
       try {
         observer.unobserve(bottomElementRef.current);
-        console.log('dummydiv cleanup fired');
       } catch (error) {
         console.log(error);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //Dummy div reference and intersection logic are handled here
+  //
   useEffect(() => {
     observerMemoized();
+
+    return () => {
+      observerCleanUpMemoized();
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -220,17 +232,40 @@ const ItemCards = () => {
         >
           <FiltersMenuWrapper>
             <FiltersMenuHeaders>Categories</FiltersMenuHeaders>
-            <FiltersMenuItems onClick={handleFilterParameter}>
-              <FilterMenuItem>Dresses</FilterMenuItem>
-              <FilterMenuItem>Jackets</FilterMenuItem>
-              <FilterMenuItem>Coats</FilterMenuItem>
-              <FilterMenuItem>T-Shirts</FilterMenuItem>
-              <FilterMenuItem>Skirts</FilterMenuItem>
-              <FilterMenuItem>Sweaters</FilterMenuItem>
-              <FilterMenuItem>Trousers</FilterMenuItem>
-              <FilterMenuItem>Coats</FilterMenuItem>
-              <FilterMenuItem>Waistcoats</FilterMenuItem>
-              <FilterMenuItem>Accessories</FilterMenuItem>
+            <FiltersMenuItems>
+              <FilterMenuItem onClick={handleFilterParameter}>
+                All
+              </FilterMenuItem>
+              <FilterMenuItem onClick={handleFilterParameter}>
+                Dresses
+              </FilterMenuItem>
+              <FilterMenuItem onClick={handleFilterParameter}>
+                Jackets
+              </FilterMenuItem>
+              <FilterMenuItem onClick={handleFilterParameter}>
+                Coats
+              </FilterMenuItem>
+              <FilterMenuItem onClick={handleFilterParameter}>
+                T-Shirts
+              </FilterMenuItem>
+              <FilterMenuItem onClick={handleFilterParameter}>
+                Skirts
+              </FilterMenuItem>
+              <FilterMenuItem onClick={handleFilterParameter}>
+                Sweaters
+              </FilterMenuItem>
+              <FilterMenuItem onClick={handleFilterParameter}>
+                Trousers
+              </FilterMenuItem>
+              <FilterMenuItem onClick={handleFilterParameter}>
+                Coats
+              </FilterMenuItem>
+              <FilterMenuItem onClick={handleFilterParameter}>
+                Waistcoats
+              </FilterMenuItem>
+              <FilterMenuItem onClick={handleFilterParameter}>
+                Accessories
+              </FilterMenuItem>
             </FiltersMenuItems>
           </FiltersMenuWrapper>
           <FiltersMenuWrapper>
