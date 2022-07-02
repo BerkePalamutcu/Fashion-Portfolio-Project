@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getDataFromFirestore } from '../redux/dataSlice';
 import styled from 'styled-components';
@@ -52,6 +52,7 @@ const Slider = () => {
     };
     getData();
     console.log(items);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
