@@ -148,7 +148,7 @@ const Navbar = () => {
                     textDecoration: 'none',
                     color: hovered === true ? 'black' : 'white',
                   }}
-                  to="/all-products"
+                  to="/products"
                 >
                   <Spans>SHOP</Spans>
                 </NavLink>
