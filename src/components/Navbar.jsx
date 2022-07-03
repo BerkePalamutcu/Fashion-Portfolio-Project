@@ -51,7 +51,7 @@ export const WrapperContainer = styled.div`
   }
 `;
 export const LogoContainer = styled.div`
-  flex: 0.7;
+  flex: 1;
   text-align: center;
   font-family: 'My Soul', cursive;
   font-weight: 400;
