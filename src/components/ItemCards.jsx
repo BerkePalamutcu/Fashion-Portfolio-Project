@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getDataFromFirestore } from '../redux/dataSlice';
 import { getCategoriesAndDocuments } from '../firebase/firebaseapp';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 //TODO: implement smooth rendering on the component
@@ -119,6 +120,9 @@ const ItemCards = () => {
   const items = useSelector((state) => state.getDataReducer.itemData); // main state -> reducer -> inital state object
   const dispatch = useDispatch(); // Redux helper function to dispatch actions.
 
+  //useNavigate hook and redirect to product page logic are handled here
+  const redirectToProductPage = useNavigate();
+
   //HELPER FUNCTION TO SET FILTER PARAMETER
   const handleFilterParameter = (event) => {
     setFilterParameter(event.target.innerHTML.toLowerCase());
@@ -145,6 +149,7 @@ const ItemCards = () => {
     }
     return 0;
   };
+
   const handleSorting = (event) => {
     if (event.target.innerHTML === 'Low To High') {
       setItemsDataState([...itemsDataState.sort((a, b) => a.price - b.price)]);
@@ -187,12 +192,12 @@ const ItemCards = () => {
     setSortMenuActive(!sortMenuActive);
   };
 
+  //Redux action to get the data from the store
+  const getData = async () => {
+    const shopData = await getCategoriesAndDocuments('categories');
+    dispatch(getDataFromFirestore(shopData));
+  };
   useEffect(() => {
-    //Redux action to get the data from the store
-    const getData = async () => {
-      const shopData = await getCategoriesAndDocuments('categories');
-      dispatch(getDataFromFirestore(shopData));
-    };
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -207,6 +212,7 @@ const ItemCards = () => {
   };
   //useEffect for infinite scrolling and slicing logic
   useEffect(() => {
+    console.log('slice effect fired');
     if (filterParameter === '' || filterParameter === 'all') {
       dataCleaner();
       let slicedItems = itemsData.slice(0, fetchedItemCount);
@@ -219,6 +225,7 @@ const ItemCards = () => {
 
   //useEffect for implementing filter
   useEffect(() => {
+    console.log('filter parameter effect fired');
     dataCleaner();
     let filteredItemsByPrice;
     if (filterParameter !== '') {
@@ -256,6 +263,7 @@ const ItemCards = () => {
   );
   //Function to use memoized observer instance
   const observerMemoized = useCallback(() => {
+    console.log('memoized effect fired');
     if (bottomElementRef.current) {
       observer.observe(bottomElementRef.current);
     }
@@ -274,6 +282,7 @@ const ItemCards = () => {
 
   //useEffect for observers and infinite scrolling
   useEffect(() => {
+    console.log('observer effect fired');
     observerMemoized();
 
     return () => {
@@ -377,7 +386,9 @@ const ItemCards = () => {
                 onMouseLeave={(e) => (e.target.src = item.imgURL[0])}
                 alt={item.name}
                 src={item.imgURL[0]}
-                onClick={(e) => console.log(i)}
+                onClick={(e) =>
+                  redirectToProductPage(`${i}`, { replace: true })
+                }
               />
               <ItemCard>{item.name}</ItemCard>
               <div>{item.price}$</div>
