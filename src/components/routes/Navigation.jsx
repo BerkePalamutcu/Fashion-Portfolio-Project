@@ -7,12 +7,14 @@ import About from '../pages/About';
 import Contact from '../pages/Contact';
 import Sale from '../pages/Sale';
 import SignUp from '../pages/SignUp';
-
+import Product from '../pages/Product';
+///
 const Navigation = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/products" element={<Shop />} />
+      <Route path="/products/" element={<Shop />} />
+      <Route path="/products/:id" element={<Product />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/sale" element={<Sale />} />
