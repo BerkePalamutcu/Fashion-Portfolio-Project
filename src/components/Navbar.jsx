@@ -59,7 +59,7 @@ export const LogoContainer = styled.div`
   transition: ease-in-out 2s;
 `;
 export const MainContainer = styled.div`
-  flex: 1.5;
+  flex: 2;
   font-size: 14px;
   font-weight: 500;
   text-align: center;
