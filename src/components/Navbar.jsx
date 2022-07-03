@@ -51,7 +51,7 @@ export const WrapperContainer = styled.div`
   }
 `;
 export const LogoContainer = styled.div`
-  flex: 0.8;
+  flex: 0.7;
   text-align: center;
   font-family: 'My Soul', cursive;
   font-weight: 400;
@@ -73,27 +73,26 @@ export const RightContainer = styled.div`
   font-size: 14px;
   display: flex;
   transition: ease-in-out 1s;
+  gap: 50px;
+  margin-left: 50px;
 `;
 
 export const MainList = styled.ul``;
 
 export const MainListItems = styled.li`
   list-style-type: none;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
 `;
 
-export const Spans = styled.span`
-  margin: 0 20px;
-  cursor: pointer;
-`;
-
-export const Languages = styled.span`
-  margin-right: 24px;
-`;
+export const Spans = styled.span``;
 
 export const SearchIcon = styled(SearchRounded)`
   border: 1px solid;
   border-radius: 50%;
-  padding: 5px;
+  padding: 3px;
+  cursor: pointer;
 `;
 
 const Navbar = () => {
