@@ -4,11 +4,11 @@ import { getDataFromFirestore } from '../redux/dataSlice';
 import { getCategoriesAndDocuments } from '../firebase/firebaseapp';
 import styled from 'styled-components';
 
+//TODO: implement smooth rendering on the component
 //STYLING
 const CardsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  transition: ease-in-out 1s;
 `;
 const CardsWrapper = styled.div`
   width: 100vw;
@@ -30,6 +30,7 @@ const CardImage = styled.img.attrs((props) => ({
   width: 450px;
   object-fit: cover;
   cursor: pointer;
+  transition: max-height 200ms ease, opacity 200ms ease;
 `;
 const FilterContainer = styled.div`
   display: flex;
@@ -61,14 +62,12 @@ const FiltersMenuContainer = styled.div`
 `;
 const FiltersMenuWrapper = styled.div`
   display: flex;
-
   margin: 20px 30px 20px 30px;
 `;
 const FiltersMenuHeaders = styled.span`
   display: flex;
   font-size: 22px;
   font-weight: 600;
-  font-family: 'Quintessential', cursive;
 `;
 const FiltersMenuItems = styled.div`
   display: flex;
@@ -103,26 +102,50 @@ const SortItem = styled.span`
 
 //COMPONENT
 const ItemCards = () => {
-  let itemsData = [];
-  const [intersection, setIntersection] = useState(false);
-  const [fetchedItemCount, setFetchedItemCount] = useState(4);
-  const [itemsDataState, setItemsDataState] = useState([]);
-  const [filterMenuActive, setFilterMenuActive] = useState(false);
-  const [sortMenuActive, setSortMenuActive] = useState(false);
-  const [filterParameter, setFilterParameter] = useState('');
-  const bottomElementRef = useRef(null); //dummy div reference
+  let itemsData = []; //The data will be stored here after getting it from redux store
+  const [intersection, setIntersection] = useState(false); //state for detecting intersections
+  const [fetchedItemCount, setFetchedItemCount] = useState(4); //state for fetched Items
+  const [itemsDataState, setItemsDataState] = useState([]); // state for rendered data
+  const [filterMenuActive, setFilterMenuActive] = useState(false); //state for filter menu
+  const [sortMenuActive, setSortMenuActive] = useState(false); //state for sort menu
+  const [filterParameter, setFilterParameter] = useState(''); //state for detecting filter parameters from JSX
+  const bottomElementRef = useRef(null); //dummy div reference for intersection
   const items = useSelector((state) => state.getDataReducer.itemData); // main state -> reducer -> inital state object
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); // Redux helper function to dispatch actions.
 
   //HELPER FUNCTION TO SET FILTER PARAMETER
   const handleFilterParameter = (event) => {
     setFilterParameter(event.target.innerHTML.toLowerCase());
   };
 
+  //HELPER FUNCTION TO SET FILTER PARAMETER BY PRICE RANGE
+  const handleFilterByPriceRange = (event) => {
+    if (event.target.innerHTML === '$0-50') {
+      setFilterParameter('$0-50');
+    }
+    if (event.target.innerHTML === '$50-100') {
+      setFilterParameter('$50-100');
+    }
+    if (event.target.innerHTML === '$100-150') {
+      setFilterParameter('$100-150');
+    }
+  };
+
+  const handleSorting = (event) => {
+    if (event.target.innerHTML === 'Low To High') {
+      setItemsDataState([...itemsDataState.sort((a, b) => a.price - b.price)]);
+    }
+    if (event.target.innerHTML === 'High To Low') {
+      setItemsDataState([...itemsDataState.sort((a, b) => b.price - a.price)]);
+    }
+    if (event.target.innerHTML === 'A-Z') {
+    }
+    if (event.target.innerHTML === 'Z-A') {
+    }
+  };
   //CALLBACK FUNCTION FOR INTERSECTION OBSERVER
   const observerHelper = (items) => {
     let [item] = items;
-
     setIntersection(item.isIntersecting);
   };
 
@@ -151,7 +174,7 @@ const ItemCards = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //infinite scrolling and array slice logic is handled here
+  //Helper function to iterate the data
   const dataCleaner = () => {
     for (let i = 0; i < Object.values(items).length; i++) {
       for (let j = 0; j < Object.values(items)[i].items.length; j++) {
@@ -159,6 +182,7 @@ const ItemCards = () => {
       }
     }
   };
+  //useEffect for infinite scrolling and slicing logic
   useEffect(() => {
     if (filterParameter === '' || filterParameter === 'all') {
       dataCleaner();
@@ -169,30 +193,51 @@ const ItemCards = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [intersection]);
-  //
+
+  //useEffect for implementing filter
   useEffect(() => {
+    dataCleaner();
+    let filteredItemsByPrice;
     if (filterParameter !== '') {
-      dataCleaner();
       let allFilteredItems = itemsData.filter(
         (item) => item.category === filterParameter
       );
       setItemsDataState(allFilteredItems);
-      console.log(allFilteredItems);
+    }
+    if (filterParameter === '$0-50') {
+      filteredItemsByPrice = itemsData.filter((item) => item.price < 50);
+      setItemsDataState(filteredItemsByPrice);
+    }
+    if (filterParameter === '$50-100') {
+      filteredItemsByPrice = itemsData.filter(
+        (item) => item.price > 50 && item.price < 100
+      );
+      setItemsDataState(filteredItemsByPrice);
+    }
+    if (filterParameter === '$100-150') {
+      filteredItemsByPrice = itemsData.filter(
+        (item) => item.price > 100 && item.price < 150
+      );
+      setItemsDataState(filteredItemsByPrice);
+    }
+    if (filterParameter === 'all') {
+      setItemsDataState(itemsData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterParameter]);
 
+  //Memoized observer object instance
   const observer = useMemo(
     () => new IntersectionObserver(observerHelper, optionsObj),
     [optionsObj]
   );
-
+  //Function to use memoized observer instance
   const observerMemoized = useCallback(() => {
     if (bottomElementRef.current) {
       observer.observe(bottomElementRef.current);
     }
   }, [observer]);
-
+  //Memoized Observer Clean-Up function for useEffect
   const observerCleanUpMemoized = useCallback(() => {
     if (bottomElementRef.current) {
       try {
@@ -204,7 +249,7 @@ const ItemCards = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //
+  //useEffect for observers and infinite scrolling
   useEffect(() => {
     observerMemoized();
 
@@ -215,6 +260,7 @@ const ItemCards = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //TODO: implement a new sorting algorithm here and sort the fetched Items by price range or alphabetically
   return (
     <>
       <CardsContainer>
@@ -271,9 +317,15 @@ const ItemCards = () => {
           <FiltersMenuWrapper>
             <FiltersMenuHeaders>Price</FiltersMenuHeaders>
             <FiltersMenuItems>
-              <FilterMenuItem>$0-50</FilterMenuItem>
-              <FilterMenuItem>$50-100</FilterMenuItem>
-              <FilterMenuItem>$100-150</FilterMenuItem>
+              <FilterMenuItem onClick={handleFilterByPriceRange}>
+                $0-50
+              </FilterMenuItem>
+              <FilterMenuItem onClick={handleFilterByPriceRange}>
+                $50-100
+              </FilterMenuItem>
+              <FilterMenuItem onClick={handleFilterByPriceRange}>
+                $100-150
+              </FilterMenuItem>
             </FiltersMenuItems>
           </FiltersMenuWrapper>
         </FiltersMenuContainer>
@@ -281,10 +333,10 @@ const ItemCards = () => {
           style={{ display: sortMenuActive === false && 'none' }}
         >
           <SortItemsWrapper>
-            <SortItem>Low To High</SortItem>
-            <SortItem>High To Low</SortItem>
-            <SortItem>A-Z</SortItem>
-            <SortItem>Z-A</SortItem>
+            <SortItem onClick={handleSorting}>Low To High</SortItem>
+            <SortItem onClick={handleSorting}>High To Low</SortItem>
+            <SortItem onClick={handleSorting}>A-Z</SortItem>
+            <SortItem onClick={handleSorting}>Z-A</SortItem>
             <SortItem>Featured</SortItem>
           </SortItemsWrapper>
         </SortItemsContainer>
