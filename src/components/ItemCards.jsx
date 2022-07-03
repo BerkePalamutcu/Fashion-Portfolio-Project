@@ -99,7 +99,13 @@ const SortItem = styled.span`
   user-select: none;
   cursor: pointer;
 `;
-
+const DecorationSpan = styled.span`
+  font-family: 'Quintessential', cursive;
+  font-size: 22px;
+  margin-right: 20px;
+  font-style: italic;
+  font-weight: 500;
+`;
 //COMPONENT
 const ItemCards = () => {
   let itemsData = []; //The data will be stored here after getting it from redux store
@@ -130,7 +136,15 @@ const ItemCards = () => {
       setFilterParameter('$100-150');
     }
   };
-
+  const alphabeticalSortHelper = (a, b) => {
+    if (a.name > b.name) {
+      return 1;
+    }
+    if (b.name > a.name) {
+      return -1;
+    }
+    return 0;
+  };
   const handleSorting = (event) => {
     if (event.target.innerHTML === 'Low To High') {
       setItemsDataState([...itemsDataState.sort((a, b) => a.price - b.price)]);
@@ -139,10 +153,16 @@ const ItemCards = () => {
       setItemsDataState([...itemsDataState.sort((a, b) => b.price - a.price)]);
     }
     if (event.target.innerHTML === 'A-Z') {
+      setItemsDataState([...itemsDataState.sort(alphabeticalSortHelper)]);
     }
+
     if (event.target.innerHTML === 'Z-A') {
+      setItemsDataState([
+        ...itemsDataState.sort(alphabeticalSortHelper).reverse(),
+      ]);
     }
   };
+
   //CALLBACK FUNCTION FOR INTERSECTION OBSERVER
   const observerHelper = (items) => {
     let [item] = items;
@@ -150,22 +170,25 @@ const ItemCards = () => {
   };
 
   //OPTIONS FOR OBSERVER
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const options = {
     root: null,
     rootMargin: '0px 0px 90px 0px',
     threshold: 0.0,
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const optionsObj = useMemo(() => options, []);
+  const optionsObj = useMemo(() => options, [options]); // Memoization the value of options object
+
+  //Menu click handlers
   const filterClickHandler = () => {
     setFilterMenuActive(!filterMenuActive);
   };
   const sortClickHandler = () => {
     setSortMenuActive(!sortMenuActive);
   };
-  //Redux action to get the data from the store
+
   useEffect(() => {
+    //Redux action to get the data from the store
     const getData = async () => {
       const shopData = await getCategoriesAndDocuments('categories');
       dispatch(getDataFromFirestore(shopData));
@@ -260,7 +283,6 @@ const ItemCards = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //TODO: implement a new sorting algorithm here and sort the fetched Items by price range or alphabetically
   return (
     <>
       <CardsContainer>
@@ -277,7 +299,9 @@ const ItemCards = () => {
           style={{ display: filterMenuActive === false && 'none' }}
         >
           <FiltersMenuWrapper>
-            <FiltersMenuHeaders>Categories</FiltersMenuHeaders>
+            <FiltersMenuHeaders>
+              <DecorationSpan>Filter By</DecorationSpan>Categories
+            </FiltersMenuHeaders>
             <FiltersMenuItems>
               <FilterMenuItem onClick={handleFilterParameter}>
                 All
@@ -315,7 +339,9 @@ const ItemCards = () => {
             </FiltersMenuItems>
           </FiltersMenuWrapper>
           <FiltersMenuWrapper>
-            <FiltersMenuHeaders>Price</FiltersMenuHeaders>
+            <FiltersMenuHeaders>
+              <DecorationSpan>Filter By</DecorationSpan>Price
+            </FiltersMenuHeaders>
             <FiltersMenuItems>
               <FilterMenuItem onClick={handleFilterByPriceRange}>
                 $0-50
@@ -337,7 +363,6 @@ const ItemCards = () => {
             <SortItem onClick={handleSorting}>High To Low</SortItem>
             <SortItem onClick={handleSorting}>A-Z</SortItem>
             <SortItem onClick={handleSorting}>Z-A</SortItem>
-            <SortItem>Featured</SortItem>
           </SortItemsWrapper>
         </SortItemsContainer>
         <CardsWrapper>
