@@ -387,7 +387,9 @@ const ItemCards = () => {
                 alt={item.name}
                 src={item.imgURL[0]}
                 onClick={(e) =>
-                  redirectToProductPage(`${i}`, { replace: true })
+                  redirectToProductPage(`${itemsDataState[i].id}`, {
+                    replace: true,
+                  })
                 }
               />
               <ItemCard>{item.name}</ItemCard>
