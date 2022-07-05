@@ -4,6 +4,7 @@ import { getDataFromFirestore } from '../redux/dataSlice';
 import { getCategoriesAndDocuments } from '../firebase/firebaseapp';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { getProductData } from '../redux/productDataSlice';
 
 //TODO: implement smooth rendering on the component
 //STYLING
@@ -386,11 +387,12 @@ const ItemCards = () => {
                 onMouseLeave={(e) => (e.target.src = item.imgURL[0])}
                 alt={item.name}
                 src={item.imgURL[0]}
-                onClick={(e) =>
+                onClick={(e) => {
                   redirectToProductPage(`${itemsDataState[i].id}`, {
                     replace: true,
-                  })
-                }
+                  }); //semicolons are important!
+                  dispatch(getProductData(itemsDataState[i]));
+                }}
               />
               <ItemCard>{item.name}</ItemCard>
               <div>{item.price}$</div>
