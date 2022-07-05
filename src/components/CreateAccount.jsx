@@ -16,7 +16,7 @@ import {
   PasswordInput,
   SignUpButton,
 } from './SignIn';
-
+//STYLES
 const SignUpPageContainer = styled.div`
   positition: relative;
   display: flex;
@@ -50,7 +50,7 @@ const SignUpInputContainer = styled(InputContainer)`
   gap: 5px;
 `;
 const ConfirmedPasswordInput = styled(PasswordInput)``;
-/// Create Account Component
+//COMPONENT
 const CreateAccount = () => {
   const defaultParameters = {
     email: '',
