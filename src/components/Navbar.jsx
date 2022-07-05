@@ -189,7 +189,10 @@ const Navbar = () => {
               </NavLink>
             ) : (
               <Spans
-                style={{ color: hovered === true ? 'black' : 'white' }}
+                style={{
+                  color: hovered === true ? 'black' : 'white',
+                  cursor: 'pointer',
+                }}
                 onClick={signOutUser}
               >
                 LOG OUT
