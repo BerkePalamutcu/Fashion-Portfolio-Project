@@ -32,7 +32,7 @@ const CardImage = styled.img.attrs((props) => ({
   width: 450px;
   object-fit: cover;
   cursor: pointer;
-  transition: max-height 200ms ease, opacity 200ms ease;
+  transition: all 1.5s ease;
 `;
 const FilterContainer = styled.div`
   display: flex;
