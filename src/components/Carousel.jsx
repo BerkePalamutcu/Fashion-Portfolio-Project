@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Video from './Video';
-
+//STYLES
 const VideoEdited = styled(Video)`
   object-fit: cover;
   width: 100vw;
@@ -74,7 +74,7 @@ const BlackButton = styled.button`
     cursor: pointer;
   }
 `;
-
+//COMPONENT
 const Carousel = () => {
   return (
     <VideoContainer>
