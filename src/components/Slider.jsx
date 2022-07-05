@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import { getCategoriesAndDocuments } from '../firebase/firebaseapp';
 
+//STYLES
 const SliderContainer = styled.div`
   height: 700px;
   width: 100vw;
@@ -41,7 +42,7 @@ const SliderImg = styled.img.attrs((props) => ({
   height: 400px;
   width: 275px;
 `;
-
+//COMPONENT
 const Slider = () => {
   const items = useSelector((state) => state.getDataReducer);
   const dispatch = useDispatch();
