@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const productInitialState = {
+const initialState = {
   productData: {},
 };
 
 export const productSlice = createSlice({
   name: 'productSlice',
-  productInitialState,
+  initialState,
   reducers: {
     getProductData: (state, action) => {
       state.productData = { ...action.payload };
