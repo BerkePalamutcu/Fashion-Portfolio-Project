@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { signInWithGooglePopup, signInUser } from '../firebase/firebaseapp';
 
+//Styles
 const SignInContainer = styled.div`
   positition: relative;
   display: flex;
@@ -152,7 +153,7 @@ const logoStylesheet = {
   justifyContent: 'center',
   borderRadius: '2px',
 };
-
+//COMPONENT
 const SignIn = () => {
   const defaultParams = {
     email: '',
