@@ -5,10 +5,9 @@ import Login from '../pages/Login';
 import Shop from '../pages/Shop';
 import About from '../pages/About';
 import Contact from '../pages/Contact';
-import Sale from '../pages/Sale';
 import SignUp from '../pages/SignUp';
 import Product from '../pages/Product';
-///
+
 const Navigation = () => {
   return (
     <Routes>
@@ -17,7 +16,6 @@ const Navigation = () => {
       <Route path="/products/:id" element={<Product />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
-      <Route path="/sale" element={<Sale />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signUp" element={<SignUp />} />
     </Routes>
