@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { SearchRounded } from '@mui/icons-material';
-import styled from 'styled-components';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, signOutUser } from '../firebase/firebaseapp';
 import { changeCardModalToTrue } from '../redux/modalSlice';
+import styled from 'styled-components';
 export const Notifications = styled.div`
   display: flex;
   width: 100vw;
@@ -118,7 +118,6 @@ const Navbar = () => {
   const handleMouseLeave = () => {
     setHovered(false);
   };
-
   return (
     <>
       <Notifications>

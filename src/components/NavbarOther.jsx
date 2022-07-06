@@ -20,7 +20,7 @@ import { auth, signOutUser } from '../firebase/firebaseapp';
 import { onAuthStateChanged } from 'firebase/auth';
 
 const StaticNavbarContainer = styled(NavbarContainer)`
-  position: relative;
+  position: static;
   box-shadow: 0 2px #e0e0eb;
   transition: ease-in-out 1s;
 `;
