@@ -13,6 +13,8 @@ import {
   Spans,
   SearchIcon,
 } from './Navbar';
+import { useDispatch } from 'react-redux';
+import { changeCardModalToTrue } from '../redux/modalSlice';
 import styled from 'styled-components';
 import { auth, signOutUser } from '../firebase/firebaseapp';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -26,7 +28,7 @@ const StaticNavbarContainer = styled(NavbarContainer)`
 const NavbarOther = () => {
   const [loginData, setUserLoggedIn] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0); // getting the current scrollingPosition
-
+  const dispatch = useDispatch();
   //Handling Scrolling events and setting scroll position to the state
   const handleScroll = () => {
     const position = window.pageYOffset;
@@ -108,9 +110,6 @@ const NavbarOther = () => {
                 >
                   <Spans>CONTACT</Spans>
                 </NavLink>
-                <NavLink style={{ textDecoration: 'none' }} to="/sale">
-                  <Spans style={{ color: 'red' }}>SALE</Spans>
-                </NavLink>
               </MainListItems>
             </MainList>
           </MainContainer>
@@ -138,9 +137,11 @@ const NavbarOther = () => {
               </NavLink>
             )}
             <Spans
+              onClick={() => dispatch(changeCardModalToTrue(true))}
               style={{
                 textDecoration: 'none',
                 color: 'black',
+                cursor: 'pointer',
               }}
             >
               Bag (0)

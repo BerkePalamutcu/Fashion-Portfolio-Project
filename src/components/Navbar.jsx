@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { SearchRounded } from '@mui/icons-material';
 import styled from 'styled-components';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, signOutUser } from '../firebase/firebaseapp';
+import { changeCardModalToTrue } from '../redux/modalSlice';
 export const Notifications = styled.div`
   display: flex;
   width: 100vw;
@@ -51,7 +53,7 @@ export const WrapperContainer = styled.div`
   }
 `;
 export const LogoContainer = styled.div`
-  flex: 1;
+  flex: 0.8;
   text-align: center;
   font-family: 'My Soul', cursive;
   font-weight: 400;
@@ -97,6 +99,7 @@ export const SearchIcon = styled(SearchRounded)`
 
 const Navbar = () => {
   const [loginData, setUserLoggedIn] = useState(false);
+  const dispatch = useDispatch();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -170,9 +173,6 @@ const Navbar = () => {
                 >
                   <Spans>CONTACT</Spans>
                 </NavLink>
-                <NavLink style={{ textDecoration: 'none' }} to="/sale">
-                  <Spans style={{ color: 'red' }}>SALE</Spans>
-                </NavLink>
               </MainListItems>
             </MainList>
           </MainContainer>
@@ -199,9 +199,11 @@ const Navbar = () => {
               </Spans>
             )}
             <Spans
+              onClick={() => dispatch(changeCardModalToTrue(true))}
               style={{
                 textDecoration: 'none',
                 color: hovered === true ? 'black' : 'white',
+                cursor: 'pointer',
               }}
             >
               Bag (0)
