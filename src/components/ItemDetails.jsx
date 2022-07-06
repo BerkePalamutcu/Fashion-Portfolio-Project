@@ -8,6 +8,7 @@ const Container = styled.div`
   margin-top: 10px;
   display: flex;
 `;
+
 const DetailsContainer = styled.div`
   width: 300px;
   display: flex;
@@ -52,6 +53,7 @@ const ArrowContainerLeft = styled.div`
   margin-left: 20px;
   cursor: pointer;
   z-index: 2;
+  user-select: none;
 `;
 const ArrowContainerRight = styled(ArrowContainerLeft)`
   position: absolute;
@@ -112,6 +114,7 @@ const AddToCartButton = styled(StyledButton)`
 const ItemDetails = () => {
   const [index, setIndex] = useState(0);
   const [sizeValue, setSizeValue] = useState(undefined);
+
   const itemData = useSelector(
     (state) => state.getProductDataReducer.productData
   );
@@ -129,7 +132,7 @@ const ItemDetails = () => {
   const handleSizeSelection = (event) => {
     setSizeValue(event.target.value);
   };
-  console.log(sizeValue);
+
   return (
     <div>
       <Container>
