@@ -3,14 +3,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getDataFromFirestore } from '../redux/dataSlice';
 import { getCategoriesAndDocuments } from '../firebase/firebaseapp';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import { getProductData } from '../redux/productDataSlice';
+import styled from 'styled-components';
+import autoAnimate from '@formkit/auto-animate';
 
 //TODO: implement smooth rendering on the component
 //STYLING
 const CardsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 const CardsWrapper = styled.div`
   width: 100vw;
@@ -18,6 +20,8 @@ const CardsWrapper = styled.div`
   grid-template-columns: 1fr 1fr 1fr 1fr;
   row-gap: 40px;
   margin-left: 10px;
+  transform: translateY(-250px);
+  transition: ease 1s;
 `;
 const ItemCard = styled.div`
   display: flex;
@@ -60,6 +64,9 @@ const FiltersMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
   user-select: none;
+  // transform: translateX(-1150px);
+  transition: ease 1s;
+  opacity: 0;
 `;
 const FiltersMenuWrapper = styled.div`
   display: flex;
@@ -90,6 +97,9 @@ const SortItemsContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin: 40px 30px 50px 30px;
+  // transform: translateX(-900px);
+  transition: ease 1s;
+  opacity: 0;
 `;
 const SortItemsWrapper = styled.div`
   display: flex;
@@ -117,6 +127,7 @@ const ItemCards = () => {
   const [sortMenuActive, setSortMenuActive] = useState(false); //state for sort menu
   const [filterParameter, setFilterParameter] = useState(''); //state for detecting filter parameters from JSX
   const bottomElementRef = useRef(null); //dummy div reference for intersection
+  const cards = useRef(null);
   const items = useSelector((state) => state.getDataReducer.itemData); // main state -> reducer -> inital state object
   const dispatch = useDispatch(); // Redux helper function to dispatch actions.
 
@@ -140,6 +151,7 @@ const ItemCards = () => {
       setFilterParameter('$100-150');
     }
   };
+  //There is a better sorting method even including all UTF-8 characters! this is ordinary.
   const alphabeticalSortHelper = (a, b) => {
     if (a.name > b.name) {
       return 1;
@@ -292,6 +304,16 @@ const ItemCards = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //Cards Animation
+  useEffect(() => {
+    cards.current &&
+      autoAnimate(cards.current, {
+        duration: 700,
+      });
+  }, [cards]);
+
+  //Filter Menu Animation
+
   return (
     <>
       <CardsContainer>
@@ -305,7 +327,9 @@ const ItemCards = () => {
           </FilterWrapper>
         </FilterContainer>
         <FiltersMenuContainer
-          style={{ display: filterMenuActive === false && 'none' }}
+          style={{
+            opacity: filterMenuActive === false && '1',
+          }}
         >
           <FiltersMenuWrapper>
             <FiltersMenuHeaders>
@@ -365,7 +389,7 @@ const ItemCards = () => {
           </FiltersMenuWrapper>
         </FiltersMenuContainer>
         <SortItemsContainer
-          style={{ display: sortMenuActive === false && 'none' }}
+          style={{ opacity: sortMenuActive === false && '1' }}
         >
           <SortItemsWrapper>
             <SortItem onClick={handleSorting}>Low To High</SortItem>
@@ -374,7 +398,15 @@ const ItemCards = () => {
             <SortItem onClick={handleSorting}>Z-A</SortItem>
           </SortItemsWrapper>
         </SortItemsContainer>
-        <CardsWrapper>
+        <CardsWrapper
+          style={{
+            transform:
+              sortMenuActive === false || filterMenuActive === false
+                ? 'translateY(0px)'
+                : undefined,
+          }}
+          ref={cards}
+        >
           {itemsDataState.map((item, i) => (
             <div key={item.id}>
               <CardImage
