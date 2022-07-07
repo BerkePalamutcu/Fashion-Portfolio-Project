@@ -7,7 +7,6 @@ import { getProductData } from '../redux/productDataSlice';
 import styled from 'styled-components';
 import autoAnimate from '@formkit/auto-animate';
 
-//TODO: implement smooth rendering on the component
 //STYLING
 const CardsContainer = styled.div`
   display: flex;
@@ -121,7 +120,7 @@ const DecorationSpan = styled.span`
 const ItemCards = () => {
   let itemsData = []; //The data will be stored here after getting it from redux store
   const [intersection, setIntersection] = useState(false); //state for detecting intersections
-  const [fetchedItemCount, setFetchedItemCount] = useState(4); //state for fetched Items
+  const [fetchedItemCount, setFetchedItemCount] = useState(8); //state for fetched Items
   const [itemsDataState, setItemsDataState] = useState([]); // state for rendered data
   const [filterMenuActive, setFilterMenuActive] = useState(false); //state for filter menu
   const [sortMenuActive, setSortMenuActive] = useState(false); //state for sort menu
@@ -190,8 +189,8 @@ const ItemCards = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const options = {
     root: null,
-    rootMargin: '0px 0px 90px 0px',
-    threshold: 0.0,
+    rootMargin: '10px 0px 50px 0px',
+    threshold: 1.0,
   };
 
   const optionsObj = useMemo(() => options, [options]); // Memoization the value of options object
@@ -224,8 +223,7 @@ const ItemCards = () => {
   };
   //useEffect for infinite scrolling and slicing logic
   useEffect(() => {
-    console.log('slice effect fired');
-    if (filterParameter === '' || filterParameter === 'all') {
+    if (intersection && filterParameter === '') {
       dataCleaner();
       let slicedItems = itemsData.slice(0, fetchedItemCount);
       setFetchedItemCount(fetchedItemCount + 4);
@@ -237,7 +235,6 @@ const ItemCards = () => {
 
   //useEffect for implementing filter
   useEffect(() => {
-    console.log('filter parameter effect fired');
     dataCleaner();
     let filteredItemsByPrice;
     if (filterParameter !== '') {
@@ -275,7 +272,6 @@ const ItemCards = () => {
   );
   //Function to use memoized observer instance
   const observerMemoized = useCallback(() => {
-    console.log('memoized effect fired');
     if (bottomElementRef.current) {
       observer.observe(bottomElementRef.current);
     }
@@ -294,7 +290,6 @@ const ItemCards = () => {
 
   //useEffect for observers and infinite scrolling
   useEffect(() => {
-    console.log('observer effect fired');
     observerMemoized();
 
     return () => {
@@ -304,15 +299,12 @@ const ItemCards = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //Cards Animation
   useEffect(() => {
     cards.current &&
       autoAnimate(cards.current, {
-        duration: 700,
+        duration: 800,
       });
-  }, [cards]);
-
-  //Filter Menu Animation
+  }, [cards, intersection]);
 
   return (
     <>
