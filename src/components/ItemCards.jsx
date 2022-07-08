@@ -120,7 +120,7 @@ const DecorationSpan = styled.span`
 const ItemCards = () => {
   let itemsData = []; //The data will be stored here after getting it from redux store
   const [intersection, setIntersection] = useState(false); //state for detecting intersections
-  const [fetchedItemCount, setFetchedItemCount] = useState(8); //state for fetched Items
+  const [fetchedItemCount, setFetchedItemCount] = useState(16); //state for fetched Items
   const [itemsDataState, setItemsDataState] = useState([]); // state for rendered data
   const [filterMenuActive, setFilterMenuActive] = useState(false); //state for filter menu
   const [sortMenuActive, setSortMenuActive] = useState(false); //state for sort menu
@@ -189,8 +189,8 @@ const ItemCards = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const options = {
     root: null,
-    rootMargin: '10px 0px 50px 0px',
-    threshold: 1.0,
+    rootMargin: '0px 0px 1px 0px',
+    threshold: 0,
   };
 
   const optionsObj = useMemo(() => options, [options]); // Memoization the value of options object
@@ -223,10 +223,10 @@ const ItemCards = () => {
   };
   //useEffect for infinite scrolling and slicing logic
   useEffect(() => {
-    if (intersection && filterParameter === '') {
+    if (filterParameter === '' && intersection) {
       dataCleaner();
       let slicedItems = itemsData.slice(0, fetchedItemCount);
-      setFetchedItemCount(fetchedItemCount + 4);
+      setFetchedItemCount(fetchedItemCount + 8);
       setItemsDataState(slicedItems);
     }
 
@@ -302,9 +302,9 @@ const ItemCards = () => {
   useEffect(() => {
     cards.current &&
       autoAnimate(cards.current, {
-        duration: 800,
+        duration: 400,
       });
-  }, [cards, intersection]);
+  }, [cards]);
 
   return (
     <>
