@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeCardModalToFalse } from '../redux/modalSlice';
 import styled from 'styled-components';
+import CloseIcon from '@mui/icons-material/Close';
 
 //STYLING
 const ModalBackdrop = styled.div`
@@ -19,15 +20,99 @@ const ModalWindow = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   height: 70%;
-  width: 60%;
+  width: 50%;
   background-color: white;
   z-index: 101;
   overflow-y: auto;
 `;
+const CardContainer = styled.div`
+  margin: 50px;
+`;
+const CardWrapper = styled.div`
+  justify-content: space-between;
+  display: flex;
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+`;
+const CardHeader = styled.h1`
+  font-family: 'Baskervville', serif;
+`;
+const StyledCloseIcon = styled(CloseIcon)`
+  cursor: pointer;
+`;
+
+const CardImage = styled.img.attrs((props) => ({
+  props: props.src,
+  alt: props.alt,
+}))`
+  width: 150px;
+  height: 200px;
+  object-fit: contain;
+`;
+
+const CardItemsContainer = styled.div`
+  margin-top: 50px;
+  overflow-y: auto;
+  border-bottom: 1px solid;
+  padding-bottom: 20px;
+`;
+
+const CardItemsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+`;
+const ItemDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 20px;
+  gap: 10px;
+`;
+const ItemName = styled.h2``;
+const ItemPrice = styled.p``;
+const ItemSize = styled.p``;
+
+const QuantityContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 30px;
+`;
+const QuantityWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  gap: 20px;
+`;
+const QuantityCounter = styled.p``;
+const MinusSymbol = styled.p`
+  cursor: pointer;
+`;
+const PlusSymbol = styled.p`
+  cursor: pointer;
+`;
+const RemoveItemButton = styled.button`
+  background: transparent;
+  font-family: 'Baskervville', serif;
+  width: 100px;
+  font-size: 20px;
+  text-align: center;
+  color: red;
+  border: 1px solid red;
+  padding: 5px;
+  cursor: pointer;
+`;
+const TotalPriceContainer = styled.div``;
+const TotalPriceHeader = styled.h1``;
+const TotalPriceNumber = styled.h1;
 
 //COMPONENT
 const Card = () => {
   const dispatch = useDispatch();
+  const bagItemsData = useSelector((state) => state.getBagDataReducer.bagData);
   const ModalWindowData = useSelector(
     (state) => state.changeModalViewReducer.cardModal
   );
@@ -36,6 +121,7 @@ const Card = () => {
       dispatch(changeCardModalToFalse(false));
     }
   };
+  console.log(bagItemsData);
   return (
     <>
       {ModalWindowData && (
@@ -45,7 +131,33 @@ const Card = () => {
         >
           {ModalWindowData && (
             <ModalWindow>
-              <h1>Card component</h1>
+              <CardContainer>
+                <CardWrapper>
+                  <CardHeader>Your Bag</CardHeader>
+                  <StyledCloseIcon
+                    className="backdrop"
+                    onClick={() => dispatch(changeCardModalToFalse(false))}
+                  />
+                </CardWrapper>
+                <CardItemsContainer>
+                  <CardItemsWrapper>
+                    <CardImage src={bagItemsData.imgURL[0]} />
+                    <ItemDetails>
+                      <ItemName>{bagItemsData.name}</ItemName>
+                      <ItemPrice>Price: {bagItemsData.price}$</ItemPrice>
+                      <ItemSize>Size: 42</ItemSize>
+                    </ItemDetails>
+                    <QuantityContainer>
+                      <QuantityWrapper>
+                        <MinusSymbol>-</MinusSymbol>
+                        <QuantityCounter>0</QuantityCounter>
+                        <PlusSymbol>+</PlusSymbol>
+                      </QuantityWrapper>
+                      <RemoveItemButton>Remove</RemoveItemButton>
+                    </QuantityContainer>
+                  </CardItemsWrapper>
+                </CardItemsContainer>
+              </CardContainer>
             </ModalWindow>
           )}
         </ModalBackdrop>
