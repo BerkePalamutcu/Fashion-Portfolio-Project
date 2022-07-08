@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { sendDataToCardComponent } from '../redux/bagDataSlice';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 
 //STYLES
@@ -114,7 +115,7 @@ const AddToCartButton = styled(StyledButton)`
 const ItemDetails = () => {
   const [index, setIndex] = useState(0);
   const [sizeValue, setSizeValue] = useState(undefined);
-
+  const dispatch = useDispatch();
   const itemData = useSelector(
     (state) => state.getProductDataReducer.productData
   );
@@ -175,7 +176,11 @@ const ItemDetails = () => {
             {sizeValue === undefined ? (
               <StyledButton>Select a size</StyledButton>
             ) : (
-              <AddToCartButton>Add to Cart</AddToCartButton>
+              <AddToCartButton
+                onClick={() => dispatch(sendDataToCardComponent(itemData))}
+              >
+                Add to Cart
+              </AddToCartButton>
             )}
           </SelectionContainer>
         </DetailsContainer>
