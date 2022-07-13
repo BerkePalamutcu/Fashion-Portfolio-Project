@@ -52,7 +52,6 @@ const Slider = () => {
       dispatch(getDataFromFirestore(shopData));
     };
     getData();
-    console.log(items);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
