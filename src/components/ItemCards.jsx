@@ -1,11 +1,11 @@
-import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getDataFromFirestore } from '../redux/dataSlice';
-import { getCategoriesAndDocuments } from '../firebase/firebaseapp';
-import { useNavigate } from 'react-router-dom';
-import { getProductData } from '../redux/productDataSlice';
-import styled from 'styled-components';
-import autoAnimate from '@formkit/auto-animate';
+import { useEffect, useState, useRef, useMemo, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getDataFromFirestore } from "../redux/dataSlice";
+import { getCategoriesAndDocuments } from "../firebase/firebaseapp";
+import { useNavigate } from "react-router-dom";
+import { getProductData } from "../redux/productDataSlice";
+import styled from "styled-components";
+import autoAnimate from "@formkit/auto-animate";
 
 //STYLING
 const CardsContainer = styled.div`
@@ -24,7 +24,7 @@ const CardsWrapper = styled.div`
 `;
 const ItemCard = styled.div`
   display: flex;
-  font-family: 'Quintessential', cursive;
+  font-family: "Quintessential", cursive;
   font-weight: 500;
   font-size: 20px;
 `;
@@ -47,14 +47,14 @@ const FilterWrapper = styled.div`
   gap: 15px;
 `;
 const FilterTag = styled.span`
-  font-family: 'Quintessential', cursive;
+  font-family: "Quintessential", cursive;
   font-size: 22px;
   cursor: pointer;
   user-select: none;
 `;
 
 const Header = styled.h1`
-  font-family: 'Quintessential', cursive;
+  font-family: "Quintessential", cursive;
   font-size: 55px;
   font-weight: 500;
 `;
@@ -82,7 +82,7 @@ const FiltersMenuItems = styled.div`
   align-items: center;
   margin-left: 50px;
   font-size: 18px;
-  font-family: 'Baskervville', serif;
+  font-family: "Baskervville", serif;
   font-weight: 400;
 `;
 const FilterMenuItem = styled.span`
@@ -105,12 +105,12 @@ const SortItemsWrapper = styled.div`
   gap: 20px;
 `;
 const SortItem = styled.span`
-  font-family: 'Baskervville', serif;
+  font-family: "Baskervville", serif;
   user-select: none;
   cursor: pointer;
 `;
 const DecorationSpan = styled.span`
-  font-family: 'Quintessential', cursive;
+  font-family: "Quintessential", cursive;
   font-size: 22px;
   margin-right: 20px;
   font-style: italic;
@@ -124,7 +124,7 @@ const ItemCards = () => {
   const [itemsDataState, setItemsDataState] = useState([]); // state for rendered data
   const [filterMenuActive, setFilterMenuActive] = useState(false); //state for filter menu
   const [sortMenuActive, setSortMenuActive] = useState(false); //state for sort menu
-  const [filterParameter, setFilterParameter] = useState(''); //state for detecting filter parameters from JSX
+  const [filterParameter, setFilterParameter] = useState(""); //state for detecting filter parameters from JSX
   const bottomElementRef = useRef(null); //dummy div reference for intersection
   const cards = useRef(null);
   const items = useSelector((state) => state.getDataReducer.itemData); // main state -> reducer -> inital state object
@@ -140,14 +140,14 @@ const ItemCards = () => {
 
   //HELPER FUNCTION TO SET FILTER PARAMETER BY PRICE RANGE
   const handleFilterByPriceRange = (event) => {
-    if (event.target.innerHTML === '$0-50') {
-      setFilterParameter('$0-50');
+    if (event.target.innerHTML === "$0-50") {
+      setFilterParameter("$0-50");
     }
-    if (event.target.innerHTML === '$50-100') {
-      setFilterParameter('$50-100');
+    if (event.target.innerHTML === "$50-100") {
+      setFilterParameter("$50-100");
     }
-    if (event.target.innerHTML === '$100-150') {
-      setFilterParameter('$100-150');
+    if (event.target.innerHTML === "$100-150") {
+      setFilterParameter("$100-150");
     }
   };
   //There is a better sorting method even including all UTF-8 characters! this is ordinary.
@@ -162,17 +162,17 @@ const ItemCards = () => {
   };
 
   const handleSorting = (event) => {
-    if (event.target.innerHTML === 'Low To High') {
+    if (event.target.innerHTML === "Low To High") {
       setItemsDataState([...itemsDataState.sort((a, b) => a.price - b.price)]);
     }
-    if (event.target.innerHTML === 'High To Low') {
+    if (event.target.innerHTML === "High To Low") {
       setItemsDataState([...itemsDataState.sort((a, b) => b.price - a.price)]);
     }
-    if (event.target.innerHTML === 'A-Z') {
+    if (event.target.innerHTML === "A-Z") {
       setItemsDataState([...itemsDataState.sort(alphabeticalSortHelper)]);
     }
 
-    if (event.target.innerHTML === 'Z-A') {
+    if (event.target.innerHTML === "Z-A") {
       setItemsDataState([
         ...itemsDataState.sort(alphabeticalSortHelper).reverse(),
       ]);
@@ -189,7 +189,7 @@ const ItemCards = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const options = {
     root: null,
-    rootMargin: '0px 0px 1px 0px',
+    rootMargin: "0px 0px 1px 0px",
     threshold: 0,
   };
 
@@ -205,7 +205,7 @@ const ItemCards = () => {
 
   //Redux action to get the data from the store
   const getData = async () => {
-    const shopData = await getCategoriesAndDocuments('categories');
+    const shopData = await getCategoriesAndDocuments("categories");
     dispatch(getDataFromFirestore(shopData));
   };
   useEffect(() => {
@@ -223,7 +223,7 @@ const ItemCards = () => {
   };
   //useEffect for infinite scrolling and slicing logic
   useEffect(() => {
-    if (filterParameter === '' && intersection) {
+    if (filterParameter === "" && intersection) {
       dataCleaner();
       let slicedItems = itemsData.slice(0, fetchedItemCount);
       setFetchedItemCount(fetchedItemCount + 8);
@@ -237,29 +237,29 @@ const ItemCards = () => {
   useEffect(() => {
     dataCleaner();
     let filteredItemsByPrice;
-    if (filterParameter !== '') {
+    if (filterParameter !== "") {
       let allFilteredItems = itemsData.filter(
         (item) => item.category === filterParameter
       );
       setItemsDataState(allFilteredItems);
     }
-    if (filterParameter === '$0-50') {
+    if (filterParameter === "$0-50") {
       filteredItemsByPrice = itemsData.filter((item) => item.price < 50);
       setItemsDataState(filteredItemsByPrice);
     }
-    if (filterParameter === '$50-100') {
+    if (filterParameter === "$50-100") {
       filteredItemsByPrice = itemsData.filter(
         (item) => item.price > 50 && item.price < 100
       );
       setItemsDataState(filteredItemsByPrice);
     }
-    if (filterParameter === '$100-150') {
+    if (filterParameter === "$100-150") {
       filteredItemsByPrice = itemsData.filter(
         (item) => item.price > 100 && item.price < 150
       );
       setItemsDataState(filteredItemsByPrice);
     }
-    if (filterParameter === 'all') {
+    if (filterParameter === "all") {
       setItemsDataState(itemsData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -320,7 +320,7 @@ const ItemCards = () => {
         </FilterContainer>
         <FiltersMenuContainer
           style={{
-            opacity: filterMenuActive === false && '1',
+            opacity: filterMenuActive === false && "1",
           }}
         >
           <FiltersMenuWrapper>
@@ -352,9 +352,7 @@ const ItemCards = () => {
               <FilterMenuItem onClick={handleFilterParameter}>
                 Trousers
               </FilterMenuItem>
-              <FilterMenuItem onClick={handleFilterParameter}>
-                Coats
-              </FilterMenuItem>
+
               <FilterMenuItem onClick={handleFilterParameter}>
                 Waistcoats
               </FilterMenuItem>
@@ -381,7 +379,7 @@ const ItemCards = () => {
           </FiltersMenuWrapper>
         </FiltersMenuContainer>
         <SortItemsContainer
-          style={{ opacity: sortMenuActive === false && '1' }}
+          style={{ opacity: sortMenuActive === false && "1" }}
         >
           <SortItemsWrapper>
             <SortItem onClick={handleSorting}>Low To High</SortItem>
@@ -394,7 +392,7 @@ const ItemCards = () => {
           style={{
             transform:
               sortMenuActive === false || filterMenuActive === false
-                ? 'translateY(0px)'
+                ? "translateY(0px)"
                 : undefined,
           }}
           ref={cards}
@@ -410,7 +408,7 @@ const ItemCards = () => {
                 onMouseLeave={(e) => (e.target.src = item.imgURL[0])}
                 alt={item.name}
                 src={item.imgURL[0]}
-                onClick={(e) => {
+                onClick={() => {
                   redirectToProductPage(`${itemsDataState[i].id}`, {
                     replace: true,
                   }); //semicolons are important!
