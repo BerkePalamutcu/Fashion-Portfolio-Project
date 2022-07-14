@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import styled from 'styled-components';
-import { sendDataToCardComponent } from '../redux/bagDataSlice';
-import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import styled from "styled-components";
+import { sendDataToCardComponent } from "../redux/bagDataSlice";
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 
 //STYLES
 const Container = styled.div`
@@ -15,7 +15,7 @@ const DetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 50px 120px;
-  font-family: 'Domine', serif;
+  font-family: "Domine", serif;
   gap: 10px;
 `;
 const SliderContainer = styled.div`
@@ -65,7 +65,7 @@ const ArrowBackModified = styled(ArrowBackIos)``;
 const ArrowForwardModified = styled(ArrowForwardIos)``;
 const ItemHeader = styled.h1`
   font-size: 40px;
-  font-family: 'Quintessential', cursive;
+  font-family: "Quintessential", cursive;
   font-weight: 500;
 `;
 const ItemPrice = styled.h3`
@@ -76,7 +76,7 @@ const ItemDescription = styled.p`
   font-size: 18px;
   font-weight: 400;
 
-  font-family: 'Arima', cursive;
+  font-family: "Arima", cursive;
   margin-top: 100px;
 `;
 const ItemSizeSelection = styled.select`
@@ -85,7 +85,7 @@ const ItemSizeSelection = styled.select`
   height: 50px;
   width: 80px;
   padding: 5px 10px;
-  font-family: 'Arima', cursive;
+  font-family: "Arima", cursive;
   font-size: 18px;
   font-weight: 500;
   border: 1px solid black;
@@ -116,10 +116,10 @@ const ItemDetails = () => {
   const [index, setIndex] = useState(0);
   const [sizeValue, setSizeValue] = useState(undefined);
   const dispatch = useDispatch();
-  const itemData = useSelector(
+  let itemData = useSelector(
     (state) => state.getProductDataReducer.productData
   );
-
+  itemData = { ...itemData, selectedSize: sizeValue };
   const slideIndexHandlerIncrease = (array) => {
     if (itemData.imgURL.length - index !== 2) {
       setIndex(index + 1);
@@ -141,7 +141,7 @@ const ItemDetails = () => {
           <SliderWrapper>
             <ArrowContainerLeft
               onClick={slideIndexHandlerDecrease}
-              style={{ display: index === 0 && 'none' }}
+              style={{ display: index === 0 && "none" }}
             >
               <ArrowBackModified />
             </ArrowContainerLeft>
@@ -151,7 +151,7 @@ const ItemDetails = () => {
             <ArrowContainerRight
               onClick={slideIndexHandlerIncrease}
               style={{
-                display: itemData.imgURL.length - index === 2 && 'none',
+                display: itemData.imgURL.length - index === 2 && "none",
               }}
             >
               <ArrowForwardModified />
@@ -163,7 +163,10 @@ const ItemDetails = () => {
           <ItemPrice>{itemData.price}$</ItemPrice>
           <ItemDescription>{itemData.description}</ItemDescription>
           <SelectionContainer>
-            <ItemSizeSelection onClick={(event) => handleSizeSelection(event)}>
+            <ItemSizeSelection
+              value={sizeValue}
+              onChange={(event) => handleSizeSelection(event)}
+            >
               <option value="34">34</option>
               <option value="36">36</option>
               <option value="38">38</option>
