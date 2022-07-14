@@ -1,9 +1,13 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { changeCardModalToFalse } from '../redux/modalSlice';
-import styled from 'styled-components';
-import CloseIcon from '@mui/icons-material/Close';
-
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { changeCardModalToFalse } from "../redux/modalSlice";
+import {
+  increaseItemQuantity,
+  decreaseItemQuantity,
+  removeItem,
+} from "../redux/bagDataSlice";
+import styled from "styled-components";
+import CloseIcon from "@mui/icons-material/Close";
 //STYLING
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -35,7 +39,7 @@ const CardWrapper = styled.div`
   padding-bottom: 10px;
 `;
 const CardHeader = styled.h1`
-  font-family: 'Baskervville', serif;
+  font-family: "Baskervville", serif;
 `;
 const StyledCloseIcon = styled(CloseIcon)`
   cursor: pointer;
@@ -60,6 +64,7 @@ const CardItemsContainer = styled.div`
 const CardItemsWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  margin: 30px 0;
 `;
 const ItemDetails = styled.div`
   display: flex;
@@ -85,18 +90,20 @@ const QuantityWrapper = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 25px;
-  gap: 20px;
+  gap: 30px;
 `;
 const QuantityCounter = styled.p``;
 const MinusSymbol = styled.p`
   cursor: pointer;
+  user-select: none;
 `;
 const PlusSymbol = styled.p`
   cursor: pointer;
+  user-select: none;
 `;
 const RemoveItemButton = styled.button`
   background: transparent;
-  font-family: 'Baskervville', serif;
+  font-family: "Baskervville", serif;
   width: 100px;
   font-size: 20px;
   text-align: center;
@@ -105,19 +112,29 @@ const RemoveItemButton = styled.button`
   padding: 5px;
   cursor: pointer;
 `;
-const TotalPriceContainer = styled.div``;
-const TotalPriceHeader = styled.h1``;
-const TotalPriceNumber = styled.h1;
+const TotalPriceContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+`;
+const TotalPriceHeader = styled.h1`
+  font-family: "Baskervville", serif;
+`;
+const TotalPriceNumber = styled.h1`
+  font-family: "Domine", serif;
+`;
 
 //COMPONENT
 const Card = () => {
   const dispatch = useDispatch();
   const bagItemsData = useSelector((state) => state.getBagDataReducer.bagData);
+
   const ModalWindowData = useSelector(
     (state) => state.changeModalViewReducer.cardModal
   );
+
   const handleModalWindowClosing = (event) => {
-    if (event.target.className.split(' ').includes('backdrop')) {
+    if (event.target.className.split(" ").includes("backdrop")) {
       dispatch(changeCardModalToFalse(false));
     }
   };
@@ -140,23 +157,45 @@ const Card = () => {
                   />
                 </CardWrapper>
                 <CardItemsContainer>
-                  <CardItemsWrapper>
-                    <CardImage src={bagItemsData.imgURL[0]} />
-                    <ItemDetails>
-                      <ItemName>{bagItemsData.name}</ItemName>
-                      <ItemPrice>Price: {bagItemsData.price}$</ItemPrice>
-                      <ItemSize>Size: 42</ItemSize>
-                    </ItemDetails>
-                    <QuantityContainer>
-                      <QuantityWrapper>
-                        <MinusSymbol>-</MinusSymbol>
-                        <QuantityCounter>0</QuantityCounter>
-                        <PlusSymbol>+</PlusSymbol>
-                      </QuantityWrapper>
-                      <RemoveItemButton>Remove</RemoveItemButton>
-                    </QuantityContainer>
-                  </CardItemsWrapper>
+                  {bagItemsData.map((item, i) => (
+                    <CardItemsWrapper key={item.id}>
+                      <CardImage src={item.imgURL[0]} />
+                      <ItemDetails>
+                        <ItemName>{item.name}</ItemName>
+                        <ItemPrice>Price: {item.price}$</ItemPrice>
+                        <ItemSize>Size: {item.selectedSize}</ItemSize>
+                      </ItemDetails>
+                      <QuantityContainer>
+                        <QuantityWrapper>
+                          <MinusSymbol
+                            onClick={() =>
+                              dispatch(decreaseItemQuantity(item.id))
+                            }
+                          >
+                            -
+                          </MinusSymbol>
+                          <QuantityCounter>{item.quantity}</QuantityCounter>
+                          <PlusSymbol
+                            onClick={() =>
+                              dispatch(increaseItemQuantity(item.id))
+                            }
+                          >
+                            +
+                          </PlusSymbol>
+                        </QuantityWrapper>
+                        <RemoveItemButton
+                          onClick={() => dispatch(removeItem(item.id))}
+                        >
+                          Remove
+                        </RemoveItemButton>
+                      </QuantityContainer>
+                    </CardItemsWrapper>
+                  ))}
                 </CardItemsContainer>
+                <TotalPriceContainer>
+                  <TotalPriceHeader>Subtotal:</TotalPriceHeader>
+                  <TotalPriceNumber>250$</TotalPriceNumber>
+                </TotalPriceContainer>
               </CardContainer>
             </ModalWindow>
           )}
