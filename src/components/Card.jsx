@@ -158,7 +158,7 @@ const Card = () => {
                 </CardWrapper>
                 <CardItemsContainer>
                   {bagItemsData.map((item, i) => (
-                    <CardItemsWrapper key={item.id}>
+                    <CardItemsWrapper key={Math.random()}>
                       <CardImage src={item.imgURL[0]} />
                       <ItemDetails>
                         <ItemName>{item.name}</ItemName>
@@ -168,23 +168,19 @@ const Card = () => {
                       <QuantityContainer>
                         <QuantityWrapper>
                           <MinusSymbol
-                            onClick={() =>
-                              dispatch(decreaseItemQuantity(item.id))
-                            }
+                            onClick={() => dispatch(decreaseItemQuantity(item))}
                           >
                             -
                           </MinusSymbol>
                           <QuantityCounter>{item.quantity}</QuantityCounter>
                           <PlusSymbol
-                            onClick={() =>
-                              dispatch(increaseItemQuantity(item.id))
-                            }
+                            onClick={() => dispatch(increaseItemQuantity(item))}
                           >
                             +
                           </PlusSymbol>
                         </QuantityWrapper>
                         <RemoveItemButton
-                          onClick={() => dispatch(removeItem(item.id))}
+                          onClick={() => dispatch(removeItem(item))}
                         >
                           Remove
                         </RemoveItemButton>
