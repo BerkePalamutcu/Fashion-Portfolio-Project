@@ -9,20 +9,29 @@ export const bagDataSlice = createSlice({
   initialState,
   reducers: {
     sendDataToCardComponent: (state, action) => {
-      state.bagData.push({ ...action.payload, quantity: 1 });
-      // state.quantityData = { ...state.bagData, ...action.payload };
+      let { id, size } = action.payload;
+
+      const findItemById = state.bagData.findIndex(
+        (item) => item.id === id && item.size === size
+      );
+
+      if (findItemById > -1) {
+        state.bagData[findItemById].quantity++;
+      } else {
+        state.bagData.push({ ...action.payload, quantity: 1 });
+      }
     },
     increaseItemQuantity: (state, { payload }) => {
-      state.bagData.filter((item, i) =>
-        item.id === payload ? (state.bagData[i].quantity += 1) : item
-      );
+      const found = state.bagData.findIndex(({ id }) => id === payload);
+      if (found !== -1) {
+        state.bagData[found].quantity++;
+      }
     },
     decreaseItemQuantity: (state, { payload }) => {
-      state.bagData.filter((item, i) =>
-        item.id === payload && item.quantity > 1
-          ? (state.bagData[i].quantity -= 1)
-          : item
-      );
+      const found = state.bagData.findIndex(({ id }) => id === payload);
+      if (found !== -1 && state.bagData[found].quantity > 1) {
+        state.bagData[found].quantity--;
+      }
     },
     removeItem: (state, { payload }) => {
       state.bagData = state.bagData.filter((item) => item.id !== payload);
