@@ -119,7 +119,7 @@ const ItemDetails = () => {
   let itemData = useSelector(
     (state) => state.getProductDataReducer.productData
   );
-  itemData = { ...itemData, selectedSize: sizeValue };
+  itemData = { ...itemData, quantity: 1, selectedSize: sizeValue };
   const slideIndexHandlerIncrease = (array) => {
     if (itemData.imgURL.length - index !== 2) {
       setIndex(index + 1);
