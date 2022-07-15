@@ -8,6 +8,7 @@ import {
 } from "../redux/bagDataSlice";
 import styled from "styled-components";
 import CloseIcon from "@mui/icons-material/Close";
+import { current } from "@reduxjs/toolkit";
 //STYLING
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -57,7 +58,7 @@ const CardImage = styled.img.attrs((props) => ({
 const CardItemsContainer = styled.div`
   margin-top: 50px;
   overflow-y: auto;
-  border-bottom: 1px solid;
+
   padding-bottom: 20px;
 `;
 
@@ -115,7 +116,8 @@ const RemoveItemButton = styled.button`
 const TotalPriceContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 10px;
+  border-top: 1px solid;
+  padding: 8px;
 `;
 const TotalPriceHeader = styled.h1`
   font-family: "Baskervville", serif;
@@ -123,7 +125,13 @@ const TotalPriceHeader = styled.h1`
 const TotalPriceNumber = styled.h1`
   font-family: "Domine", serif;
 `;
-
+const EmptyBagNotification = styled.h2`
+  font-family: "Baskervville", serif;
+  font-size: 30px;
+  display: flex;
+  margin: 210px 0;
+  justify-content: center;
+`;
 //COMPONENT
 const Card = () => {
   const dispatch = useDispatch();
@@ -138,7 +146,7 @@ const Card = () => {
       dispatch(changeCardModalToFalse(false));
     }
   };
-  console.log(bagItemsData);
+
   return (
     <>
       {ModalWindowData && (
@@ -156,41 +164,59 @@ const Card = () => {
                     onClick={() => dispatch(changeCardModalToFalse(false))}
                   />
                 </CardWrapper>
-                <CardItemsContainer>
-                  {bagItemsData.map((item, i) => (
-                    <CardItemsWrapper key={Math.random()}>
-                      <CardImage src={item.imgURL[0]} />
-                      <ItemDetails>
-                        <ItemName>{item.name}</ItemName>
-                        <ItemPrice>Price: {item.price}$</ItemPrice>
-                        <ItemSize>Size: {item.selectedSize}</ItemSize>
-                      </ItemDetails>
-                      <QuantityContainer>
-                        <QuantityWrapper>
-                          <MinusSymbol
-                            onClick={() => dispatch(decreaseItemQuantity(item))}
+                {bagItemsData.length !== 0 ? (
+                  <CardItemsContainer>
+                    {bagItemsData.map((item, i) => (
+                      <CardItemsWrapper key={Math.random()}>
+                        <CardImage src={item.imgURL[0]} />
+                        <ItemDetails>
+                          <ItemName>{item.name}</ItemName>
+                          <ItemPrice>Price: {item.price}$</ItemPrice>
+                          <ItemSize>Size: {item.selectedSize}</ItemSize>
+                        </ItemDetails>
+                        <QuantityContainer>
+                          <QuantityWrapper>
+                            <MinusSymbol
+                              onClick={() =>
+                                dispatch(decreaseItemQuantity(item))
+                              }
+                            >
+                              -
+                            </MinusSymbol>
+                            <QuantityCounter>{item.quantity}</QuantityCounter>
+                            <PlusSymbol
+                              onClick={() =>
+                                dispatch(increaseItemQuantity(item))
+                              }
+                            >
+                              +
+                            </PlusSymbol>
+                          </QuantityWrapper>
+                          <RemoveItemButton
+                            onClick={() => dispatch(removeItem(item))}
                           >
-                            -
-                          </MinusSymbol>
-                          <QuantityCounter>{item.quantity}</QuantityCounter>
-                          <PlusSymbol
-                            onClick={() => dispatch(increaseItemQuantity(item))}
-                          >
-                            +
-                          </PlusSymbol>
-                        </QuantityWrapper>
-                        <RemoveItemButton
-                          onClick={() => dispatch(removeItem(item))}
-                        >
-                          Remove
-                        </RemoveItemButton>
-                      </QuantityContainer>
-                    </CardItemsWrapper>
-                  ))}
-                </CardItemsContainer>
+                            Remove
+                          </RemoveItemButton>
+                        </QuantityContainer>
+                      </CardItemsWrapper>
+                    ))}
+                  </CardItemsContainer>
+                ) : (
+                  <EmptyBagNotification>
+                    Your bag is empty!
+                  </EmptyBagNotification>
+                )}
                 <TotalPriceContainer>
                   <TotalPriceHeader>Subtotal:</TotalPriceHeader>
-                  <TotalPriceNumber>250$</TotalPriceNumber>
+                  <TotalPriceNumber>
+                    {bagItemsData
+                      ? bagItemsData
+                          .map((item, i) => item.price * item.quantity)
+                          .reduce((acc, current) => acc + current, 0)
+                          .toFixed(2)
+                      : "0$"}
+                    $
+                  </TotalPriceNumber>
                 </TotalPriceContainer>
               </CardContainer>
             </ModalWindow>
