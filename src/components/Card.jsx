@@ -5,10 +5,11 @@ import {
   increaseItemQuantity,
   decreaseItemQuantity,
   removeItem,
+  getTotalQuantity,
 } from "../redux/bagDataSlice";
 import styled from "styled-components";
 import CloseIcon from "@mui/icons-material/Close";
-import { current } from "@reduxjs/toolkit";
+
 //STYLING
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -135,6 +136,7 @@ const EmptyBagNotification = styled.h2`
 //COMPONENT
 const Card = () => {
   const dispatch = useDispatch();
+
   const bagItemsData = useSelector((state) => state.getBagDataReducer.bagData);
 
   const ModalWindowData = useSelector(
@@ -146,6 +148,14 @@ const Card = () => {
       dispatch(changeCardModalToFalse(false));
     }
   };
+
+  let totalItemQuantity = bagItemsData
+    .map((item) => item.quantity)
+    .reduce((acc, curr) => acc + curr, 0);
+
+  React.useEffect(() => {
+    dispatch(getTotalQuantity(totalItemQuantity));
+  }, [totalItemQuantity, dispatch]);
 
   return (
     <>

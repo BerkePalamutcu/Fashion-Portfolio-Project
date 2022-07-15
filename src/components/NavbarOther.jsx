@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import {
   Notifications,
   NotificationsList,
@@ -12,19 +12,19 @@ import {
   MainListItems,
   Spans,
   SearchIcon,
-} from './Navbar';
-import { useDispatch } from 'react-redux';
-import { changeCardModalToTrue } from '../redux/modalSlice';
-import styled from 'styled-components';
-import { auth, signOutUser } from '../firebase/firebaseapp';
-import { onAuthStateChanged } from 'firebase/auth';
+} from "./Navbar";
+import { useDispatch, useSelector } from "react-redux";
+import { changeCardModalToTrue } from "../redux/modalSlice";
+import styled from "styled-components";
+import { auth, signOutUser } from "../firebase/firebaseapp";
+import { onAuthStateChanged } from "firebase/auth";
 
 const StaticNavbarContainer = styled(NavbarContainer)`
   position: static;
   box-shadow: 0 2px #e0e0eb;
   transition: ease-in-out 1s;
 `;
-
+//COMPONENT
 const NavbarOther = () => {
   const [loginData, setUserLoggedIn] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0); // getting the current scrollingPosition
@@ -34,6 +34,11 @@ const NavbarOther = () => {
     const position = window.pageYOffset;
     setScrollPosition(position);
   };
+
+  let itemsQuantity = useSelector(
+    (state) => state.getBagDataReducer.totalItemQuantityData
+  );
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -44,17 +49,17 @@ const NavbarOther = () => {
     });
   }, [loginData]);
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
   return (
     <>
       <Notifications
         style={{
-          display: scrollPosition > 450 && 'none',
+          display: scrollPosition > 450 && "none",
         }}
       >
         <NotificationsList>
@@ -64,16 +69,16 @@ const NavbarOther = () => {
 
       <StaticNavbarContainer
         style={{
-          position: scrollPosition > 450 && 'fixed',
-          backgroundColor: scrollPosition > 450 && 'white',
+          position: scrollPosition > 450 && "fixed",
+          backgroundColor: scrollPosition > 450 && "white",
         }}
       >
         <WrapperContainer>
           <LogoContainer>
             <NavLink
               style={{
-                textDecoration: 'none',
-                color: 'black',
+                textDecoration: "none",
+                color: "black",
               }}
               to="/"
             >
@@ -85,8 +90,8 @@ const NavbarOther = () => {
               <MainListItems>
                 <NavLink
                   style={{
-                    textDecoration: 'none',
-                    color: 'black',
+                    textDecoration: "none",
+                    color: "black",
                   }}
                   to="/products"
                 >
@@ -94,8 +99,8 @@ const NavbarOther = () => {
                 </NavLink>
                 <NavLink
                   style={{
-                    textDecoration: 'none',
-                    color: 'black',
+                    textDecoration: "none",
+                    color: "black",
                   }}
                   to="/about"
                 >
@@ -103,8 +108,8 @@ const NavbarOther = () => {
                 </NavLink>
                 <NavLink
                   style={{
-                    textDecoration: 'none',
-                    color: 'black',
+                    textDecoration: "none",
+                    color: "black",
                   }}
                   to="/contact"
                 >
@@ -117,8 +122,8 @@ const NavbarOther = () => {
             {!loginData ? (
               <NavLink
                 style={{
-                  textDecoration: 'none',
-                  color: 'black',
+                  textDecoration: "none",
+                  color: "black",
                 }}
                 to="/login"
               >
@@ -127,8 +132,8 @@ const NavbarOther = () => {
             ) : (
               <NavLink
                 style={{
-                  textDecoration: 'none',
-                  color: 'black',
+                  textDecoration: "none",
+                  color: "black",
                 }}
                 to="/"
                 onClick={signOutUser}
@@ -139,18 +144,19 @@ const NavbarOther = () => {
             <Spans
               onClick={() => dispatch(changeCardModalToTrue(true))}
               style={{
-                textDecoration: 'none',
-                color: 'black',
-                cursor: 'pointer',
+                textDecoration: "none",
+                color: "black",
+                cursor: "pointer",
+                fontSize: "16px",
               }}
             >
-              Bag (0)
+              Bag ({`${itemsQuantity}`})
             </Spans>
             <Spans>
               <SearchIcon
                 style={{
-                  textDecoration: 'none',
-                  color: 'black',
+                  textDecoration: "none",
+                  color: "black",
                 }}
               />
             </Spans>

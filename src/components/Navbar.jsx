@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { SearchRounded } from '@mui/icons-material';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth, signOutUser } from '../firebase/firebaseapp';
-import { changeCardModalToTrue } from '../redux/modalSlice';
-import styled from 'styled-components';
+import { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { SearchRounded } from "@mui/icons-material";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, signOutUser } from "../firebase/firebaseapp";
+import { changeCardModalToTrue } from "../redux/modalSlice";
+import styled from "styled-components";
 export const Notifications = styled.div`
   display: flex;
   width: 100vw;
@@ -20,11 +20,11 @@ export const NotificationsList = styled.ul`
   list-style-type: none;
   color: white;
   font-size: 12px;
-  font-family: 'Domine', serif;
+  font-family: "Domine", serif;
 `;
 export const NavbarContainer = styled.div`
   height: 115px;
-  font-family: 'Domine', serif;
+  font-family: "Domine", serif;
   align-content: center;
   align-items: center;
   position: absolute;
@@ -55,7 +55,7 @@ export const WrapperContainer = styled.div`
 export const LogoContainer = styled.div`
   flex: 0.8;
   text-align: center;
-  font-family: 'My Soul', cursive;
+  font-family: "My Soul", cursive;
   font-weight: 400;
   font-size: 38px;
   transition: ease-in-out 2s;
@@ -99,6 +99,10 @@ export const SearchIcon = styled(SearchRounded)`
 
 const Navbar = () => {
   const [loginData, setUserLoggedIn] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  let itemsQuantity = useSelector(
+    (state) => state.getBagDataReducer.totalItemQuantityData
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -109,7 +113,6 @@ const Navbar = () => {
       }
     });
   }, [loginData]);
-  const [hovered, setHovered] = useState(false);
 
   const handleMouseEnter = () => {
     setHovered(true);
@@ -133,9 +136,9 @@ const Navbar = () => {
           <LogoContainer>
             <NavLink
               style={{
-                textDecoration: 'none',
-                color: hovered === true ? 'black' : 'white',
-                transition: 'ease-in-out 2s',
+                textDecoration: "none",
+                color: hovered === true ? "black" : "white",
+                transition: "ease-in-out 2s",
               }}
               to="/"
             >
@@ -147,8 +150,8 @@ const Navbar = () => {
               <MainListItems>
                 <NavLink
                   style={{
-                    textDecoration: 'none',
-                    color: hovered === true ? 'black' : 'white',
+                    textDecoration: "none",
+                    color: hovered === true ? "black" : "white",
                   }}
                   to="/products"
                 >
@@ -156,8 +159,8 @@ const Navbar = () => {
                 </NavLink>
                 <NavLink
                   style={{
-                    textDecoration: 'none',
-                    color: hovered === true ? 'black' : 'white',
+                    textDecoration: "none",
+                    color: hovered === true ? "black" : "white",
                   }}
                   to="/about"
                 >
@@ -165,8 +168,8 @@ const Navbar = () => {
                 </NavLink>
                 <NavLink
                   style={{
-                    textDecoration: 'none',
-                    color: hovered === true ? 'black' : 'white',
+                    textDecoration: "none",
+                    color: hovered === true ? "black" : "white",
                   }}
                   to="/contact"
                 >
@@ -179,8 +182,8 @@ const Navbar = () => {
             {!loginData ? (
               <NavLink
                 style={{
-                  textDecoration: 'none',
-                  color: hovered === true ? 'black' : 'white',
+                  textDecoration: "none",
+                  color: hovered === true ? "black" : "white",
                 }}
                 to="/login"
               >
@@ -189,8 +192,8 @@ const Navbar = () => {
             ) : (
               <Spans
                 style={{
-                  color: hovered === true ? 'black' : 'white',
-                  cursor: 'pointer',
+                  color: hovered === true ? "black" : "white",
+                  cursor: "pointer",
                 }}
                 onClick={signOutUser}
               >
@@ -200,18 +203,19 @@ const Navbar = () => {
             <Spans
               onClick={() => dispatch(changeCardModalToTrue(true))}
               style={{
-                textDecoration: 'none',
-                color: hovered === true ? 'black' : 'white',
-                cursor: 'pointer',
+                textDecoration: "none",
+                color: hovered === true ? "black" : "white",
+                cursor: "pointer",
+                fontSize: "16px",
               }}
             >
-              Bag (0)
+              Bag ({`${itemsQuantity}`})
             </Spans>
             <Spans>
               <SearchIcon
                 style={{
-                  textDecoration: 'none',
-                  color: hovered === true ? 'black' : 'white',
+                  textDecoration: "none",
+                  color: hovered === true ? "black" : "white",
                 }}
               />
             </Spans>

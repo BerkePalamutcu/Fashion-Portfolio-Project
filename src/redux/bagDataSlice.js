@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   bagData: [],
+  totalItemQuantityData: 0,
 };
 
 export const bagDataSlice = createSlice({
@@ -46,6 +47,9 @@ export const bagDataSlice = createSlice({
         state.bagData.splice(found, 1);
       }
     },
+    getTotalQuantity: (state, action) => {
+      state.totalItemQuantityData = action.payload;
+    },
   },
 });
 
@@ -54,5 +58,6 @@ export const {
   increaseItemQuantity,
   decreaseItemQuantity,
   removeItem,
+  getTotalQuantity,
 } = bagDataSlice.actions;
 export default bagDataSlice.reducer;
