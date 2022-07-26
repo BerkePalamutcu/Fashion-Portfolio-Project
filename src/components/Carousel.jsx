@@ -1,5 +1,6 @@
-import styled from 'styled-components';
-import Video from './Video';
+import styled from "styled-components";
+import Video from "./Video";
+import { useRef } from "react";
 //STYLES
 const VideoEdited = styled(Video)`
   object-fit: cover;
@@ -16,7 +17,7 @@ const Spring = styled.h1`
   right: 60%;
   color: white;
   z-index: 2;
-  font-family: 'Baskervville', serif;
+  font-family: "Baskervville", serif;
   font-weight: 400;
   line-height: 40px;
 `;
@@ -29,7 +30,7 @@ const Summer = styled.h1`
   right: 61.5%;
   color: white;
   z-index: 2;
-  font-family: 'Baskervville', serif;
+  font-family: "Baskervville", serif;
   font-weight: 400;
   line-height: 0;
 `;
@@ -45,7 +46,7 @@ const Collection = styled.h1`
   right: 61%;
   color: white;
   z-index: 2;
-  font-family: 'Baskervville', serif;
+  font-family: "Baskervville", serif;
   line-height: 0;
 `;
 const VideoContainer = styled.div`
@@ -67,7 +68,7 @@ const BlackButton = styled.button`
   border: none;
   font-size: 20px;
   font-weight: 600;
-  font-family: 'Baskervville', serif;
+  font-family: "Baskervville", serif;
 
   &:hover {
     background-color: #b78c71;
@@ -76,14 +77,19 @@ const BlackButton = styled.button`
 `;
 //COMPONENT
 const Carousel = () => {
+  const bottomRef = useRef(null);
+  const handleNavigation = () => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
   return (
-    <VideoContainer>
-      <VideoEdited />
-      <Spring>SPRING</Spring>
-      <Summer>SUMMER</Summer>
-      <Collection>Collection</Collection>
-      <BlackButton>New Products</BlackButton>
-    </VideoContainer>
+      <VideoContainer>
+        <VideoEdited />
+        <Spring>SPRING</Spring>
+        <Summer>SUMMER</Summer>
+        <Collection>Collection</Collection>
+        <BlackButton onClick={handleNavigation}>New Products</BlackButton>
+        <div ref={bottomRef}></div>
+      </VideoContainer>
   );
 };
 
