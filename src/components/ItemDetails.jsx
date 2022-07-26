@@ -111,7 +111,6 @@ const AddToCartButton = styled(StyledButton)`
   cursor: pointer;
 `;
 //COMPONENT
-//TODO:IMPLEMENT ZOOM ON MOUSE HOVER!!
 const ItemDetails = () => {
   const [index, setIndex] = useState(0);
   const [sizeValue, setSizeValue] = useState(undefined);

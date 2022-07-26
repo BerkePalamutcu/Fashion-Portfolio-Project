@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { useDataSlice } from "./hooks/useDataSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";import {getProductData} from "../redux/productDataSlice";
 
 //STYLES
 
@@ -9,7 +11,7 @@ const CardWrapper = styled.div`
   flex-direction: column;
   gap: 10px;
   transform: translateX(${(props) => props.index * -1200}px);
-  transition: all ease-in-out 3s;
+  transition: all ease 0.5s;
 `;
 const ItemDetails = styled.div``;
 const SlideImage = styled.img.attrs((props) => ({
@@ -35,12 +37,18 @@ const CardPrice = styled.h3`
 const SliderCard = ({ items, index }) => {
   const { itemData } = items;
   const sliderCardData = useDataSlice(itemData);
-  console.log(sliderCardData);
+  const dispatch = useDispatch();  
+  const redirectToProductPage = useNavigate();
   return (
     <>
-      {sliderCardData.flat().map((item) => (
-        <CardWrapper key={item.id} index={index}>
-          <SlideImage src={item.imgURL[0]} />
+      {sliderCardData.flat().map((item, i) => (
+        <CardWrapper key={item.id} index={index} onClick={() => {
+          redirectToProductPage(`products/${sliderCardData.flat()[i].id}`,{
+            replace: true,
+          });
+          dispatch(getProductData(sliderCardData.flat()[i]))
+          }} >
+          <SlideImage src={item.imgURL[0]}  />
           <CardName>{item.name}</CardName>
           <CardPrice>{item.price}$</CardPrice>
         </CardWrapper>

@@ -118,6 +118,7 @@ const TotalPriceContainer = styled.div`
   display: flex;
   justify-content: space-between;
   border-top: 1px solid;
+  border-bottom: 1px solid;
   padding: 8px;
 `;
 const TotalPriceHeader = styled.h1`
@@ -132,6 +133,17 @@ const EmptyBagNotification = styled.h2`
   display: flex;
   margin: 210px 0;
   justify-content: center;
+`;
+const CheckoutButton = styled.button`
+  height: 50px;
+  width: 200px;
+  font-size: 17px;
+  font-weight: bold;
+  background-color: black;
+  cursor: pointer;
+  border: none;
+  color: white;
+  margin-top: 20px;
 `;
 //COMPONENT
 const Card = () => {
@@ -228,6 +240,7 @@ const Card = () => {
                     $
                   </TotalPriceNumber>
                 </TotalPriceContainer>
+                {bagItemsData.length > 0 && <CheckoutButton>Go to Checkout</CheckoutButton>}
               </CardContainer>
             </ModalWindow>
           )}

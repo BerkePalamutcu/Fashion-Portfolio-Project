@@ -184,7 +184,7 @@ const ItemCards = () => {
     let [item] = items;
     setIntersection(item.isIntersecting);
   };
-
+  //TODO: OBSERVER WILL BE TURNED TO A HOOK!
   //OPTIONS FOR OBSERVER
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const options = {
