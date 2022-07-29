@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { getProductData } from "../redux/productDataSlice";
 import styled from "styled-components";
 import autoAnimate from "@formkit/auto-animate";
+import { SearchRounded } from "@mui/icons-material";
 
 //STYLING
 const CardsContainer = styled.div`
@@ -44,13 +45,20 @@ const FilterContainer = styled.div`
 `;
 const FilterWrapper = styled.div`
   display: flex;
-  gap: 15px;
+  gap: 35px;
+  align-items: center;
+  justify-content: center;
 `;
 const FilterTag = styled.span`
   font-family: "Quintessential", cursive;
   font-size: 22px;
   cursor: pointer;
   user-select: none;
+  display: flex;
+  align-items: center;
+  &:hover{
+    border-bottom: 1px solid black;
+  }
 `;
 
 const Header = styled.h1`
@@ -116,6 +124,39 @@ const DecorationSpan = styled.span`
   font-style: italic;
   font-weight: 500;
 `;
+const SearchInput = styled.input`
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid black;
+  display: flex;
+  font-size: 20px;
+  transition: all 2s ease;
+  opacity: 0;
+  outline: none;
+  padding: 5px 5px;
+  width: 0;
+  &::placeholder {
+    text-align: center;
+    font-family: "Baskervville", serif;
+  }
+  ${({ clickAnimation }) =>
+    clickAnimation &&
+    "background: #f6f4f2; outline:none; transition: all 2s ease; opacity:1; width: 250px; padding: 5px 5px;"}
+  &:focus {
+    background: #f6f4f2;
+    outline: none;
+    transition: all 2s ease;
+    opacity: 1;
+    width: 250px;
+    padding: 5px 5px;
+  }
+`;
+const SearchIcon = styled(SearchRounded)`
+  cursor: pointer;
+`;
+    const borderStyle = {
+      borderBottom: '1px solid black'
+    }
 //COMPONENT
 const ItemCards = () => {
   let itemsData = []; //The data will be stored here after getting it from redux store
@@ -125,6 +166,7 @@ const ItemCards = () => {
   const [filterMenuActive, setFilterMenuActive] = useState(false); //state for filter menu
   const [sortMenuActive, setSortMenuActive] = useState(false); //state for sort menu
   const [filterParameter, setFilterParameter] = useState(""); //state for detecting filter parameters from JSX
+  const [clickAnimation, setClickAnimation] = useState(false);
   const bottomElementRef = useRef(null); //dummy div reference for intersection
   const cards = useRef(null);
   const items = useSelector((state) => state.getDataReducer.itemData); // main state -> reducer -> inital state object
@@ -132,6 +174,11 @@ const ItemCards = () => {
 
   //useNavigate hook and redirect to product page logic are handled here
   const redirectToProductPage = useNavigate();
+
+  //HELPER FUNCTION FOR ANIMATING INPUT
+  const animateInput = () => {
+    setClickAnimation(!clickAnimation);
+  };
 
   //HELPER FUNCTION TO SET FILTER PARAMETER
   const handleFilterParameter = (event) => {
@@ -312,6 +359,13 @@ const ItemCards = () => {
         <FilterContainer>
           <Header>All Products</Header>
           <FilterWrapper>
+            <SearchInput
+              clickAnimation={clickAnimation}
+              placeholder="search products"
+            />
+            <FilterTag onClick={animateInput}>Search
+              <SearchIcon />
+            </FilterTag>
             <FilterTag onClick={filterClickHandler}>Filters</FilterTag>
             <FilterTag onClick={sortClickHandler}>Sort</FilterTag>
             <FilterTag>4 column</FilterTag>
