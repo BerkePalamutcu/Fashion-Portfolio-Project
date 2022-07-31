@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { getProductData } from "../redux/productDataSlice";
 import styled from "styled-components";
 import autoAnimate from "@formkit/auto-animate";
-import { SearchRounded } from "@mui/icons-material";
 
 //STYLING
 const CardsContainer = styled.div`
@@ -56,7 +55,7 @@ const FilterTag = styled.span`
   user-select: none;
   display: flex;
   align-items: center;
-  &:hover{
+  &:hover {
     border-bottom: 1px solid black;
   }
 `;
@@ -98,6 +97,9 @@ const FilterMenuItem = styled.span`
   cursor: pointer;
   font-style: italic;
   user-select: none;
+  &:hover {
+    border-bottom: 1px solid black;
+  }
 `;
 
 const SortItemsContainer = styled.div`
@@ -116,6 +118,9 @@ const SortItem = styled.span`
   font-family: "Baskervville", serif;
   user-select: none;
   cursor: pointer;
+  &:hover {
+    border-bottom: 1px solid black;
+  }
 `;
 const DecorationSpan = styled.span`
   font-family: "Quintessential", cursive;
@@ -141,22 +146,16 @@ const SearchInput = styled.input`
   }
   ${({ clickAnimation }) =>
     clickAnimation &&
-    "background: #f6f4f2; outline:none; transition: all 2s ease; opacity:1; width: 250px; padding: 5px 5px;"}
+    "background: #f6f4f2; outline:none; transition: all 2s ease; opacity:1; width: 300px; padding: 5px 5px;"}
   &:focus {
     background: #f6f4f2;
     outline: none;
     transition: all 2s ease;
     opacity: 1;
-    width: 250px;
     padding: 5px 5px;
   }
 `;
-const SearchIcon = styled(SearchRounded)`
-  cursor: pointer;
-`;
-    const borderStyle = {
-      borderBottom: '1px solid black'
-    }
+
 //COMPONENT
 const ItemCards = () => {
   let itemsData = []; //The data will be stored here after getting it from redux store
@@ -169,12 +168,51 @@ const ItemCards = () => {
   const [clickAnimation, setClickAnimation] = useState(false);
   const bottomElementRef = useRef(null); //dummy div reference for intersection
   const cards = useRef(null);
+  const categoriesRef = useRef(null);
+  const pricesRef = useRef(null);
+  const sortRef = useRef(null);
   const items = useSelector((state) => state.getDataReducer.itemData); // main state -> reducer -> inital state object
   const dispatch = useDispatch(); // Redux helper function to dispatch actions.
 
   //useNavigate hook and redirect to product page logic are handled here
   const redirectToProductPage = useNavigate();
 
+  //HELPER FUNCTION FOR ADDING BORDER TO DIVS
+  const addBorder = (event) => {
+    if (event.target.style.borderBottom === "") {
+      event.target.style.borderBottom = "1px solid black";
+    } else {
+      event.target.style.borderBottom = "";
+    }
+  };
+  //HELPER FUNCTION FOR CHECKING CLASSNAMES AND ADDING DIVS
+  const classNameChecker = (event) => {
+    event.preventDefault();
+    const nodeList = event.target.parentNode.children;
+    const mergedFilters = [
+      ...categoriesRef.current.children,
+      ...pricesRef.current.children,
+      ...sortRef.current.children,
+    ];
+    const sortArray = sortRef.current.children;
+    console.log(categoriesRef.current.children);
+
+    if (event.target.classList.contains("filters") === false) {
+      for (let i = 0; i < mergedFilters.length; i++) {
+        if (event.target.classList.contains("sort")) {
+          for (let j = 0; j < sortArray.length; j++) {
+            if (sortArray[j].style.borderBottom === "1px solid black") {
+              sortArray[j].style.borderBottom = "none";
+            }
+          }
+          event.target.style.borderBottom = "1px solid black";
+        } else {
+          mergedFilters[i].style.borderBottom = "none";
+          event.target.style.borderBottom = "1px solid black";
+        }
+      }
+    }
+  };
   //HELPER FUNCTION FOR ANIMATING INPUT
   const animateInput = () => {
     setClickAnimation(!clickAnimation);
@@ -363,12 +401,34 @@ const ItemCards = () => {
               clickAnimation={clickAnimation}
               placeholder="search products"
             />
-            <FilterTag onClick={animateInput}>Search
-              <SearchIcon />
+            <FilterTag
+              className="search"
+              onClick={(event) => {
+                animateInput();
+                addBorder(event);
+              }}
+            >
+              Search
             </FilterTag>
-            <FilterTag onClick={filterClickHandler}>Filters</FilterTag>
-            <FilterTag onClick={sortClickHandler}>Sort</FilterTag>
-            <FilterTag>4 column</FilterTag>
+            <FilterTag
+              style={{ borderBottom: "1px solid black" }}
+              onClick={(event) => {
+                filterClickHandler();
+                addBorder(event);
+              }}
+            >
+              Filters
+            </FilterTag>
+            <FilterTag
+              style={{ borderBottom: "1px solid black" }}
+              onClick={(event) => {
+                sortClickHandler();
+                addBorder(event);
+              }}
+            >
+              Sort
+            </FilterTag>
+            <FilterTag onClick={addBorder}>4 column</FilterTag>
             <FilterTag>2 column</FilterTag>
           </FilterWrapper>
         </FilterContainer>
@@ -381,36 +441,70 @@ const ItemCards = () => {
             <FiltersMenuHeaders>
               <DecorationSpan>Filter By</DecorationSpan>Categories
             </FiltersMenuHeaders>
-            <FiltersMenuItems>
-              <FilterMenuItem onClick={handleFilterParameter}>
+            <FiltersMenuItems
+              onClick={(event) => classNameChecker(event)}
+              className="filters"
+              ref={categoriesRef}
+            >
+              <FilterMenuItem
+                className="child category"
+                onClick={handleFilterParameter}
+              >
                 All
               </FilterMenuItem>
-              <FilterMenuItem onClick={handleFilterParameter}>
+              <FilterMenuItem
+                className="child category"
+                onClick={handleFilterParameter}
+              >
                 Dresses
               </FilterMenuItem>
-              <FilterMenuItem onClick={handleFilterParameter}>
+              <FilterMenuItem
+                className="child category"
+                onClick={handleFilterParameter}
+              >
                 Jackets
               </FilterMenuItem>
-              <FilterMenuItem onClick={handleFilterParameter}>
+              <FilterMenuItem
+                className="child category"
+                onClick={handleFilterParameter}
+              >
                 Coats
               </FilterMenuItem>
-              <FilterMenuItem onClick={handleFilterParameter}>
+              <FilterMenuItem
+                className="child category"
+                onClick={handleFilterParameter}
+              >
                 T-Shirts
               </FilterMenuItem>
-              <FilterMenuItem onClick={handleFilterParameter}>
+              <FilterMenuItem
+                className="child category"
+                onClick={handleFilterParameter}
+              >
                 Skirts
               </FilterMenuItem>
-              <FilterMenuItem onClick={handleFilterParameter}>
+              <FilterMenuItem
+                className="child category"
+                onClick={handleFilterParameter}
+              >
                 Sweaters
               </FilterMenuItem>
-              <FilterMenuItem onClick={handleFilterParameter}>
+              <FilterMenuItem
+                className="child category"
+                onClick={handleFilterParameter}
+              >
                 Trousers
               </FilterMenuItem>
 
-              <FilterMenuItem onClick={handleFilterParameter}>
+              <FilterMenuItem
+                className="child category"
+                onClick={handleFilterParameter}
+              >
                 Waistcoats
               </FilterMenuItem>
-              <FilterMenuItem onClick={handleFilterParameter}>
+              <FilterMenuItem
+                className="child category"
+                onClick={handleFilterParameter}
+              >
                 Accessories
               </FilterMenuItem>
             </FiltersMenuItems>
@@ -419,14 +513,27 @@ const ItemCards = () => {
             <FiltersMenuHeaders>
               <DecorationSpan>Filter By</DecorationSpan>Price
             </FiltersMenuHeaders>
-            <FiltersMenuItems>
-              <FilterMenuItem onClick={handleFilterByPriceRange}>
+            <FiltersMenuItems
+              ref={pricesRef}
+              onClick={(event) => classNameChecker(event)}
+              className="filters"
+            >
+              <FilterMenuItem
+                className="child price"
+                onClick={handleFilterByPriceRange}
+              >
                 $0-50
               </FilterMenuItem>
-              <FilterMenuItem onClick={handleFilterByPriceRange}>
+              <FilterMenuItem
+                className="child price"
+                onClick={handleFilterByPriceRange}
+              >
                 $50-100
               </FilterMenuItem>
-              <FilterMenuItem onClick={handleFilterByPriceRange}>
+              <FilterMenuItem
+                className="child price"
+                onClick={handleFilterByPriceRange}
+              >
                 $100-150
               </FilterMenuItem>
             </FiltersMenuItems>
@@ -435,11 +542,23 @@ const ItemCards = () => {
         <SortItemsContainer
           style={{ opacity: sortMenuActive === false && "1" }}
         >
-          <SortItemsWrapper>
-            <SortItem onClick={handleSorting}>Low To High</SortItem>
-            <SortItem onClick={handleSorting}>High To Low</SortItem>
-            <SortItem onClick={handleSorting}>A-Z</SortItem>
-            <SortItem onClick={handleSorting}>Z-A</SortItem>
+          <SortItemsWrapper
+            ref={sortRef}
+            onClick={(event) => classNameChecker(event)}
+            className="filters"
+          >
+            <SortItem className="child sort" onClick={handleSorting}>
+              Low To High
+            </SortItem>
+            <SortItem className="child sort" onClick={handleSorting}>
+              High To Low
+            </SortItem>
+            <SortItem className="child sort" onClick={handleSorting}>
+              A-Z
+            </SortItem>
+            <SortItem className="child sort" onClick={handleSorting}>
+              Z-A
+            </SortItem>
           </SortItemsWrapper>
         </SortItemsContainer>
         <CardsWrapper
