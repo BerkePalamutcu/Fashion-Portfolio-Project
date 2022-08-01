@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { SearchRounded } from "@mui/icons-material";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, signOutUser } from "../firebase/firebaseapp";
 import { changeCardModalToTrue } from "../redux/modalSlice";
@@ -89,13 +88,6 @@ export const MainListItems = styled.li`
 `;
 
 export const Spans = styled.span``;
-
-export const SearchIcon = styled(SearchRounded)`
-  border: 1px solid;
-  border-radius: 50%;
-  padding: 3px;
-  cursor: pointer;
-`;
 
 const Navbar = () => {
   const [loginData, setUserLoggedIn] = useState(false);
@@ -210,14 +202,6 @@ const Navbar = () => {
               }}
             >
               Bag ({`${itemsQuantity}`})
-            </Spans>
-            <Spans>
-              <SearchIcon
-                style={{
-                  textDecoration: "none",
-                  color: hovered === true ? "black" : "white",
-                }}
-              />
             </Spans>
           </RightContainer>
         </WrapperContainer>

@@ -11,7 +11,6 @@ import {
   MainList,
   MainListItems,
   Spans,
-  SearchIcon,
 } from "./Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { changeCardModalToTrue } from "../redux/modalSlice";
@@ -151,14 +150,6 @@ const NavbarOther = () => {
               }}
             >
               Bag ({`${itemsQuantity}`})
-            </Spans>
-            <Spans>
-              <SearchIcon
-                style={{
-                  textDecoration: "none",
-                  color: "black",
-                }}
-              />
             </Spans>
           </RightContainer>
         </WrapperContainer>
