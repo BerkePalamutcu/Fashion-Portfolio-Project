@@ -7,6 +7,7 @@ import {
   removeItem,
   getTotalQuantity,
 } from "../redux/bagDataSlice";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -148,7 +149,7 @@ const CheckoutButton = styled.button`
 //COMPONENT
 const Card = () => {
   const dispatch = useDispatch();
-
+  const redirectToCheckoutPage = useNavigate()
   const bagItemsData = useSelector((state) => state.getBagDataReducer.bagData);
 
   const ModalWindowData = useSelector(
@@ -240,7 +241,7 @@ const Card = () => {
                     $
                   </TotalPriceNumber>
                 </TotalPriceContainer>
-                {bagItemsData.length > 0 && <CheckoutButton>Go to Checkout</CheckoutButton>}
+                {bagItemsData.length > 0 && <CheckoutButton onClick={() => redirectToCheckoutPage(`/checkout`, {replace: false})}>Go to Checkout</CheckoutButton>}
               </CardContainer>
             </ModalWindow>
           )}
