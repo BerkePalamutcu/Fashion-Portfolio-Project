@@ -155,8 +155,7 @@ const SearchInput = styled.input`
     padding: 5px 5px;
   }
 `;
-
-//COMPONENT
+//TODO:CUSTOM HOOKS ARE NEEDED
 const ItemCards = () => {
   let itemsData = []; //The data will be stored here after getting it from redux store
   const [intersection, setIntersection] = useState(false); //state for detecting intersections
@@ -166,11 +165,13 @@ const ItemCards = () => {
   const [sortMenuActive, setSortMenuActive] = useState(false); //state for sort menu
   const [filterParameter, setFilterParameter] = useState(""); //state for detecting filter parameters from JSX
   const [clickAnimation, setClickAnimation] = useState(false);
+  const [inputvalue, setInputValue] = useState('')
   const bottomElementRef = useRef(null); //dummy div reference for intersection
   const cards = useRef(null);
   const categoriesRef = useRef(null);
   const pricesRef = useRef(null);
   const sortRef = useRef(null);
+  const inputRef = useRef(null)
   const items = useSelector((state) => state.getDataReducer.itemData); // main state -> reducer -> inital state object
   const dispatch = useDispatch(); // Redux helper function to dispatch actions.
 
@@ -185,17 +186,21 @@ const ItemCards = () => {
       event.target.style.borderBottom = "";
     }
   };
+
+  //HELPER FUNCTION FOR THE INPUT VALUE CHANGE
+  const handleChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
   //HELPER FUNCTION FOR CHECKING CLASSNAMES AND ADDING DIVS
   const classNameChecker = (event) => {
     event.preventDefault();
-    const nodeList = event.target.parentNode.children;
     const mergedFilters = [
       ...categoriesRef.current.children,
       ...pricesRef.current.children,
       ...sortRef.current.children,
     ];
     const sortArray = sortRef.current.children;
-    console.log(categoriesRef.current.children);
 
     if (event.target.classList.contains("filters") === false) {
       for (let i = 0; i < mergedFilters.length; i++) {
@@ -277,7 +282,6 @@ const ItemCards = () => {
     rootMargin: "0px 0px 1px 0px",
     threshold: 0,
   };
-
   const optionsObj = useMemo(() => options, [options]); // Memoization the value of options object
 
   //Menu click handlers
@@ -347,8 +351,13 @@ const ItemCards = () => {
     if (filterParameter === "all") {
       setItemsDataState(itemsData);
     }
+    if (inputvalue !== '') {
+      setFilterParameter('all')
+      setItemsDataState(itemsData.filter((item) => item.name.toLowerCase().includes(inputvalue.toLowerCase())));
+      
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterParameter]);
+  }, [filterParameter, inputvalue]);
 
   //Memoized observer object instance
   const observer = useMemo(
@@ -387,7 +396,7 @@ const ItemCards = () => {
   useEffect(() => {
     cards.current &&
       autoAnimate(cards.current, {
-        duration: 400,
+        duration: 700,
       });
   }, [cards]);
 
@@ -400,6 +409,9 @@ const ItemCards = () => {
             <SearchInput
               clickAnimation={clickAnimation}
               placeholder="search products"
+              value={inputvalue}
+              onChange={(event) => handleChange(event)}
+              ref={inputRef}
             />
             <FilterTag
               className="search"
@@ -428,8 +440,6 @@ const ItemCards = () => {
             >
               Sort
             </FilterTag>
-            <FilterTag onClick={addBorder}>4 column</FilterTag>
-            <FilterTag>2 column</FilterTag>
           </FilterWrapper>
         </FilterContainer>
         <FiltersMenuContainer
