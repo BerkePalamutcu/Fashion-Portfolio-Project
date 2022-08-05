@@ -1,6 +1,8 @@
 import React from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { changeCardModalToFalse } from '../redux/modalSlice';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledCardElement = styled(CardElement)`
@@ -15,7 +17,10 @@ const PayButton = styled.button`
   font-size: 16px;
   font-weight: bold;
 `;
-
+const RedirectButton = styled(PayButton)`
+  background-color: transparent;
+  color: black;
+`;
 const PaymentFormContainer = styled.div`
   display: flex;
   height: 100vh;
@@ -51,15 +56,20 @@ const SectionWrapper = styled.div`
 const DetailsHeader = styled.h1``;
 //COMPONENT
 const CheckoutForm = () => {
+  const dispatch = useDispatch();
   const stripe = useStripe();
   const elements = useElements();
-
+  const redirectToHomePage = useNavigate();
   const totalItemPrice = useSelector((state) =>
     state.getBagDataReducer.bagData
       .map((item) => item.price * item.quantity)
       .reduce((acc, current) => acc + current, 0)
       .toFixed(2)
   );
+  const handleRedirect = () => {
+    dispatch(changeCardModalToFalse(false));
+    redirectToHomePage('/', { replace: false });
+  };
   const paymentHandler = async (e) => {
     e.preventDefault();
 
@@ -147,6 +157,9 @@ const CheckoutForm = () => {
           <PayButton style={{ borderTop: '1px solid black' }}>
             Complete payment
           </PayButton>
+          <RedirectButton onClick={handleRedirect}>
+            Continue shopping
+          </RedirectButton>
         </PaymentForm>
       </PaymentFormContainer>
     </>

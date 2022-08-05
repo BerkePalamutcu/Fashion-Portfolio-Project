@@ -1,15 +1,15 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { changeCardModalToFalse } from "../redux/modalSlice";
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { changeCardModalToFalse } from '../redux/modalSlice';
 import {
   increaseItemQuantity,
   decreaseItemQuantity,
   removeItem,
   getTotalQuantity,
-} from "../redux/bagDataSlice";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import CloseIcon from "@mui/icons-material/Close";
+} from '../redux/bagDataSlice';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import CloseIcon from '@mui/icons-material/Close';
 
 //STYLING
 const ModalBackdrop = styled.div`
@@ -42,7 +42,7 @@ const CardWrapper = styled.div`
   padding-bottom: 10px;
 `;
 const CardHeader = styled.h1`
-  font-family: "Baskervville", serif;
+  font-family: 'Baskervville', serif;
 `;
 const StyledCloseIcon = styled(CloseIcon)`
   cursor: pointer;
@@ -106,7 +106,7 @@ const PlusSymbol = styled.p`
 `;
 const RemoveItemButton = styled.button`
   background: transparent;
-  font-family: "Baskervville", serif;
+  font-family: 'Baskervville', serif;
   width: 100px;
   font-size: 20px;
   text-align: center;
@@ -123,13 +123,13 @@ const TotalPriceContainer = styled.div`
   padding: 8px;
 `;
 const TotalPriceHeader = styled.h1`
-  font-family: "Baskervville", serif;
+  font-family: 'Baskervville', serif;
 `;
 const TotalPriceNumber = styled.h1`
-  font-family: "Domine", serif;
+  font-family: 'Domine', serif;
 `;
 const EmptyBagNotification = styled.h2`
-  font-family: "Baskervville", serif;
+  font-family: 'Baskervville', serif;
   font-size: 30px;
   display: flex;
   margin: 210px 0;
@@ -149,7 +149,8 @@ const CheckoutButton = styled.button`
 //COMPONENT
 const Card = () => {
   const dispatch = useDispatch();
-  const redirectToCheckoutPage = useNavigate()
+  const redirectToCheckoutPage = useNavigate();
+
   const bagItemsData = useSelector((state) => state.getBagDataReducer.bagData);
 
   const ModalWindowData = useSelector(
@@ -157,7 +158,7 @@ const Card = () => {
   );
 
   const handleModalWindowClosing = (event) => {
-    if (event.target.className.split(" ").includes("backdrop")) {
+    if (event.target.className.split(' ').includes('backdrop')) {
       dispatch(changeCardModalToFalse(false));
     }
   };
@@ -237,11 +238,19 @@ const Card = () => {
                           .map((item, i) => item.price * item.quantity)
                           .reduce((acc, current) => acc + current, 0)
                           .toFixed(2)
-                      : "0$"}
+                      : '0$'}
                     $
                   </TotalPriceNumber>
                 </TotalPriceContainer>
-                {bagItemsData.length > 0 && <CheckoutButton onClick={() => redirectToCheckoutPage(`/checkout`, {replace: false})}>Go to Checkout</CheckoutButton>}
+                {bagItemsData.length > 0 && (
+                  <CheckoutButton
+                    onClick={() =>
+                      redirectToCheckoutPage(`/checkout`, { replace: false })
+                    }
+                  >
+                    Go to Checkout
+                  </CheckoutButton>
+                )}
               </CardContainer>
             </ModalWindow>
           )}
