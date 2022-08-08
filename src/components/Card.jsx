@@ -150,7 +150,7 @@ const CheckoutButton = styled.button`
 const Card = () => {
   const dispatch = useDispatch();
   const redirectToCheckoutPage = useNavigate();
-
+  const iconRef = React.useRef(null);
   const bagItemsData = useSelector((state) => state.getBagDataReducer.bagData);
 
   const ModalWindowData = useSelector(
@@ -158,8 +158,10 @@ const Card = () => {
   );
 
   const handleModalWindowClosing = (event) => {
-    if (event.target.className.split(' ').includes('backdrop')) {
+    if (event.target === iconRef.current) {
       dispatch(changeCardModalToFalse(false));
+    } else {
+      return;
     }
   };
 
@@ -174,16 +176,14 @@ const Card = () => {
   return (
     <>
       {ModalWindowData && (
-        <ModalBackdrop
-          className="backdrop"
-          onClick={(event) => handleModalWindowClosing(event)}
-        >
+        <ModalBackdrop onClick={(event) => handleModalWindowClosing(event)}>
           {ModalWindowData && (
             <ModalWindow>
               <CardContainer>
                 <CardWrapper>
                   <CardHeader>Your Bag</CardHeader>
                   <StyledCloseIcon
+                    ref={iconRef}
                     className="backdrop"
                     onClick={() => dispatch(changeCardModalToFalse(false))}
                   />
