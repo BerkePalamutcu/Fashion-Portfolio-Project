@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   bagData: [],
@@ -6,7 +6,7 @@ const initialState = {
 };
 
 export const bagDataSlice = createSlice({
-  name: "bagDataProducts",
+  name: 'bagDataProducts',
   initialState,
   reducers: {
     sendDataToCardComponent: (state, action) => {
@@ -50,6 +50,11 @@ export const bagDataSlice = createSlice({
     getTotalQuantity: (state, action) => {
       state.totalItemQuantityData = action.payload;
     },
+    clearBagData: (state) => {
+      if (state.bagData.length > 0) {
+        state.bagData.length = 0;
+      }
+    },
   },
 });
 
@@ -59,5 +64,6 @@ export const {
   decreaseItemQuantity,
   removeItem,
   getTotalQuantity,
+  clearBagData,
 } = bagDataSlice.actions;
 export default bagDataSlice.reducer;
