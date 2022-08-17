@@ -11,7 +11,16 @@ import {
 } from 'firebase/auth';
 
 /// Firebase DB imports
-import { getFirestore, collection, getDocs, query } from 'firebase/firestore';
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  getDoc,
+  query,
+  doc,
+  setDoc,
+  addDoc,
+} from 'firebase/firestore';
 /// Firebase config file
 const firebaseConfig = {
   apiKey: 'AIzaSyAv3FLsrNVpng-85kctKuvSQ6j0Kc4YyyA',
@@ -68,9 +77,9 @@ export const signOutUser = async () => {
   signOut(auth);
 };
 
-/// DB CODE STARTS HERE
+// MY DB CODE STARTS HERE
 // Initialize Cloud Firestore and get a reference to the service
-const db = getFirestore(app);
+export const db = getFirestore(app);
 
 export const getCategoriesAndDocuments = async () => {
   const collectionRef = collection(db, 'categories');
@@ -78,12 +87,53 @@ export const getCategoriesAndDocuments = async () => {
   const querySnapshot = await getDocs(q);
   // data method comes from firebase
   return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
+};
+export const addData = async (user) => {
+  try {
+    const docRef = await addDoc(collection(db, 'users'), {
+      first: 'Ada',
+      last: 'Lovelace',
+      born: 1815,
+    });
+    console.log('Document written with ID: ', docRef.id);
+  } catch (e) {
+    console.error('Error adding document: ', e);
+  }
+};
 
-  // categories.reduce((acc, category) => {
-  //   const { title, items } = category;
+export const addUserData = async (data) => {
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const uid = user.uid;
+      try {
+        await setDoc(doc(db, 'users', uid), { data });
+        // console.log('Document written with ID: ', docRef.id);
+      } catch (e) {
+        console.error('Error adding document: ', e);
+      }
+    } else {
+      return;
+    }
+  });
+};
 
-  //   acc[title.toLowerCase()] = items;
-  //   return acc;
-  // }, {});
-  // return categories;
+export const getUserData = () => {
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const uid = user.uid;
+      try {
+        const docRef = doc(db, 'users', uid);
+        const docSnapshot = await getDoc(docRef);
+        if (docSnapshot.exists()) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch (e) {
+        console.error('Error adding document: ', e);
+      }
+    } else {
+      return;
+    }
+  });
 };
