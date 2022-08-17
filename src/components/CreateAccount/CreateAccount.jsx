@@ -3,53 +3,29 @@ import { useNavigate } from 'react-router-dom';
 import {
   createNewUserFromEmailandPassword,
   onAuthStateChangedListener,
-} from '../firebase/firebaseapp';
-import styled from 'styled-components';
-import myImage from '../assets/LoginImg-1.png';
+  addUserData,
+} from '../../firebase/firebaseapp';
+
 import {
   LoginHeader,
   FormStylingContainer,
-  InputContainer,
   EmailLabel,
   PasswordLabel,
   EmailInput,
   PasswordInput,
   SignUpButton,
-} from './SignIn';
-//STYLES
-const SignUpPageContainer = styled.div`
-  positition: relative;
-  display: flex;
-  justify-content: space-between;
-  width: 100vw;
-  height: 84vh;
-  background-color: #f6f4f2;
-  font-family: 'Domine', serif;
-`;
+} from '../SignIn/signIn.styles';
 
-const ImageContainer = styled.img.attrs((props) => ({
-  src: props.src,
-  alt: props.alt,
-}))`
-  height: auto;
-  max-width: 64%;
-  height: auto;
-  object-fit: cover;
-  display: flex;
-`;
+import {
+  SignUpPageContainer,
+  ImageContainer,
+  SignUpFormContainer,
+  SignUpInputContainer,
+  ConfirmedPasswordInput,
+} from '../CreateAccount/createAccount.styles';
 
-const SignUpFormContainer = styled.form`
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  text-align: center;
-  width: 100%;
-  padding: 0 50px;
-`;
-const SignUpInputContainer = styled(InputContainer)`
-  gap: 5px;
-`;
-const ConfirmedPasswordInput = styled(PasswordInput)``;
+import myImage from '../../assets/LoginImg-1.png';
+
 //COMPONENT
 const CreateAccount = () => {
   const defaultParameters = {
@@ -62,11 +38,19 @@ const CreateAccount = () => {
   const { email, password, confirmedPassword } = params;
 
   /// checks the user if signed in or not when component mounts!
-  useEffect(() => onAuthStateChangedListener(), []);
+  useEffect(() => {
+    onAuthStateChangedListener();
+  }, []);
   /// helper function to assign to the sign up button
   const createNewAccount = async () => {
     /// its async function to communicate with external fb auth therefore, the response needs to await.
     await createNewUserFromEmailandPassword(email, password);
+    try {
+      const { user } = await createNewUserFromEmailandPassword(email, password);
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+    }
     setParams(defaultParameters);
   };
   const redirect = useNavigate();
@@ -85,9 +69,10 @@ const CreateAccount = () => {
     }
     try {
       createNewAccount();
+      addUserData();
       redirect('../', { replace: true });
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
   };
 

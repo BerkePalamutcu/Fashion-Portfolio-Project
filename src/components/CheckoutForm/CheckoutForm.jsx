@@ -1,59 +1,20 @@
-import React from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeCardModalToFalse } from '../redux/modalSlice';
+import { changeCardModalToFalse } from '../../redux/modalSlice';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-
-const StyledCardElement = styled(CardElement)`
-  padding: 10px;
-  border: 1px solid black;
-`;
-const PayButton = styled.button`
-  height: 50px;
-  color: white;
-  background-color: black;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-`;
-const RedirectButton = styled(PayButton)`
-  background-color: transparent;
-  color: black;
-`;
-const PaymentFormContainer = styled.div`
-  display: flex;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-`;
-
-const PaymentForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-const InputsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-const InputWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-const InputLabel = styled.label``;
-const FormInput = styled.input`
-  padding: 5px 5px;
-`;
-const SectionWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-const DetailsHeader = styled.h1``;
+import {
+  StyledCardElement,
+  PayButton,
+  RedirectButton,
+  PaymentFormContainer,
+  PaymentForm,
+  InputsContainer,
+  InputWrapper,
+  InputLabel,
+  FormInput,
+  SectionWrapper,
+  DetailsHeader,
+} from './checkoutForm.styles';
 //COMPONENT
 const CheckoutForm = () => {
   const dispatch = useDispatch();

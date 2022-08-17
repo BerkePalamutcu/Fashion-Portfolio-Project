@@ -1,157 +1,46 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeCardModalToFalse } from '../redux/modalSlice';
+import { changeCardModalToFalse } from '../../redux/modalSlice';
 import {
   increaseItemQuantity,
   decreaseItemQuantity,
   removeItem,
   getTotalQuantity,
-} from '../redux/bagDataSlice';
+} from '../../redux/bagDataSlice';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import CloseIcon from '@mui/icons-material/Close';
+import {
+  ModalBackdrop,
+  ModalWindow,
+  CardContainer,
+  CardWrapper,
+  CardHeader,
+  StyledCloseIcon,
+  CardItemsContainer,
+  CardItemsWrapper,
+  CardImage,
+  ItemDetails,
+  ItemName,
+  ItemPrice,
+  ItemSize,
+  QuantityContainer,
+  QuantityWrapper,
+  QuantityCounter,
+  PlusSymbol,
+  MinusSymbol,
+  RemoveItemButton,
+  EmptyBagNotification,
+  TotalPriceContainer,
+  TotalPriceHeader,
+  TotalPriceNumber,
+  CheckoutButton,
+} from './card.styles';
 
-//STYLING
-const ModalBackdrop = styled.div`
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background-color: rgba(0, 0, 0, 0.3);
-`;
-const ModalWindow = styled.div`
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  height: 70%;
-  width: 50%;
-  background-color: white;
-  z-index: 101;
-  overflow-y: auto;
-`;
-const CardContainer = styled.div`
-  margin: 50px;
-`;
-const CardWrapper = styled.div`
-  justify-content: space-between;
-  display: flex;
-  border-bottom: 1px solid black;
-  padding-bottom: 10px;
-`;
-const CardHeader = styled.h1`
-  font-family: 'Baskervville', serif;
-`;
-const StyledCloseIcon = styled(CloseIcon)`
-  cursor: pointer;
-`;
-
-const CardImage = styled.img.attrs((props) => ({
-  props: props.src,
-  alt: props.alt,
-}))`
-  width: 150px;
-  height: 200px;
-  object-fit: contain;
-`;
-
-const CardItemsContainer = styled.div`
-  margin-top: 50px;
-  overflow-y: auto;
-
-  padding-bottom: 20px;
-`;
-
-const CardItemsWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  margin: 30px 0;
-`;
-const ItemDetails = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: 20px;
-  gap: 10px;
-`;
-const ItemName = styled.h2``;
-const ItemPrice = styled.p``;
-const ItemSize = styled.p``;
-
-const QuantityContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  margin-top: 30px;
-`;
-const QuantityWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 25px;
-  gap: 30px;
-`;
-const QuantityCounter = styled.p``;
-const MinusSymbol = styled.p`
-  cursor: pointer;
-  user-select: none;
-`;
-const PlusSymbol = styled.p`
-  cursor: pointer;
-  user-select: none;
-`;
-const RemoveItemButton = styled.button`
-  background: transparent;
-  font-family: 'Baskervville', serif;
-  width: 100px;
-  font-size: 20px;
-  text-align: center;
-  color: red;
-  border: 1px solid red;
-  padding: 5px;
-  cursor: pointer;
-`;
-const TotalPriceContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
-  padding: 8px;
-`;
-const TotalPriceHeader = styled.h1`
-  font-family: 'Baskervville', serif;
-`;
-const TotalPriceNumber = styled.h1`
-  font-family: 'Domine', serif;
-`;
-const EmptyBagNotification = styled.h2`
-  font-family: 'Baskervville', serif;
-  font-size: 30px;
-  display: flex;
-  margin: 210px 0;
-  justify-content: center;
-`;
-const CheckoutButton = styled.button`
-  height: 50px;
-  width: 200px;
-  font-size: 17px;
-  font-weight: bold;
-  background-color: black;
-  cursor: pointer;
-  border: none;
-  color: white;
-  margin-top: 20px;
-`;
 //COMPONENT
 const Card = () => {
   const dispatch = useDispatch();
   const redirectToCheckoutPage = useNavigate();
   const iconRef = React.useRef(null);
-  const bagItemsData = useSelector((state) => state.getBagDataReducer.bagData);
+  let bagItemsData = useSelector((state) => state.getBagDataReducer.bagData);
 
   const ModalWindowData = useSelector(
     (state) => state.changeModalViewReducer.cardModal

@@ -1,49 +1,19 @@
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getDataFromFirestore } from "../redux/dataSlice";
-import styled from "styled-components";
-import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
-import { getCategoriesAndDocuments } from "../firebase/firebaseapp";
-import SliderCard from "./SliderCard";
-//STYLES
-const SliderContainer = styled.div`
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getDataFromFirestore } from '../../redux/dataSlice';
+import { getCategoriesAndDocuments } from '../../firebase/firebaseapp';
+import SliderCard from '../SliderCard/SliderCard';
 
-const SliderHeader = styled.h1`
-  font-family: "Baskervville", serif;
-  font-size: 56px;
-  text-align: center;
-  font-weight: 400;
-  margin: 70px 0;
-`;
+import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 
-const ImgContainer = styled.div`
-  display: flex;
-  gap: 40px;
-  align-items: center;
-`;
-const ArrowContainer = styled.div`
-  border: none;
-  width: 70px;
-  height: 70px;
-  background-color: #d9d9d9;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-`;
-const SliderDiv = styled.div`
-  width: 1200px;
-  display: flex;
-  overflow: hidden;
-`;
+import {
+  SliderContainer,
+  SliderHeader,
+  ImgContainer,
+  ArrowContainer,
+  SliderDiv,
+} from './slider.styles';
+
 //COMPONENT
 const Slider = () => {
   let [index, setIndex] = useState(0);
@@ -70,7 +40,7 @@ const Slider = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const shopData = await getCategoriesAndDocuments("categories");
+      const shopData = await getCategoriesAndDocuments('categories');
       dispatch(getDataFromFirestore(shopData));
     };
     getData();

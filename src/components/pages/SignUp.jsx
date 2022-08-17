@@ -1,11 +1,12 @@
-import NavbarOther from '../NavbarOther';
-import CreateAccount from '../CreateAccount';
-import Card from '../Card';
+import NavbarOther from '../NavbarOther/NavbarOther';
+import CreateAccount from '../CreateAccount/CreateAccount';
+import Card from '../Card/Card';
+
 const SignUp = () => {
   return (
     <>
       <NavbarOther />
-      <Card/>
+      <Card />
       <CreateAccount />
     </>
   );

@@ -1,160 +1,32 @@
-import { useEffect, useState, useRef, useMemo, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getDataFromFirestore } from "../redux/dataSlice";
-import { getCategoriesAndDocuments } from "../firebase/firebaseapp";
-import { useNavigate } from "react-router-dom";
-import { getProductData } from "../redux/productDataSlice";
-import styled from "styled-components";
-import autoAnimate from "@formkit/auto-animate";
+import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getDataFromFirestore } from '../../redux/dataSlice';
+import { getCategoriesAndDocuments } from '../../firebase/firebaseapp';
+import { useNavigate } from 'react-router-dom';
+import { getProductData } from '../../redux/productDataSlice';
+import autoAnimate from '@formkit/auto-animate';
 
-//STYLING
-const CardsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-`;
-const CardsWrapper = styled.div`
-  width: 100vw;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  row-gap: 40px;
-  margin-left: 10px;
-  transform: translateY(-250px);
-  transition: ease 1s;
-`;
-const ItemCard = styled.div`
-  display: flex;
-  font-family: "Quintessential", cursive;
-  font-weight: 500;
-  font-size: 20px;
-`;
-const CardImage = styled.img.attrs((props) => ({
-  src: props.src,
-  alt: props.alt,
-}))`
-  width: 450px;
-  object-fit: cover;
-  cursor: pointer;
-`;
-const FilterContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 40px 30px 50px 30px;
-`;
-const FilterWrapper = styled.div`
-  display: flex;
-  gap: 35px;
-  align-items: center;
-  justify-content: center;
-`;
-const FilterTag = styled.span`
-  font-family: "Quintessential", cursive;
-  font-size: 22px;
-  cursor: pointer;
-  user-select: none;
-  display: flex;
-  align-items: center;
-  &:hover {
-    border-bottom: 1px solid black;
-  }
-`;
+import {
+  CardsContainer,
+  CardsWrapper,
+  ItemCard,
+  CardImage,
+  FilterContainer,
+  FilterWrapper,
+  FilterTag,
+  Header,
+  FiltersMenuContainer,
+  FiltersMenuWrapper,
+  FiltersMenuHeaders,
+  FiltersMenuItems,
+  FilterMenuItem,
+  SortItemsContainer,
+  SortItemsWrapper,
+  SortItem,
+  DecorationSpan,
+  SearchInput,
+} from './itemCards.styles';
 
-const Header = styled.h1`
-  font-family: "Quintessential", cursive;
-  font-size: 55px;
-  font-weight: 500;
-`;
-
-const FiltersMenuContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  user-select: none;
-  // transform: translateX(-1150px);
-  transition: ease 1s;
-  opacity: 0;
-`;
-const FiltersMenuWrapper = styled.div`
-  display: flex;
-  margin: 20px 30px 20px 30px;
-`;
-const FiltersMenuHeaders = styled.span`
-  display: flex;
-  font-size: 22px;
-  font-weight: 600;
-`;
-const FiltersMenuItems = styled.div`
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  margin-left: 50px;
-  font-size: 18px;
-  font-family: "Baskervville", serif;
-  font-weight: 400;
-`;
-const FilterMenuItem = styled.span`
-  display: flex;
-  cursor: pointer;
-  font-style: italic;
-  user-select: none;
-  &:hover {
-    border-bottom: 1px solid black;
-  }
-`;
-
-const SortItemsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin: 40px 30px 50px 30px;
-  // transform: translateX(-900px);
-  transition: ease 1s;
-  opacity: 0;
-`;
-const SortItemsWrapper = styled.div`
-  display: flex;
-  gap: 20px;
-`;
-const SortItem = styled.span`
-  font-family: "Baskervville", serif;
-  user-select: none;
-  cursor: pointer;
-  &:hover {
-    border-bottom: 1px solid black;
-  }
-`;
-const DecorationSpan = styled.span`
-  font-family: "Quintessential", cursive;
-  font-size: 22px;
-  margin-right: 20px;
-  font-style: italic;
-  font-weight: 500;
-`;
-const SearchInput = styled.input`
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid black;
-  display: flex;
-  font-size: 20px;
-  transition: all 2s ease;
-  opacity: 0;
-  outline: none;
-  padding: 5px 5px;
-  width: 0;
-  &::placeholder {
-    text-align: center;
-    font-family: "Baskervville", serif;
-  }
-  ${({ clickAnimation }) =>
-    clickAnimation &&
-    "background: #f6f4f2; outline:none; transition: all 2s ease; opacity:1; width: 300px; padding: 5px 5px;"}
-  &:focus {
-    background: #f6f4f2;
-    outline: none;
-    transition: all 2s ease;
-    opacity: 1;
-    padding: 5px 5px;
-  }
-`;
 //TODO:CUSTOM HOOKS ARE NEEDED
 const ItemCards = () => {
   let itemsData = []; //The data will be stored here after getting it from redux store
@@ -163,15 +35,15 @@ const ItemCards = () => {
   const [itemsDataState, setItemsDataState] = useState([]); // state for rendered data
   const [filterMenuActive, setFilterMenuActive] = useState(false); //state for filter menu
   const [sortMenuActive, setSortMenuActive] = useState(false); //state for sort menu
-  const [filterParameter, setFilterParameter] = useState(""); //state for detecting filter parameters from JSX
+  const [filterParameter, setFilterParameter] = useState(''); //state for detecting filter parameters from JSX
   const [clickAnimation, setClickAnimation] = useState(false);
-  const [inputvalue, setInputValue] = useState('')
+  const [inputvalue, setInputValue] = useState('');
   const bottomElementRef = useRef(null); //dummy div reference for intersection
   const cards = useRef(null);
   const categoriesRef = useRef(null);
   const pricesRef = useRef(null);
   const sortRef = useRef(null);
-  const inputRef = useRef(null)
+  const inputRef = useRef(null);
   const items = useSelector((state) => state.getDataReducer.itemData); // main state -> reducer -> inital state object
   const dispatch = useDispatch(); // Redux helper function to dispatch actions.
 
@@ -180,10 +52,10 @@ const ItemCards = () => {
 
   //HELPER FUNCTION FOR ADDING BORDER TO DIVS
   const addBorder = (event) => {
-    if (event.target.style.borderBottom === "") {
-      event.target.style.borderBottom = "1px solid black";
+    if (event.target.style.borderBottom === '') {
+      event.target.style.borderBottom = '1px solid black';
     } else {
-      event.target.style.borderBottom = "";
+      event.target.style.borderBottom = '';
     }
   };
 
@@ -202,18 +74,18 @@ const ItemCards = () => {
     ];
     const sortArray = sortRef.current.children;
 
-    if (event.target.classList.contains("filters") === false) {
+    if (event.target.classList.contains('filters') === false) {
       for (let i = 0; i < mergedFilters.length; i++) {
-        if (event.target.classList.contains("sort")) {
+        if (event.target.classList.contains('sort')) {
           for (let j = 0; j < sortArray.length; j++) {
-            if (sortArray[j].style.borderBottom === "1px solid black") {
-              sortArray[j].style.borderBottom = "none";
+            if (sortArray[j].style.borderBottom === '1px solid black') {
+              sortArray[j].style.borderBottom = 'none';
             }
           }
-          event.target.style.borderBottom = "1px solid black";
+          event.target.style.borderBottom = '1px solid black';
         } else {
-          mergedFilters[i].style.borderBottom = "none";
-          event.target.style.borderBottom = "1px solid black";
+          mergedFilters[i].style.borderBottom = 'none';
+          event.target.style.borderBottom = '1px solid black';
         }
       }
     }
@@ -230,14 +102,14 @@ const ItemCards = () => {
 
   //HELPER FUNCTION TO SET FILTER PARAMETER BY PRICE RANGE
   const handleFilterByPriceRange = (event) => {
-    if (event.target.innerHTML === "$0-50") {
-      setFilterParameter("$0-50");
+    if (event.target.innerHTML === '$0-50') {
+      setFilterParameter('$0-50');
     }
-    if (event.target.innerHTML === "$50-100") {
-      setFilterParameter("$50-100");
+    if (event.target.innerHTML === '$50-100') {
+      setFilterParameter('$50-100');
     }
-    if (event.target.innerHTML === "$100-150") {
-      setFilterParameter("$100-150");
+    if (event.target.innerHTML === '$100-150') {
+      setFilterParameter('$100-150');
     }
   };
   //There is a better sorting method even including all UTF-8 characters! this is ordinary.
@@ -252,17 +124,17 @@ const ItemCards = () => {
   };
 
   const handleSorting = (event) => {
-    if (event.target.innerHTML === "Low To High") {
+    if (event.target.innerHTML === 'Low To High') {
       setItemsDataState([...itemsDataState.sort((a, b) => a.price - b.price)]);
     }
-    if (event.target.innerHTML === "High To Low") {
+    if (event.target.innerHTML === 'High To Low') {
       setItemsDataState([...itemsDataState.sort((a, b) => b.price - a.price)]);
     }
-    if (event.target.innerHTML === "A-Z") {
+    if (event.target.innerHTML === 'A-Z') {
       setItemsDataState([...itemsDataState.sort(alphabeticalSortHelper)]);
     }
 
-    if (event.target.innerHTML === "Z-A") {
+    if (event.target.innerHTML === 'Z-A') {
       setItemsDataState([
         ...itemsDataState.sort(alphabeticalSortHelper).reverse(),
       ]);
@@ -275,11 +147,12 @@ const ItemCards = () => {
     setIntersection(item.isIntersecting);
   };
   //TODO: OBSERVER WILL BE TURNED TO A HOOK!
+  //TODO:BUNU HOOKA CEVIRCEM
   //OPTIONS FOR OBSERVER
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const options = {
     root: null,
-    rootMargin: "0px 0px 1px 0px",
+    rootMargin: '0px 0px 1px 0px',
     threshold: 0,
   };
   const optionsObj = useMemo(() => options, [options]); // Memoization the value of options object
@@ -294,7 +167,7 @@ const ItemCards = () => {
 
   //Redux action to get the data from the store
   const getData = async () => {
-    const shopData = await getCategoriesAndDocuments("categories");
+    const shopData = await getCategoriesAndDocuments('categories');
     dispatch(getDataFromFirestore(shopData));
   };
   useEffect(() => {
@@ -312,7 +185,7 @@ const ItemCards = () => {
   };
   //useEffect for infinite scrolling and slicing logic
   useEffect(() => {
-    if (filterParameter === "" && intersection) {
+    if (filterParameter === '' && intersection) {
       dataCleaner();
       let slicedItems = itemsData.slice(0, fetchedItemCount);
       setFetchedItemCount(fetchedItemCount + 8);
@@ -326,35 +199,38 @@ const ItemCards = () => {
   useEffect(() => {
     dataCleaner();
     let filteredItemsByPrice;
-    if (filterParameter !== "") {
+    if (filterParameter !== '') {
       let allFilteredItems = itemsData.filter(
         (item) => item.category === filterParameter
       );
       setItemsDataState(allFilteredItems);
     }
-    if (filterParameter === "$0-50") {
+    if (filterParameter === '$0-50') {
       filteredItemsByPrice = itemsData.filter((item) => item.price < 50);
       setItemsDataState(filteredItemsByPrice);
     }
-    if (filterParameter === "$50-100") {
+    if (filterParameter === '$50-100') {
       filteredItemsByPrice = itemsData.filter(
         (item) => item.price > 50 && item.price < 100
       );
       setItemsDataState(filteredItemsByPrice);
     }
-    if (filterParameter === "$100-150") {
+    if (filterParameter === '$100-150') {
       filteredItemsByPrice = itemsData.filter(
         (item) => item.price > 100 && item.price < 150
       );
       setItemsDataState(filteredItemsByPrice);
     }
-    if (filterParameter === "all") {
+    if (filterParameter === 'all') {
       setItemsDataState(itemsData);
     }
     if (inputvalue !== '') {
-      setFilterParameter('all')
-      setItemsDataState(itemsData.filter((item) => item.name.toLowerCase().includes(inputvalue.toLowerCase())));
-      
+      setFilterParameter('all');
+      setItemsDataState(
+        itemsData.filter((item) =>
+          item.name.toLowerCase().includes(inputvalue.toLowerCase())
+        )
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterParameter, inputvalue]);
@@ -423,7 +299,7 @@ const ItemCards = () => {
               Search
             </FilterTag>
             <FilterTag
-              style={{ borderBottom: "1px solid black" }}
+              style={{ borderBottom: '1px solid black' }}
               onClick={(event) => {
                 filterClickHandler();
                 addBorder(event);
@@ -432,7 +308,7 @@ const ItemCards = () => {
               Filters
             </FilterTag>
             <FilterTag
-              style={{ borderBottom: "1px solid black" }}
+              style={{ borderBottom: '1px solid black' }}
               onClick={(event) => {
                 sortClickHandler();
                 addBorder(event);
@@ -444,7 +320,7 @@ const ItemCards = () => {
         </FilterContainer>
         <FiltersMenuContainer
           style={{
-            opacity: filterMenuActive === false && "1",
+            opacity: filterMenuActive === false && '1',
           }}
         >
           <FiltersMenuWrapper>
@@ -550,7 +426,7 @@ const ItemCards = () => {
           </FiltersMenuWrapper>
         </FiltersMenuContainer>
         <SortItemsContainer
-          style={{ opacity: sortMenuActive === false && "1" }}
+          style={{ opacity: sortMenuActive === false && '1' }}
         >
           <SortItemsWrapper
             ref={sortRef}
@@ -575,7 +451,7 @@ const ItemCards = () => {
           style={{
             transform:
               sortMenuActive === false || filterMenuActive === false
-                ? "translateY(0px)"
+                ? 'translateY(0px)'
                 : undefined,
           }}
           ref={cards}

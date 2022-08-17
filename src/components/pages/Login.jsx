@@ -1,11 +1,11 @@
-import SignIn from '../SignIn';
-import NavbarOther from '../NavbarOther';
-import Card from '../Card';
+import SignIn from '../SignIn/SignIn';
+import NavbarOther from '../NavbarOther/NavbarOther';
+import Card from '../Card/Card';
 const Login = () => {
   return (
     <>
       <NavbarOther />
-      <Card/>
+      <Card />
       <SignIn />
     </>
   );

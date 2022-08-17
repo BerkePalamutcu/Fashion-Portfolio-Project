@@ -1,8 +1,8 @@
-import Navbar from '../Navbar';
-import Slider from '../Slider';
-import Carousel from '../Carousel';
-import Card from '../Card';
-// import Animation from '../Animation';
+import Navbar from '../Navbar/Navbar';
+import Slider from '../Slider/Slider';
+import Carousel from '../Carousel/Carousel';
+import Card from '../Card/Card';
+
 const Home = () => {
   return (
     <>
