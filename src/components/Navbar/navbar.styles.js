@@ -10,7 +10,7 @@ export const Notifications = styled.div`
   align-items: center;
   height: 28px;
   background-color: #b78c71;
-
+  overflow: hidden;
   @media only screen and ${device.mobileL} {
     display: none;
   }
@@ -21,6 +21,7 @@ export const NotificationsList = styled.ul`
   color: white;
   font-size: 12px;
   font-family: 'Domine', serif;
+  overflow: hidden;
   @media only screen and ${device.mobileL} {
     display: none;
   }
@@ -32,7 +33,7 @@ export const NavbarContainer = styled.div`
   align-items: center;
   position: absolute;
   z-index: 4;
-  width: 100vw;
+  width: 100%;
   transition: ease-in-out 1s;
   overflow hidden;
   &:hover {
@@ -53,7 +54,7 @@ export const WrapperContainer = styled.div`
   align-content: center;
   color: white;
   z-index: 3;
-  overflow-x: hidden;
+  overflow: hidden;
   &&&: [hover] {
     background-color: white;
     color: black !important;

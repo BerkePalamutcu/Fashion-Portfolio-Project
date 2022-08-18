@@ -52,11 +52,11 @@ const Navbar = () => {
 
   return (
     <>
-      <Notifications>
+      {/* <Notifications>
         <NotificationsList>
           <li>Free Shipping to All Europe</li>
         </NotificationsList>
-      </Notifications>
+      </Notifications> */}
       <NavbarContainer>
         <WrapperContainer
           onMouseEnter={handleMouseEnter}

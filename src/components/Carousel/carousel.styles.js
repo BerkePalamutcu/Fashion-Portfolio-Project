@@ -3,10 +3,10 @@ import Video from '../Video/Video';
 import { device } from '../styles/breakpoints';
 //STYLES
 export const VideoEdited = styled(Video)`
-  width: 10%;
-  height: 100vh;
-  overflow-x: hidden;
-  display: flex;
+  // max-width: 50vw;
+  // height: 100vh;
+  // overflow: hidden;
+  // object-fit: cover;
 `;
 
 export const Spring = styled.h1`
