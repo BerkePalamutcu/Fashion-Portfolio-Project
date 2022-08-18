@@ -11,11 +11,12 @@ To test the credit card payment please enter 4242 4242 4242 4242 as your card nu
 
 ## Roadmap
 - [x] Stripe realtime payment integration.
-- [ ] Some spinners can be added for better userexperience while loading homepage or other pages
+- [ ] Some loading spinners can be added for better userexperience while loading homepage or other pages.
 - [ ] Make it mobile and tablet responsive.
 - [ ] User Bag data can be sent to user's own UID data on firebase firestore.
 - [ ] More form validations can be applied as user enters email and password instead of alerting the page
 - [ ] Purchased product data can be integrated to firestore also.
+- [ ] Some components know too much about the logic and they can be written as custom hooks to make the code more clean.
 
 ## The flow diagram and architecture of the project
 ![Untitled Diagram (1)](https://user-images.githubusercontent.com/78186900/185489222-962e08c3-3b00-41d6-8bcd-f3a2bc2cb51a.jpg)
