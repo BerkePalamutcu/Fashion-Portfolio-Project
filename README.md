@@ -9,7 +9,7 @@ To test the credit card payment please enter 4242 4242 4242 4242 as your card nu
 - Styled Components
 - Stripe Api for payment integration
 
-## Roadmap
+## ToDO
 - [x] Stripe realtime payment integration.
 - [ ] Some loading spinners can be added for better userexperience while loading homepage or other pages.
 - [ ] Make it mobile and tablet responsive.
