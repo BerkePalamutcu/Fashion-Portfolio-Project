@@ -1,6 +1,6 @@
 # Fashion E-commerce Project
 ###
->Firstly, to live preview the project please click on this [demo link](https://lustrous-shortbread-5bfbe8.netlify.app/).
+>Firstly, to live preview the project please click on this [demo link](https://fashionecommerce.netlify.app/).
 To test the credit card payment please enter 4242 4242 4242 4242 as your card number and choose expire date from the future.
 
 ## The stack was used in the project
