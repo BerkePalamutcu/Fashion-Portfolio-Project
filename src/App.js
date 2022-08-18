@@ -3,11 +3,11 @@ import Navigation from './components/routes/Navigation';
 
 function App() {
   return (
-    <main className="App">
+    <div className="App">
       <BrowserRouter>
         <Navigation />
       </BrowserRouter>
-    </main>
+    </div>
   );
 }
 
