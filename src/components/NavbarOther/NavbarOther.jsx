@@ -82,35 +82,7 @@ const NavbarOther = () => {
           </LogoContainer>
           <MainContainer>
             <MainList>
-              <MainListItems>
-                <NavLink
-                  style={{
-                    textDecoration: 'none',
-                    color: 'black',
-                  }}
-                  to="/products"
-                >
-                  <Spans>SHOP</Spans>
-                </NavLink>
-                <NavLink
-                  style={{
-                    textDecoration: 'none',
-                    color: 'black',
-                  }}
-                  to="/about"
-                >
-                  <Spans>ABOUT</Spans>
-                </NavLink>
-                <NavLink
-                  style={{
-                    textDecoration: 'none',
-                    color: 'black',
-                  }}
-                  to="/contact"
-                >
-                  <Spans>CONTACT</Spans>
-                </NavLink>
-              </MainListItems>
+              <MainListItems></MainListItems>
             </MainList>
           </MainContainer>
           <RightContainer>
@@ -138,6 +110,15 @@ const NavbarOther = () => {
                 <Spans>LOG OUT</Spans>
               </NavLink>
             )}
+            <NavLink
+              style={{
+                textDecoration: 'none',
+                color: 'black',
+              }}
+              to="/products"
+            >
+              <Spans>SHOP</Spans>
+            </NavLink>
             <Spans
               onClick={() => dispatch(changeCardModalToTrue(true))}
               style={{
