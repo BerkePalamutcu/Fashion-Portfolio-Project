@@ -284,7 +284,7 @@ const ItemCards = () => {
           <FilterWrapper>
             <SearchInput
               clickAnimation={clickAnimation}
-              placeholder="search products"
+              placeholder="search all products"
               value={inputvalue}
               onChange={(event) => handleChange(event)}
               ref={inputRef}
