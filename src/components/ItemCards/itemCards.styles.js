@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const CardsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  overflow-y: hidden;
+  overflow: hidden;
 `;
 export const CardsWrapper = styled.div`
   width: 100vw;
