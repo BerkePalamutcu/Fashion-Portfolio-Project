@@ -1,33 +1,28 @@
 import { useRef } from 'react';
-
-//STYLE IMPORTS
 import {
-  VideoEdited,
-  VideoContainer,
   Spring,
   Summer,
   Collection,
   BlackButton,
-} from './carousel.styles';
+} from '../Carousel/carousel.styles';
+import { BackgroundImage } from './carouselMobile.styles';
 
-//COMPONENT
-const Carousel = () => {
+const CarouselMobile = () => {
   const bottomRef = useRef(null);
   const handleNavigation = () => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
   return (
     <>
-      <VideoContainer>
-        <VideoEdited />
+      <BackgroundImage>
         <Spring>SPRING</Spring>
         <Summer>SUMMER</Summer>
         <Collection>Collection</Collection>
         <BlackButton onClick={handleNavigation}>New Products</BlackButton>
-        <div ref={bottomRef}></div>
-      </VideoContainer>
+      </BackgroundImage>
+      <div ref={bottomRef}></div>
     </>
   );
 };
 
-export default Carousel;
+export default CarouselMobile;

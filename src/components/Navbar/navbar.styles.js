@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { device } from '../styles/breakpoints';
-import MenuIcon from '@mui/icons-material/Menu';
+import styled from "styled-components";
+import { device } from "../styles/breakpoints";
+import MenuIcon from "@mui/icons-material/Menu";
 
 export const Notifications = styled.div`
   display: flex;
@@ -12,7 +12,7 @@ export const Notifications = styled.div`
   background-color: #b78c71;
   overflow: hidden;
   @media only screen and ${device.mobileL} {
-    display: none;
+    display: flex;
   }
 `;
 export const NotificationsList = styled.ul`
@@ -20,10 +20,11 @@ export const NotificationsList = styled.ul`
   list-style-type: none;
   color: white;
   font-size: 12px;
-  font-family: 'Domine', serif;
+  font-family: "Domine", serif;
   overflow: hidden;
   @media only screen and ${device.mobileL} {
-    display: none;
+    display: flex;
+    justify-content: center;
   }
 `;
 export const NavbarContainer = styled.div`
@@ -43,6 +44,7 @@ export const NavbarContainer = styled.div`
   @media only screen and ${device.mobileL} {
     display: flex;
     justify-content: space-between;
+    position: static;
   }
 `;
 export const WrapperContainer = styled.div`
@@ -68,7 +70,7 @@ export const WrapperContainer = styled.div`
 export const LogoContainer = styled.div`
   flex: 0.8;
   text-align: center;
-  font-family: 'My Soul', cursive;
+  font-family: "My Soul", cursive;
   font-weight: 400;
   font-size: 38px;
   transition: ease-in-out 2s;
@@ -122,7 +124,6 @@ export const Spans = styled.span`
   }
 `;
 export const Hamburger = styled(MenuIcon)`
-  display: none;
   @media only screen and (min-width: 992px) {
     visibility: hidden;
   }
@@ -144,5 +145,4 @@ export const SliderMenu = styled.div`
     flex-direction: row;
     transform: translateX(100vw);
     position: absolute;
-  }
-`;
+  }`

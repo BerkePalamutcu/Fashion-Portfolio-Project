@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { device } from '../styles/breakpoints';
 
 //STYLES
 export const CardWrapper = styled.div`
@@ -7,8 +8,10 @@ export const CardWrapper = styled.div`
   gap: 10px;
   transform: translateX(${(props) => props.index * -1200}px);
   transition: all ease 0.5s;
+  @media only screen and ${device.mobileL} {
+    transform: translateX(${(props) => props.index * -300}px);
+  }
 `;
-
 export const SlideImage = styled.img.attrs((props) => ({
   src: props.src,
   alt: props.alt,
